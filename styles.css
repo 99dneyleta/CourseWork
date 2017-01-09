@@ -1,0 +1,70 @@
+body {
+    
+    background-color: #580EAD;
+        
+
+}
+
+body {
+    margin: 0;
+}
+.logo-position {
+    text-align: center!important;
+}
+::-webkit-input-placeholder { /* WebKit browsers focus place holder*/
+   color:    white;
+}
+
+input::-webkit-input-placeholder       {text-indent: 0px;   transition: text-indent 0.3s ease;}
+
+input:focus::-webkit-input-placeholder {text-indent: 100vw; transition: text-indent 0.3s ease;}
+
+
+ 
+
+#input {
+    width: 92vw;
+    height: 3vh;
+    
+   
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    
+    outline: none;
+    font-size: 32pt;
+    font-family: Bebas Neue;
+    
+    color: white;
+    
+    
+    border-color: white;
+    border-right: 0;
+    border-left: 0;
+    border-top: 0;
+    
+    background: #580EAD;
+    
+}
+#butt {
+    width: 26vw;
+    height: 7vh;
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 28pt;
+    color: white;
+    background: #444BDF;
+    font-family: Tahoma;
+    border:1px solid #444BDF;
+    border-radius: 2px;
+}
+#sign-up {
+    display: block;
+    text-align: center!important;
+    font-family: Verdana;
+    color: white;
+    font-size: 30px;
+    text-decoration: none;
+}
