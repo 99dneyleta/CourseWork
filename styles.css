@@ -1,26 +1,22 @@
 body {
     
     background-color: #580EAD;
-        
-
-}
-
-body {
     margin: 0;
 }
+
+
 .logo-position {
     text-align: center!important;
 }
-::-webkit-input-placeholder { /* WebKit browsers focus place holder*/
-   color:    white;
-}
 
-input::-webkit-input-placeholder       {text-indent: 0px;   transition: text-indent 0.3s ease;}
 
+/*input animation(to right) default position*/
+input::-webkit-input-placeholder       {text-indent: 27vw;   transition: text-indent 0.3s ease;}
+
+/*focus position*/
 input:focus::-webkit-input-placeholder {text-indent: 100vw; transition: text-indent 0.3s ease;}
 
 
- 
 
 #input {
     width: 92vw;
@@ -35,7 +31,7 @@ input:focus::-webkit-input-placeholder {text-indent: 100vw; transition: text-ind
     font-size: 32pt;
     font-family: Bebas Neue;
     
-    color: white;
+    
     
     
     border-color: white;
@@ -67,4 +63,50 @@ input:focus::-webkit-input-placeholder {text-indent: 100vw; transition: text-ind
     color: white;
     font-size: 30px;
     text-decoration: none;
+}
+
+/*Sign Up page*/
+.back-arrow {
+    float: left;
+    width:64px;
+    height: 64px;
+    margin-left: 10px;
+    vertical-align:middle;
+}
+
+.next-link {
+    margin: 0;
+    margin-left: 89vw;
+    margin-right: 10px;
+    
+    
+  width: 84px;
+height: 64px;
+    padding-right: 10px;
+}
+ 
+div p {
+    position: absolute;
+    display: table-cell;
+    vertical-align: bottom;
+    margin-top: 10px;
+}
+
+
+a:link {
+   
+    text-decoration: none;
+    color: white;
+    font-size: 42px;
+    
+}
+
+
+header {
+background-color: #580EAD;
+    position:inherit;
+ width: 100vw;
+    margin-bottom: 200px;
+ 
+    
 }
