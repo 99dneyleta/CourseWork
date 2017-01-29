@@ -11,18 +11,24 @@ body {
 
 
 /*input animation(to right) default position*/
-input::-webkit-input-placeholder       {text-indent: 27vw;   transition: text-indent 0.3s ease;}
+input.input-half::-webkit-input-placeholder       {text-indent: 27vw;   transition: text-indent 0.3s ease;}
 
 /*focus position*/
-input:focus::-webkit-input-placeholder {text-indent: 100vw; transition: text-indent 0.3s ease;}
+input.input-half:focus::-webkit-input-placeholder {text-indent: 100vw; transition: text-indent 0.3s ease;}
+
+/*input animation(to right) default position*/
+input.input-on-start::-webkit-input-placeholder       {text-indent: 0;   transition: text-indent 0.3s ease;}
+
+/*focus position*/
+input.input-on-start:focus::-webkit-input-placeholder {text-indent: 100vw; transition: text-indent 0.3s ease;}
 
 
 
-#input {
+
+.input-on-start,.input-half,.input-for-prof {
     width: 92vw;
     height: 3vh;
     
-   
     display:block;
     margin-left: auto;
     margin-right: auto;
@@ -30,9 +36,6 @@ input:focus::-webkit-input-placeholder {text-indent: 100vw; transition: text-ind
     outline: none;
     font-size: 32pt;
     font-family: Bebas Neue;
-    
-    
-    
     
     border-color: white;
     border-right: 0;
@@ -42,6 +45,18 @@ input:focus::-webkit-input-placeholder {text-indent: 100vw; transition: text-ind
     background: #580EAD;
     
 }
+
+#container-for-photo {
+    position: relative;
+    float:left;
+    width: 100%;
+}
+
+#Name {
+    float: left;
+    height: 50%;
+}
+
 #butt {
     width: 26vw;
     height: 7vh;
@@ -75,6 +90,8 @@ input:focus::-webkit-input-placeholder {text-indent: 100vw; transition: text-ind
 }
 
 .next-link {
+    text-decoration: none;
+    
     margin: 0;
     margin-left: 89vw;
     margin-right: 10px;
@@ -110,3 +127,57 @@ background-color: #580EAD;
  
     
 }
+/*Profile Data page*/
+
+.space-for-photo {
+    float: left;
+    background: white;
+    background-color: white;
+    
+}
+
+.gender {
+    font-family:inherit;
+    
+}
+
+fieldset {
+  overflow: hidden
+}
+
+.some-class {
+font-size: 32px;
+  float: left;
+  clear: none;
+}
+
+label {
+    font-size: 32px;
+  float: left;
+  clear: none;
+  display: block;
+  padding: 2px 1em 0 0;
+}
+
+input[type=radio],
+input.radio {
+    
+  float: left;
+  clear: none;
+  margin: 2px 0 0 2px;
+    width: 30%;
+    height: 2em;
+    
+}
+
+.floating-box {
+    float: left;
+    text-align: center;
+    width: 256px;
+    height: 75px;
+    
+    border: none;
+    font-size: 32px;
+}
+
+
