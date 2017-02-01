@@ -5,25 +5,35 @@ class User {
     var $firstname = null;
     var $lastname = null;
     var $email;
+    var $gender;
     var $image = null;
+    var $status = "online";
 
-    function __construct($username, $uid, $email ) {
-        $this->username = $username;
-        $this->uid = $uid;
-        $this->email = $email;
+    function __construct() {
 
     }
 
-    function getUsername() {
-        return $this->username;
+    public static function withUsername($username) {
+        $instance = new self();
+        $instance->username = $username;
+        return $instance;
     }
 
-    function getUid() {
-        return $this->uid;
+    public static function withBasicStuff($username, $uid, $email) {
+        $instance = new self();
+        $instance->username = $username;
+        $instance->uid = $uid;
+        $instance->email = $email;
+        return $instance;
     }
 
-    function getImage() {
-        return $this->image;
+    function getName()
+    {
+        if (!isset($this->firstname) && !isset($this->lastname)) {
+            return $this->username;
+        } else {
+            return $this->firstname . " " . $this->lastname;
+        }
     }
 
     function toString() {
@@ -32,21 +42,49 @@ class User {
 
     function update($dbCon, $forceUpdate) {
         if ( $forceUpdate == false && isset($_COOKIE['new'])) {
-            return ;
+            return true;
         }
-        $sql = "SELECT id, first_name, last_name, email, image FROM members WHERE username = '$this->username' AND activated = '1' LIMIT 1";
+        $sql = "SELECT id, first_name, last_name, email, image, gender FROM members WHERE username = '$this->username' AND activated = '1' LIMIT 1";
         $query = mysqli_query($dbCon, $sql);
         $row = mysqli_fetch_row($query);
+        if ( mysqli_error($dbCon) ) {
+            return false;
+        }
         $this->uid = $row[0];
         $this->firstname = $row[1];
         $this->lastname = $row[2];
         $this->email = $row[3];
         $this->image = $row[4];
+        $this->gender = $row[5];
 
         generateSessionAndCookie($this);
-
-        setcookie("new", "old", time() + 3600, "/");
+        $this->getOnline($dbCon);
+        setcookie("new", "old", time() + 600, "/");
     }
+
+    function upgrade($dbCon) {
+        $sql = "UPDATE members " .
+            "SET image='$this->image', first_name='$this->firstname', last_name='$this->lastname', email='$this->email', gender='$this->gender' " .
+            "WHERE username='$this->username';";
+        if( !mysqli_query($dbCon, $sql) ) {
+            return 0;
+        }
+        return $this->getOnline($dbCon);
+    }
+
+    function getOnline($dbCon) {
+        if (  isset($_COOKIE['new'])) {
+            return true;
+        }
+        $sql = "UPDATE members " .
+            "SET online='".time()."'".
+            "WHERE username='$this->username';";
+        if( !mysqli_query($dbCon, $sql) ) {
+            return false;
+        }
+        return true;
+    }
+
 }
 
 function generateSessionAndCookie($user) {
@@ -54,11 +92,25 @@ function generateSessionAndCookie($user) {
     setcookie("user", serialize($user), time() + (86400 * 30), "/"); // 86400 = 1 day
 }
 
+function getUser() {
+    if (isset($_SESSION['user'])) {
+        return unserialize($_SESSION['user']);
+    } elseif (isset($_COOKIE['user'])) {
+        return unserialize($_COOKIE['user']);
+    }
+    return null;
+
+}
+
 function clearSessionAndCookie() {
     session_destroy();
     if (isset($_COOKIE['user'])) {
         unset($_COOKIE['user']);
         setcookie('user', '', time() - 3600, '/'); // empty value and old timestamp
+    }
+    if (isset($_COOKIE['new'])) {
+        unset($_COOKIE['new']);
+        setcookie('new', '', time() - 3600, '/'); // empty value and old timestamp
     }
 }
 
@@ -110,15 +162,13 @@ function proceedImageUpdate($user, $image, $dbCon) {
 
         if(empty($errors)==true) {
             $file_name = generateRandomString() . '.' . $file_ext;
+
             if (!move_uploaded_file($file_tmp, "images/" . $file_name)) {
-                echo "<img src='" . $_FILES['image']['tmp_name'] . "." . $file_ext . "'><br>";
-                //var_dump(is_uploaded_file($_FILES["image"]["tmp_name"]));
                 return "Cannot move " . $_FILES['image']['tmp_name'] . " to " . "/Users/Denis/" . $file_name;
             }
 
-
             //Check if file was before
-            $oldFilename = "images/" . $user->getImage();
+            $oldFilename = "images/" . $user->image;
             if (file_exists($oldFilename)) {
                 unlink($oldFilename);
             }
@@ -126,7 +176,7 @@ function proceedImageUpdate($user, $image, $dbCon) {
             $user->image = $file_name;
             generateSessionAndCookie($user);
 
-            $uid = $user->getUid();
+            $uid = $user->uid;
 
             $sql = "UPDATE members " .
                 "SET image='$file_name' " .
@@ -137,6 +187,13 @@ function proceedImageUpdate($user, $image, $dbCon) {
             }
         }
     }
-    return "0";
+    return null;
+}
+
+function getAlert($strong, $msg) {
+    $result = '<div class="alert" id="alert">'.
+              '<span class="closebtn" onclick="this.parentElement.style.display='.'\'none\''.';">&times;</span>'.
+              '<strong>'.$strong.' </strong> '.$msg.'</div>';
+    return $result;
 }
 ?>

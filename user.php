@@ -4,7 +4,7 @@ session_start();
 include_once("dbConnect.php");
 include_once("functionality.php");
 ////////Global variables
-$errors = 0;
+$errors = null;
 $user = null;
 $result = null;
 
@@ -22,20 +22,39 @@ if (isset($_SESSION['user'])) {
 } else  {
     header("Location: index.php");
 }
-
-proceedImageUpdate($user, 'image', $dbCon);
+if ( isset($_FILES) && isset($_FILES['image'])) {
+    $errors = proceedImageUpdate($user, 'image', $dbCon);
+}
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $user->getUsername() ;?> - Test Site</title>
+    <title><?php echo $user->getName() ?></title>
+    <script>
+        function validate_fileupload(fileName)
+        {
+            var allowed_extensions = new Array("jpg","png","gif");
+            var file_extension = fileName.split('.').pop(); // split function will split the filename by dot(.), and pop function will pop the last element from the array which will give you the extension as well. If there will be no extension then it will return the filename.
+
+            for(var i = 0; i <= allowed_extensions.length; i++)
+            {
+                if(allowed_extensions[i]==file_extension)
+                {
+                    return true; // valid file extension
+                }
+            }
+            alert("Not valid file!");
+            document.forms['Update']['image'].value = null;
+            return false;
+        }
+    </script>
 </head>
 
 <body>
 <div>
     <?php
-        if ( $errors != "0") {
+        if ( $errors ) {
             echo "<h1> '$errors'</h1>";
         }
         $img = $user->image;
@@ -50,9 +69,11 @@ echo $result;
 <br>
 <a href="logout.php">logout</a>
 <br><br>
-<form method="post" enctype="multipart/form-data" action="user.php" >
+<a href="profileData.php">profileData</a>
+<br><br>
+<form name="Update" method="post" enctype="multipart/form-data" action="user.php" >
 
-    <input type="file" name="image">
+    <input type="file" id="image" name="image" onchange="validate_fileupload(this.value);">
     <br>
     <input type="submit" value="Update">
 </form>

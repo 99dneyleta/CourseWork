@@ -1,43 +1,39 @@
 <?php
 session_start();
+include_once("functionality.php");
+
 if (isset($_SESSION['user']) || isset($_COOKIE['user'])) {
-    header("Location: user.php");
+    header("Location: profile.php");
 }
 
+$error = null;
 if (isset($_POST['username'])) {
 
     include_once("dbConnect.php");
-    include_once("functionality.php");
 
     // Set the posted data from the form into local variables
-    $usname = strip_tags($_POST['username']);
-    $paswd = strip_tags($_POST['password']);
+    $username = strip_tags($_POST['username']);
+    $password = strip_tags($_POST['password']);
     // escape variables for security
-    $usname = mysqli_real_escape_string($dbCon, $usname);
-    $paswd = mysqli_real_escape_string($dbCon, $paswd);
+    $username = mysqli_real_escape_string($dbCon, $username);
+    $password = mysqli_real_escape_string($dbCon, $password);
 
 
-    $sql = "SELECT id, username, password, first_name, last_name, email, image FROM members WHERE username = '$usname' AND activated = '1' LIMIT 1";
+    $sql = "SELECT password FROM members WHERE username = '$username' AND activated = '1' LIMIT 1";
     $query = mysqli_query($dbCon, $sql);
     $row = mysqli_fetch_row($query);
+    $dbPassword = $row[0];
 
-    $uid = $row[0];
-    $dbUsname = $row[1];
-    $dbPassword = $row[2];
-    $fn = $row[3];
-    $ln = $row[4];
-    $em = $row[5];
-    $im = $row[6];
-    // Check if the username and the password they entered was correct
-    if ($usname == $dbUsname && password_verify($paswd,$dbPassword)) {
+    // Check if the password they entered was correct
+    if (password_verify($password,$dbPassword)) {
 
-        $user = new User($usname, $uid, $fn, $ln, $em, $im);
+        $user = User::withUsername($username);
+        $user->update($dbCon, true);
         generateSessionAndCookie($user);
         // Now direct to users feed
-        header("Location: user.php");
+        header("Location: profile.php");
     } else {
-        echo "<h2>Ops that username or password combination was incorrect.
-		<br /> Please try again.</h2>";
+        $error = 1;
     }
 
 }
@@ -87,7 +83,7 @@ if (isset($_POST['username'])) {
 <head>
     <title>LogIn</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styless.css">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    white;
@@ -110,7 +106,9 @@ if (isset($_POST['username'])) {
     </div>
     <div style="margin-bottom: 15vh">
         <input class="input-on-start" type="password" name="password" placeholder="Password"/>
+        <?php if ( $error ) {echo getAlert("Incorrect username or password", ""); } ?>
     </div>
+
     <div style="margin-bottom: 19vh">
         <input type="submit" value="Sign In" id="butt"/>
     </div>
