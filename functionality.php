@@ -1,11 +1,11 @@
 <?php
 class User {
     var $username;
-    var $uid;
+    var $uid = null;
     var $firstname = null;
     var $lastname = null;
     var $email;
-    var $gender;
+    var $gender = null;
     var $image = null;
     var $status = "online";
 
@@ -64,10 +64,38 @@ class User {
 
     function upgrade($dbCon) {
         $sql = "UPDATE members " .
-            "SET image='$this->image', first_name='$this->firstname', last_name='$this->lastname', email='$this->email', gender='$this->gender' " .
-            "WHERE username='$this->username';";
+            "SET ";
+
+        if ( isset($this->firstname)){
+            $sql = $sql . "first_name='".$this->firstname."', ";
+        } else {
+            $sql = $sql . "first_name=NULL, ";
+        }
+        if ( isset($this->lastname)){
+            $sql = $sql . "last_name='".$this->lastname."', ";
+        } else {
+            $sql = $sql . "last_name=NULL, ";
+        }
+        if ( isset($this->gender)){
+            $sql = $sql . "gender='".$this->gender."', ";
+        } else {
+            $sql = $sql . "gender=NULL, ";
+        }
+        if ( isset($this->image)){
+            $sql = $sql . "image='".$this->image."', ";
+        } else {
+            $sql = $sql . "image=NULL, ";
+        }
+        if ( isset($this->email)) {
+            $sql = $sql . "email='".$this->email."', ";
+        } else {
+            $sql = $sql . "email=NULL, ";
+        }
+        $sql = $sql . "username='".$this->username."' ".
+                "WHERE id='$this->uid';";
+
         if( !mysqli_query($dbCon, $sql) ) {
-            return 0;
+            die($sql);
         }
         return $this->getOnline($dbCon);
     }

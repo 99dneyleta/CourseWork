@@ -7,23 +7,33 @@ $user = getUser();
 if (!$user) {
     header("Location: index.php");
 }
-
-if ( isset($_POST['firstname']) ) {
-    $user->firstname = mysqli_real_escape_string($dbCon, $_POST['firstname']);
-}
-if ( isset($_POST['lastname']) ) {
-    $user->lastname = mysqli_real_escape_string($dbCon, $_POST['lastname']);
-}
-if ( isset($_FILES)) {
-    proceedImageUpdate($user, "file", $dbCon);
-}
-if ( isset($_POST['gender'])) {
-    $user->gender = mysqli_real_escape_string($dbCon, $_POST['gender']);
-}
-
-$user->upgrade($dbCon);
-generateSessionAndCookie($user);
 if ( isset($_POST['wasloaded'])){
+
+    if ( isset($_POST['firstname']) &&  mysqli_real_escape_string($dbCon, $_POST['firstname']) != "") {
+        $user->firstname = mysqli_real_escape_string($dbCon, $_POST['firstname']);
+    } else {
+        $user->firstname = null;
+    }
+    if ( isset($_POST['lastname']) && mysqli_real_escape_string($dbCon, $_POST['lastname']) != "") {
+        $user->lastname = mysqli_real_escape_string($dbCon, $_POST['lastname']);
+    } else {
+        $user->lastname = null;
+    }
+    if ( isset($_FILES)) {
+        proceedImageUpdate($user, "file", $dbCon);
+    } else {
+        $user->image = null;
+    }
+    if ( isset($_POST['gender']) && mysqli_real_escape_string($dbCon, $_POST['gender']) != "") {
+        $user->gender = mysqli_real_escape_string($dbCon, $_POST['gender']);
+    } else {
+        die(mysqli_real_escape_string($dbCon, $_POST['gender']));
+        $user->gender = null;
+    }
+
+    $user->upgrade($dbCon);
+    generateSessionAndCookie($user);
+
     header("Location: profile.php");
 }
 
@@ -97,19 +107,19 @@ if ( isset($_POST['wasloaded'])){
 
         </div>
         <div id = "Name"><input class="input-on-start" style="background-color: white; border-color:#580EAD; width:70vw;position: absolute;
-    bottom: 0;"type="text"  name="firstname" placeholder="First Name" <?php if ( isset($user->firstname)) {echo "value='".$user->firstname."'";} ?>/></div>
+    bottom: 0;"type="text"  name="lastname" placeholder="Last Name" <?php if ( isset($user->lastname)) {echo "value='".$user->lastname."'";} ?>/></div>
 
         <div id = "Name"><input class="input-on-start" style="
-                    position:absolute;margin-top:5%;background-color: white; border-color:#580EAD; width:70vw;"type="text"  name="lastname" placeholder="Last Name" <?php if ( isset($user->lastname)) {echo "value='".$user->lastname."'";} ?> /></div>
+                    position:absolute;margin-top:5%;background-color: white; border-color:#580EAD; width:70vw;"type="text"  name="firstname" placeholder="First Name" <?php if ( isset($user->firstname)) {echo "value='".$user->firstname."'";} ?> /></div>
 
     </div>
 
     <div class="floating-box"><label for="file" id="lbl_file">Add Photo</label></div>
     <div class="floating-box-gender">
-        <input type="radio" id="male" name="gender" value="male" onchange="radioChange(this)"  <?php if ( $user->gender == "male" ) {echo "selected";} ?> >
+        <input type="radio" id="male" name="gender" value="male" onchange="radioChange(this)"  <?php if ( $user->gender == "male" ) {echo "checked";} ?> >
         <label for="male" style="color: <?php if ( $user->gender == "male" ) {echo "black;";} else {echo "#f7f;";} ?>" id="lbl_m">Male</label>
 
-        <input type="radio" id="female" name="gender" value="female" onchange="radioChange(this)"  <?php if ( $user->gender == "female" ) {echo "selected";} ?>>
+        <input type="radio" id="female" name="gender" value="female" onchange="radioChange(this)"  <?php if ( $user->gender == "female" ) {echo "checked";} ?> >
         <label for="female" style="color: <?php if ( $user->gender == "female" ) {echo "black;";} else {echo "#f7f;";} ?>" id="lbl_f">Female</label>
     </div>
 </form>

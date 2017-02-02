@@ -90,7 +90,7 @@ $user->update($dbCon, true);
     </a>
     <a href="javascript:void(0);"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
     <a href="javascript:void(0);"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
-    <a href="javascript:void(0);"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
+    <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>
 </div>
 
@@ -125,24 +125,30 @@ $user->update($dbCon, true);
             <div class="text" >
                 <?php if ( isset($user->firstname)) {echo "First name: '".$user->firstname."'";} ?>
             </div>
-
+<br>
             <div class="text" >
                 <?php if ( isset($user->lastname)) {echo "Last name: '".$user->lastname."'";} ?>
             </div>
-
+<br>
             <div class="text" >
                 <?php if ( isset($user->username)) {echo "username: '".$user->username."'";} ?>
             </div>
-
+<br>
             <div class="text" >
                 <?php if ( isset($user->email)) {echo "@mail: '".$user->email."'";} ?>
             </div>
+<br>
+            <div class="text" >
+                <?php if ( isset($user->gender) ) {echo $user->gender;} ?>
+            </div>
+
+
         </div>
+
+
     </div>
 
-    <div class="text">
-        <?php if ( isset($user->gender) ) {echo $user->gender;} ?>
-    </div>
+
 
 </body>
 </html>

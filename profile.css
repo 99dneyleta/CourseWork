@@ -152,6 +152,7 @@ div p {
 
 .all-info {
     margin: auto;
+    display: inline-block;
 }
 
 .text {
