@@ -9,6 +9,25 @@ body {
     text-align: center!important;
 }
 
+/* unvisited link */
+a:link {
+    color: #FFF;
+}
+
+/* visited link */
+a:visited {
+    color: #FFF;
+}
+
+/* mouse over link */
+a:hover {
+    color: #FFF;
+}
+
+/* selected link */
+a:active {
+    color: #FFF;
+}
 
 /*input animation(to right) default position*/
 input.input-half::-webkit-input-placeholder       {text-indent: 27vw;   transition: text-indent 0.3s ease;}
@@ -26,8 +45,10 @@ input.input-on-start:focus::-webkit-input-placeholder {text-indent: 100vw; trans
 
 
 .input-on-start,.input-half,.input-for-prof {
-    width: 92vw;
-    height: 3vh;
+    /*width: 92vw;*/
+    /*height: 3vh;*/
+    height: 4vw;
+    color: #580EAD;
     
     display:block;
     margin-left: auto;
@@ -64,7 +85,9 @@ input.input-on-start:focus::-webkit-input-placeholder {text-indent: 100vw; trans
     display: block;
     margin-left: auto;
     margin-right: auto;
+    /*!!!*/
     font-size: 28pt;
+
     color: white;
     background: #444BDF;
     font-family: Tahoma;
@@ -83,22 +106,22 @@ input.input-on-start:focus::-webkit-input-placeholder {text-indent: 100vw; trans
 /*Sign Up page*/
 .back-arrow {
     float: left;
-    width:64px;
-    height: 64px;
+    width:10vw;
+    height: 10vw;
     margin-left: 10px;
     vertical-align:middle;
 }
 
 .next-link {
     text-decoration: none;
-    
+
     margin: 0;
-    margin-left: 89vw;
+    margin-left: 83vw;
     margin-right: 10px;
-    
-    
-  width: 84px;
-height: 64px;
+    font-size:7.5vw;
+
+    width: auto;
+    height: 10vw;
     padding-right: 10px;
 }
  
@@ -114,7 +137,7 @@ a:link {
    
     text-decoration: none;
     color: white;
-    font-size: 42px;
+    /*font-size: 10vw;*/
     
 }
 
@@ -123,6 +146,7 @@ header {
 background-color: #580EAD;
     position:inherit;
  width: 100vw;
+    height: 10vw;
     margin-bottom: 200px;
  
     
@@ -138,7 +162,13 @@ background-color: #580EAD;
 
 .gender {
     font-family:inherit;
-    
+    display: block;
+    width: 70%;
+    height:20vw;
+    position: relative;
+    float: right;
+    margin: auto;
+    padding: 10;
 }
 
 fieldset {
@@ -160,12 +190,12 @@ label {
 }
 
 input[type=radio],
-input.radio {
-    
+input.radio{
+    display: none;
   float: left;
   clear: none;
   margin: 2px 0 0 2px;
-    width: 30%;
+    width: 20%;
     height: 2em;
     
 }
@@ -180,4 +210,84 @@ input.radio {
     font-size: 32px;
 }
 
+.floating-box-gender {
+    float: right;
+    text-align: justify;
+    width: 70%;
 
+    border: none;
+    font-size: 32px;
+    padding: 20px;
+}
+
+#avatar {
+    width: 26.123vw;
+    height:26.123vw;
+    -webkit-border-radius:50%;
+    -moz-border-radius:50%;
+    border-radius:50%;
+}
+
+#lbl_m {
+    font-size:6vw;
+}
+#lbl_f {
+    font-size: 6vw;
+    float: right;
+}
+#lbl_file {
+    float: none;
+}
+
+
+/*style for alerts!! */
+.alert {
+    padding: 30px;
+    background-color: #f44336;
+    color: white;
+    margin: auto;
+    display: block;
+    font-size: 50px;
+    text-align: center;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 110px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 1%;
+}
+
+.closebtn:hover {
+    color: black;
+}
+/* end of alerts */
+
+
+/* start of my header */
+
+div.forDash {
+    display: inline;
+    float: left;
+    width: 8vw;
+    height: 8vw;
+    margin: 0;
+}
+
+div.head {
+    display: inline;
+    padding-right: 15vw;
+    float: center;
+
+
+    font-size: 8vw;
+    margin: auto;
+
+}
+
+/* ends my header */

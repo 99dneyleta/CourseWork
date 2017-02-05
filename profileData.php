@@ -45,7 +45,7 @@ if ( isset($_POST['wasloaded'])){
 <head>
     <title>LogIn</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/styless.css">
+    <link rel="stylesheet" href="/styles.css?v<?=time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;
@@ -77,12 +77,12 @@ if ( isset($_POST['wasloaded'])){
             }
         }
         function radioChange(radio) {
-            if ( radio.value == "male") {
-                document.getElementById('lbl_m').setAttribute("style", "color: #000;");
-                document.getElementById('lbl_f').setAttribute("style", "color: #f7f;");
+            if ( radio.value != "male") {
+                document.getElementById('lbl_m').setAttribute("style", "color: #888;");
+                document.getElementById('lbl_f').setAttribute("style", "color: #580EAD;");
             } else {
-                document.getElementById('lbl_f').setAttribute("style", "color: #000;");
-                document.getElementById('lbl_m').setAttribute("style", "color: #f7f;");
+                document.getElementById('lbl_f').setAttribute("style", "color: #888;");
+                document.getElementById('lbl_m').setAttribute("style", "color: #580EAD;");
             }
         }
     </script>
@@ -117,10 +117,10 @@ if ( isset($_POST['wasloaded'])){
     <div class="floating-box"><label for="file" id="lbl_file">Add Photo</label></div>
     <div class="floating-box-gender">
         <input type="radio" id="male" name="gender" value="male" onchange="radioChange(this)"  <?php if ( $user->gender == "male" ) {echo "checked";} ?> >
-        <label for="male" style="color: <?php if ( $user->gender == "male" ) {echo "black;";} else {echo "#f7f;";} ?>" id="lbl_m">Male</label>
+        <label for="male" style="color: <?php if ( $user->gender != "male" ) {echo "#888;";} else {echo "#580EAD;";} ?>" id="lbl_m">Male</label>
 
         <input type="radio" id="female" name="gender" value="female" onchange="radioChange(this)"  <?php if ( $user->gender == "female" ) {echo "checked";} ?> >
-        <label for="female" style="color: <?php if ( $user->gender == "female" ) {echo "black;";} else {echo "#f7f;";} ?>" id="lbl_f">Female</label>
+        <label for="female" style="color: <?php if ( $user->gender != "female" ) {echo "#888;";} else {echo "#580EAD;";} ?>" id="lbl_f">Female</label>
     </div>
 </form>
 </body>

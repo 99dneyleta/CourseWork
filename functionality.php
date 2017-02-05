@@ -9,6 +9,11 @@ class User {
     var $image = null;
     var $status = "online";
 
+    var $hobby = null;
+    var $inspiration = null;
+    var $books = null;
+    var $music = null;
+
     function __construct() {
 
     }
@@ -44,7 +49,7 @@ class User {
         if ( $forceUpdate == false && isset($_COOKIE['new'])) {
             return true;
         }
-        $sql = "SELECT id, first_name, last_name, email, image, gender FROM members WHERE username = '$this->username' AND activated = '1' LIMIT 1";
+        $sql = "SELECT id, first_name, last_name, email, image, gender, hobby, insp, books, music FROM members WHERE username = '$this->username' AND activated = '1' LIMIT 1";
         $query = mysqli_query($dbCon, $sql);
         $row = mysqli_fetch_row($query);
         if ( mysqli_error($dbCon) ) {
@@ -56,6 +61,10 @@ class User {
         $this->email = $row[3];
         $this->image = $row[4];
         $this->gender = $row[5];
+        $this->hobby = $row[6];
+        $this->inspiration = $row[7];
+        $this->books = $row[8];
+        $this->music = $row[9];
 
         generateSessionAndCookie($this);
         $this->getOnline($dbCon);
@@ -97,7 +106,45 @@ class User {
         if( !mysqli_query($dbCon, $sql) ) {
             die($sql);
         }
+        setcookie("new", "old", time() + 600, "/");
         return $this->getOnline($dbCon);
+    }
+
+    function upgradeDetail($dbCon) {
+        $sql = "UPDATE members " .
+            "SET ";
+
+        if ( isset($this->firstname)){
+            $sql = $sql . "hobby='".$this->hobby."', ";
+        } else {
+            $sql = $sql . "hobby=NULL, ";
+        }
+        if ( isset($this->lastname)){
+            $sql = $sql . "insp='".$this->inspiration."', ";
+        } else {
+            $sql = $sql . "insp=NULL, ";
+        }
+        if ( isset($this->gender)){
+            $sql = $sql . "books='".$this->books."', ";
+        } else {
+            $sql = $sql . "books=NULL, ";
+        }
+        if ( isset($this->image)){
+            $sql = $sql . "music='".$this->music."' ";
+        } else {
+            $sql = $sql . "music=NULL ";
+        }
+
+        $sql = $sql . "WHERE id='$this->uid';";
+
+        if( !mysqli_query($dbCon, $sql) ) {
+            $this->hobby = null;
+            $this->inspiration = null;
+            $this->books = null;
+            $this->music = null;
+            return $sql;
+        }
+        return null;
     }
 
     function getOnline($dbCon) {
@@ -117,7 +164,7 @@ class User {
 
 function generateSessionAndCookie($user) {
     $_SESSION['user'] = serialize($user);
-    setcookie("user", serialize($user), time() + (86400 * 30), "/"); // 86400 = 1 day
+    setcookie("user", serialize($user), time() + (86400 * 1), "/"); // 86400 = 1 day
 }
 
 function getUser() {
@@ -150,7 +197,7 @@ function generateSession($user) {
 }
 
 function generateCookie($user) {
-    setcookie("user", serialize($user), time() + (86400 * 30), "/"); // 86400 = 1 day
+    setcookie("user", serialize($user), time() + (86400 * 1), "/"); // 86400 = 1 day
 }
 
 function generateRandomString($length = 10) {

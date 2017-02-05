@@ -7,17 +7,28 @@ $user = getUser();
 if (!isset($user)) {
     header("Location: index.php");
 }
-$user->update($dbCon, true);
-?>
 
+$error = null;
+
+if ( isset($_POST['didLoad'])) {
+    $user->hobby = trim(mysqli_real_escape_string($dbCon, $_POST['hobby']));
+    $user->inspiration = trim(mysqli_real_escape_string($dbCon, $_POST['inspiration']));
+    $user->books = trim(mysqli_real_escape_string($dbCon, $_POST['books']));
+    $user->music = trim(mysqli_real_escape_string($dbCon, $_POST['music']));
+
+    $error = $user->upgradeDetail($dbCon);
+}
+
+$user->update($dbCon, false);
+?>
 
 <!Doctype html>
 <html>
 <head>
-    <title>Profile</title>
+    <title>Detail info</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/base.css?v=<?=time();?>">
-    <link rel="stylesheet" href="/profile.css?v=<?=time();?>">
+    <link rel="stylesheet" href="/detail.css?v=<?=time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;
@@ -26,15 +37,13 @@ $user->update($dbCon, true);
 
 </head>
 
-
 <body>
 
 <!-- HERE GOES MENU -->
-
 <script>
-    function show_menu() {
-        var el = document.getElementById("menu");
+    function show_menu(){
 
+        var el = document.getElementById("menu");
         var title = document.getElementById("title");
         var dash = document.getElementById("dash");
         var dashes = document.getElementById("alone");
@@ -57,7 +66,7 @@ $user->update($dbCon, true);
 
             dash.style.left = '45vw';
 
-            title.style.left = '65vw';
+            title.style.left = '59vw';
         } else {
 
             el.style.animation= 'moveback 0.3s';
@@ -80,7 +89,7 @@ $user->update($dbCon, true);
 
             dash.style.left = '0';
 
-            title.style.left = '38vw';
+            title.style.left = '32vw';
         }
     }
 </script>
@@ -97,63 +106,41 @@ $user->update($dbCon, true);
 </div>
 
 <!-- HERE ENDS MENU -->
-<!-- HERE GOES HEADER-->
 
 <header style="margin-bottom: 50px;">
     <div class="dash" id="dash" onclick="show_menu()">
         <div id="alone">
-        <span></span>
-        <span></span>
-        <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
 
     </div>
-    <div class="header-title" id="title" style="display: block;">Profile</div>
+    <div class="header-title" id="title" style="display: block; left: 32vw;">Detail info</div>
     <div class = "unused-box-for-decoration"><p><a href="#"></a></p></div>
 </header>
+
 <div class="header-empty"></div>
 
-<!-- HERE ENDS HEADER -->
+<?php if ( $error ) {echo getAlert("", $error); } ?>
 
-<div id = "container-for-photo">
-    <div class="profile-image">
-        <img class="profile-image" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "/img/space-for-avatar.png";} ?> " >
-    </div>
-    <div class="status" >
-        <?php echo $user->status; ?>
-    </div>
+<form name="detail" method="post" action="detailInfo.php" >
+    <input type="hidden" name="didLoad" value="true">
 
-    <div class="all-info">
-        <div class="text" >
-            <?php if ( isset($user->firstname)) {echo "First name: '".$user->firstname."'";} ?>
-        </div>
-<br>
-        <div class="text" >
-            <?php if ( isset($user->lastname)) {echo "Last name: '".$user->lastname."'";} ?>
-        </div>
-<br>
-        <div class="text" >
-            <?php if ( isset($user->username)) {echo "username: '".$user->username."'";} ?>
-        </div>
-<br>
-        <div class="text" >
-            <span><?php if ( isset($user->email)) {echo "@mail: '".$user->email."'";} ?></span>
-        </div>
-<br>
-        <div class="text" >
-            <?php if ( isset($user->gender) ) {echo $user->gender;} ?>
-        </div>
-<br>
+    <div id="label">My hobby</div>
+    <textarea name="hobby" rows="3"><?php if ( isset($user->hobby)) {echo $user->hobby;} ?></textarea>
 
+    <div id="label">My inspiration</div>
+    <textarea name="inspiration" rows="3"><?php if ( isset($user->inspiration)) {echo $user->inspiration;} ?></textarea>
 
-    </div>
-    <div class="detail" >
-        <a href="detailInfo.php" class="detail">Detail info</a>
-    </div>
+    <div id="label">My favorite books</div>
+    <textarea name="books" rows="3"><?php if ( isset($user->books)) {echo $user->books;} ?></textarea>
 
-</div>
+    <div id="label">My favorite music</div>
+    <textarea name="music" rows="3"><?php if ( isset($user->music)) {echo $user->music;} ?></textarea>
 
+    <input type="submit" value="Update">
 
-
+</form>
 </body>
 </html>
