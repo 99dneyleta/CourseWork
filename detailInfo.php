@@ -12,7 +12,7 @@ $error = null;
 
 if ( isset($_POST['didLoad'])) {
     $user->hobby = trim(mysqli_real_escape_string($dbCon, $_POST['hobby']));
-    $user->inspiration = trim(mysqli_real_escape_string($dbCon, $_POST['inspiration']));
+    $user->city = trim(mysqli_real_escape_string($dbCon, $_POST['city']));
     $user->books = trim(mysqli_real_escape_string($dbCon, $_POST['books']));
     $user->music = trim(mysqli_real_escape_string($dbCon, $_POST['music']));
 
@@ -44,7 +44,8 @@ $user->update($dbCon, false);
     function show_menu(){
 
         var el = document.getElementById("menu");
-        var title = document.getElementById("title");
+        var title1 = document.getElementById("title1");
+        var title2 = document.getElementById("title2");
         var dash = document.getElementById("dash");
         var dashes = document.getElementById("alone");
         if ( el.style.display == 'none' ) {
@@ -58,15 +59,21 @@ $user->update($dbCon, false);
             dash.style.webkitAnimationTimingFunction = 'ease-in';
             dash.style.webkitAnimation = 'moveforward-dash 0.3s';
 
-            title.style.animation= 'moveforward-title 0.3s';
-            title.style.webkitAnimationTimingFunction = 'ease-in';
-            title.style.webkitAnimation = 'moveforward-title 0.3s';
+            title1.style.animation= 'moveforward-title 0.3s';
+            title1.style.webkitAnimationTimingFunction = 'ease-in';
+            title1.style.webkitAnimation = 'moveforward-title 0.3s';
+
+            title2.style.animation= 'moveforward-title-first 0.3s';
+            title2.style.webkitAnimationTimingFunction = 'ease-in';
+            title2.style.webkitAnimation = 'moveforward-title-first 0.3s';
 
             dashes.className = "open";
 
             dash.style.left = '45vw';
 
-            title.style.left = '59vw';
+            title1.style.left = '66vw';
+
+            title2.style.left = 0;
         } else {
 
             el.style.animation= 'moveback 0.3s';
@@ -77,9 +84,13 @@ $user->update($dbCon, false);
             dash.style.webkitAnimationTimingFunction = 'ease-out';
             dash.style.webkitAnimation = 'moveback-dash 0.3s';
 
-            title.style.animation= 'moveback-title 0.3s';
-            title.style.webkitAnimationTimingFunction = 'ease-out';
-            title.style.webkitAnimation = 'moveback-title 0.3s';
+            title1.style.animation= 'moveback-title 0.3s';
+            title1.style.webkitAnimationTimingFunction = 'ease-out';
+            title1.style.webkitAnimation = 'moveback-title 0.3s';
+
+            title2.style.animation= 'moveback-title-first 0.3s';
+            title2.style.webkitAnimationTimingFunction = 'ease-out';
+            title2.style.webkitAnimation = 'moveback-title-first 0.3s';
 
             setTimeout(function(){
                 el.style.display = 'none';
@@ -89,7 +100,9 @@ $user->update($dbCon, false);
 
             dash.style.left = '0';
 
-            title.style.left = '32vw';
+            title1.style.left = '55vw';
+
+            title2.style.left = '32vw';
         }
     }
 </script>
@@ -116,8 +129,9 @@ $user->update($dbCon, false);
         </div>
 
     </div>
-    <div class="header-title" id="title" style="display: block; left: 32vw;">Detail info</div>
-    <div class = "unused-box-for-decoration"><p><a href="#"></a></p></div>
+    <div class="header-title" id="title1" style="display: block; left: 55vw;">info</div>
+    <div class="header-title" id="title2" style="display: block; left: 32vw;">Detail</div>
+    <div class = "search"><a href="search.php"><img class="search" src="img/search.svg"></a></div>
 </header>
 
 <div class="header-empty"></div>
@@ -127,11 +141,11 @@ $user->update($dbCon, false);
 <form name="detail" method="post" action="detailInfo.php" >
     <input type="hidden" name="didLoad" value="true">
 
+    <div id="label">My current city</div>
+    <textarea name="city" rows="3"><?php if ( isset($user->city)) {echo $user->city;} ?></textarea>
+
     <div id="label">My hobby</div>
     <textarea name="hobby" rows="3"><?php if ( isset($user->hobby)) {echo $user->hobby;} ?></textarea>
-
-    <div id="label">My inspiration</div>
-    <textarea name="inspiration" rows="3"><?php if ( isset($user->inspiration)) {echo $user->inspiration;} ?></textarea>
 
     <div id="label">My favorite books</div>
     <textarea name="books" rows="3"><?php if ( isset($user->books)) {echo $user->books;} ?></textarea>

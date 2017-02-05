@@ -57,7 +57,7 @@ $user->update($dbCon, true);
 
             dash.style.left = '45vw';
 
-            title.style.left = '65vw';
+            title.style.left = '61vw';
         } else {
 
             el.style.animation= 'moveback 0.3s';
@@ -109,7 +109,7 @@ $user->update($dbCon, true);
 
     </div>
     <div class="header-title" id="title" style="display: block;">Profile</div>
-    <div class = "unused-box-for-decoration"><p><a href="#"></a></p></div>
+    <div class = "search"><a href="search.php"><img class="search" src="img/search.svg"></a></div>
 </header>
 <div class="header-empty"></div>
 

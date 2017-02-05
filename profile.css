@@ -1,24 +1,24 @@
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes moveforward-title {
     from {left: 38vw;}
-    to {left: 65vw;}
+    to {left: 61vw;}
 }
 
 /* Standard syntax */
 @keyframes moveforward-title {
     from {left: 38vw;}
-    to {left: 65vw;}
+    to {left: 61vw;}
 }
 
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes moveback-title {
-    from {left: 65vw;}
+    from {left: 61vw;}
     to {left: 38vw;}
 }
 
 /* Standard syntax */
 @keyframes moveback-title {
-    from {left: 65vw;}
+    from {left: 61vw;}
     to {left: 38vw;}
 }
 

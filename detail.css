@@ -1,26 +1,51 @@
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes moveforward-title {
-    from {left: 32vw;}
-    to {left: 59vw;}
+    from {left: 55vw;}
+    to {left: 66vw;}
 }
 
 /* Standard syntax */
 @keyframes moveforward-title {
-    from {left: 32vw;}
-    to {left: 59vw;}
+    from {left: 55vw;}
+    to {left: 66vw;}
 }
 
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes moveback-title {
-    from {left: 59vw;}
-    to {left: 32vw;}
+    from {left: 66vw;}
+    to {left: 55vw;}
 }
 
 /* Standard syntax */
 @keyframes moveback-title {
-    from {left: 59vw;}
+    from {left: 66vw;}
+    to {left: 55vw;}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveforward-title-first {
+    from {left: 32vw;}
+    to {left: 0;}
+}
+
+/* Standard syntax */
+@keyframes moveforward-title-first {
+    from {left: 32vw;}
+    to {left: 0;}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveback-title-first {
+    from {left: 0;}
     to {left: 32vw;}
 }
+
+/* Standard syntax */
+@keyframes moveback-title-first {
+    from {left: 0;}
+    to {left: 32vw;}
+}
+
 
 
 #label {
@@ -32,16 +57,20 @@
 }
 
 textarea {
-    color: #000;
+    color: #580EAD;
     background-color: #DDD;
     border: 1px solid #000000;
-    border-radius: 10%;
+    border-radius: 50px;
     display: block;
     width: 90%;
     height: 21vw;
     margin: auto;
 
     font-size: 7vw;
+    text-align: center;
+
+    resize: none;
+
 }
 
 input[type=submit] {

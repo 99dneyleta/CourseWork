@@ -1,0 +1,112 @@
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveforward-title {
+    from {left: 40vw;}
+    to {left: 61vw;}
+}
+
+/* Standard syntax */
+@keyframes moveforward-title {
+    from {left: 40vw;}
+    to {left: 61vw;}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveback-title {
+    from {left: 61vw;}
+    to {left: 40vw;}
+}
+
+/* Standard syntax */
+@keyframes moveback-title {
+    from {left: 61vw;}
+    to {left: 40vw;}
+}
+
+input[type=text] {
+    display: block;
+
+    position: absolute;
+    top: 10.4vw;
+    float: left;
+
+    width: 88%;
+    margin: auto;
+    margin-top: 10px;
+    border: 2px solid #580EAD;
+
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    font-size: 10vw;
+    text-align: center;
+    color: #580EAD;
+    font-family: Bebas Neue;
+    outline: none;
+
+}
+
+input[type=image] {
+    display: block;
+
+    position: absolute;
+    top: 10.4vw;
+    left: 88vw;
+
+    margin-top: 10px;
+    border: 2px solid #580EAD;
+
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+
+    height: 11.8vw;
+
+}
+
+/*input animation(to right) default position*/
+input::-webkit-input-placeholder       {text-indent: 0;   transition: text-indent 0.3s ease;}
+
+/*focus position*/
+input:focus::-webkit-input-placeholder {text-indent: 100vw; transition: text-indent 0.3s ease;}
+
+
+.no-result {
+    display: block;
+    font-size: 10vw;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+}
+
+.result {
+    display: block;
+    width: 98%;
+    height: 20vw;
+    border: 2px solid #580EAD;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 10px;
+    background-color: #eee;
+}
+
+.image-tiny {
+    display: inline;
+    width: 20vw;
+    height: 20vw;
+    float: left;
+    border: 1px solid #580EAD;
+    border-radius: 50%;
+    margin-left: 4vw;
+}
+
+.username {
+    display: block;
+    font-size: 9vw;
+    text-align: center;
+    color: #580EAD;
+}
+
+.fullname {
+    display: block;
+    font-size: 7vw;
+    text-align: center;
+    color: #580EAD;
+}

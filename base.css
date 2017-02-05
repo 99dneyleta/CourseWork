@@ -111,6 +111,13 @@ div p {
     float: right;
 }
 
+.search {
+    top: 0;
+    float: right;
+    height: 10vw;
+    width: auto;
+}
+
 /* for menu */
 
 div.menu {

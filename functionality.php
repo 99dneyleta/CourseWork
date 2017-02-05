@@ -10,7 +10,7 @@ class User {
     var $status = "online";
 
     var $hobby = null;
-    var $inspiration = null;
+    var $city = null;
     var $books = null;
     var $music = null;
 
@@ -49,7 +49,7 @@ class User {
         if ( $forceUpdate == false && isset($_COOKIE['new'])) {
             return true;
         }
-        $sql = "SELECT id, first_name, last_name, email, image, gender, hobby, insp, books, music FROM members WHERE username = '$this->username' AND activated = '1' LIMIT 1";
+        $sql = "SELECT id, first_name, last_name, email, image, gender, hobby, city, books, music FROM members WHERE username = '$this->username' AND activated = '1' LIMIT 1";
         $query = mysqli_query($dbCon, $sql);
         $row = mysqli_fetch_row($query);
         if ( mysqli_error($dbCon) ) {
@@ -62,7 +62,7 @@ class User {
         $this->image = $row[4];
         $this->gender = $row[5];
         $this->hobby = $row[6];
-        $this->inspiration = $row[7];
+        $this->city = $row[7];
         $this->books = $row[8];
         $this->music = $row[9];
 
@@ -114,22 +114,22 @@ class User {
         $sql = "UPDATE members " .
             "SET ";
 
-        if ( isset($this->firstname)){
+        if ( isset($this->hobby)){
             $sql = $sql . "hobby='".$this->hobby."', ";
         } else {
             $sql = $sql . "hobby=NULL, ";
         }
-        if ( isset($this->lastname)){
-            $sql = $sql . "insp='".$this->inspiration."', ";
+        if ( isset($this->city)){
+            $sql = $sql . "city='".$this->city."', ";
         } else {
-            $sql = $sql . "insp=NULL, ";
+            $sql = $sql . "city=NULL, ";
         }
-        if ( isset($this->gender)){
+        if ( isset($this->books)){
             $sql = $sql . "books='".$this->books."', ";
         } else {
             $sql = $sql . "books=NULL, ";
         }
-        if ( isset($this->image)){
+        if ( isset($this->music)){
             $sql = $sql . "music='".$this->music."' ";
         } else {
             $sql = $sql . "music=NULL ";
@@ -139,7 +139,7 @@ class User {
 
         if( !mysqli_query($dbCon, $sql) ) {
             $this->hobby = null;
-            $this->inspiration = null;
+            $this->city = null;
             $this->books = null;
             $this->music = null;
             return $sql;
