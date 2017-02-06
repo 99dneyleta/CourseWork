@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-color: #C88A96;
+    background-color: white;
     font-family: "Bodoni 72 Smallcaps, Tahoma";
 }
 
@@ -147,6 +147,7 @@ div.menu {
     padding: 0.5vw;
     border-radius: 50%;
     width: 10vw;
+    height: 10vw;
 }
 
 .menu_header {

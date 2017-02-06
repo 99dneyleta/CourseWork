@@ -94,9 +94,6 @@ $user->updateRequests($dbCon);
     </a>
     <a href="javascript:void(0);"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
     <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
-    <?php if ( count($user->incomingRequests) || count($user->outgoingRequests)) {
-        echo "<a href=\"requests.php\"><div class=\"menu_button\"><img src=\"img/requests.svg\" class=\"menu_image\">Requests</div></a>";
-    } ?>
     <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>
 </div>
@@ -129,23 +126,14 @@ $user->updateRequests($dbCon);
     </div>
 
     <div class="all-info">
-        <div class="text" >
-            <?php if ( isset($user->firstname)) {echo "First name: ".$user->firstname;} ?>
-        </div>
-<br>
-        <div class="text" >
-            <?php if ( isset($user->lastname)) {echo "Last name: ".$user->lastname;} ?>
-        </div>
-<br>
-        <div class="text" >
-            <?php if ( isset($user->username)) {echo "username: ".$user->username;} ?>
-        </div>
-<br>
-        <div class="gender" >
-            <?php if ( isset($user->gender) ) {echo $user->gender;} ?>
-        </div>
-<br>
 
+        <?php if ( isset($user->firstname)) {echo "<div class=\"text\" >First name: ".$user->firstname."</div><br>";} ?>
+
+        <?php if ( isset($user->lastname)) {echo "<div class=\"text\" >Last name: ".$user->lastname."</div><br>";} ?>
+
+        <?php if ( isset($user->username)) {echo "<div class=\"text\" >username: ".$user->username."</div><br>";} ?>
+
+        <?php if ( isset($user->gender) ) {echo "<div class=\"gender\" >".$user->gender."</div><br>";} ?>
 
     </div>
     <div class="detail" >

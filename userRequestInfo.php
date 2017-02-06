@@ -93,7 +93,7 @@ $user->update($dbCon, false);
 <!-- HERE GOES HEADER-->
 
 <header style="margin-bottom: 50px;">
-    <div class="dash"><a href="requests.php"><img src="img/back.svg"></a></div>
+    <div class="dash"><a href="friends.php"><img src="img/back.svg"></a></div>
     <div class="header-title" id="title" style="display: block; left: 44vw;">Info</div>
     <div class = "search"><a href="search.php"><img class="search" src="img/search.svg"></a></div>
 </header>

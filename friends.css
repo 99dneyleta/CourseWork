@@ -22,12 +22,63 @@
     to {left: 40vw;}
 }
 
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveforward-content-left {
+    from {left: 0;}
+    to {left: -100vw;}
+}
+
+/* Standard syntax */
+@keyframes moveforward-content-left {
+    from {left: 0;}
+    to {left: -100vw;}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveback-content-left {
+    from {left: -100vw;}
+    to {left: 0;}
+}
+
+/* Standard syntax */
+@keyframes moveback-content-left {
+    from {left: -100vw;}
+    to {left: 0;}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveforward-content-right {
+    from {left: 100vw;}
+    to {left: 0;}
+}
+
+/* Standard syntax */
+@keyframes moveforward-content-right {
+    from {left: 100vw;}
+    to {left: 0;}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveback-content-right {
+    from {left: 0;}
+    to {left: 100vw;}
+}
+
+/* Standard syntax */
+@keyframes moveback-content-right {
+    from {left: 0;}
+    to {left: 100vw;}
+}
+
 .no-result {
     display: block;
     font-size: 10vw;
     margin: auto;
+    margin-top: 15vw;
     width: 100%;
     text-align: center;
+    position: fixed;
 }
 
 .result {
@@ -63,4 +114,44 @@
     font-size: 7vw;
     text-align: center;
     color: #580EAD;
+}
+
+#friends-hand {
+    display: inline-block;
+    width: 33%;
+    background-color: #580EAD;
+    color: #0EADA7;
+    font-size: 8vw;
+    text-align: center;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
+}
+
+#left-hand {
+    display: inline-block;
+    width: 33%;
+    background-color: #0EADA7;
+    color: #580EAD;
+    font-size: 8vw;
+    text-align: center;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
+}
+
+#right-hand {
+    display: inline-block;
+    float: right;
+    width: 33%;
+    background-color: #0EADA7;
+    color: #580EAD;
+    font-size: 8vw;
+    text-align: center;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
+}
+
+#income, #outcome, #friends {
+    position: fixed;
+    width: 100%;
+    height: auto;
 }

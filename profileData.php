@@ -27,7 +27,7 @@ if ( isset($_POST['wasloaded'])){
     if ( isset($_POST['gender']) && mysqli_real_escape_string($dbCon, $_POST['gender']) != "") {
         $user->gender = mysqli_real_escape_string($dbCon, $_POST['gender']);
     } else {
-        die(mysqli_real_escape_string($dbCon, $_POST['gender']));
+
         $user->gender = null;
     }
 

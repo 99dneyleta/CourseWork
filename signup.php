@@ -50,7 +50,7 @@
 <head>
     <title>Sign up</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css?v=<?php echo time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;
@@ -91,7 +91,7 @@
 
                 if (score > 80) {
                     input.style.backgroundColor = '#0f0';
-                } else if (score > 60) {
+                } else if (score > 20) {
                     input.style.backgroundColor = '#fff';
                 } else {
                     input.style.backgroundColor = '#f00';
@@ -115,7 +115,7 @@
                     return false;
                 }
                 x = document.forms["signUp"]["password"].value;
-                if ( x == null || x == "" || scorePassword(x) < 60) {
+                if ( x == null || x == "" || scorePassword(x) < 20) {
                     alertt();
                     return false;
                 }

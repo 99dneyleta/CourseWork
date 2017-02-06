@@ -52,10 +52,10 @@ input.input-on-start:focus::-webkit-input-placeholder {text-indent: 100vw; trans
     color: #580EAD;
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=email] {
     width: 92vw;
     /*height: 3vh;*/
-    height: 4vw;
+    height: 7vw;
 
 
     display:block;
