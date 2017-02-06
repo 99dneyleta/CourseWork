@@ -93,7 +93,7 @@ $user->update($dbCon, false);
 <!-- HERE GOES HEADER-->
 
 <header style="margin-bottom: 50px;">
-    <div class="dash"><a href="search.php?search=<?php echo $_GET['query']; ?>"><img src="img/back.svg"></a></div>
+    <div class="dash"><a href="friends.php"><img src="img/back.svg"></a></div>
     <div class="header-title" id="title" style="display: block; left: 44vw;">Info</div>
     <div class = "search"><a href="search.php"><img class="search" src="img/search.svg"></a></div>
 </header>
@@ -109,7 +109,7 @@ $user->update($dbCon, false);
         <?php echo $usr->status; ?>
     </div>
 
-    <form method="post" action="userInfo.php?username=<?php echo $_GET['username']?>&query=<?php echo $_GET['query']?>" >
+    <form method="post" action="userFriendInfo.php?username=<?php echo $_GET['username']?>" >
         <input type="submit"
         <?php
         $isExist = false;
@@ -129,7 +129,7 @@ $user->update($dbCon, false);
             }
             if ( $isExist ) {
                 echo " value=\"Accept\" class=\"accept\" > <input type='hidden' value='accept' name='req'>
-                    </form> <form method='post' action='userInfo.php?username=".$_GET['username']."&query=".$_GET['query']."' > 
+                    </form> <form method='post' action='userFriendInfo.php?username=".$_GET['username']."' >
                         <input type='submit' value='Decline' class='decline'>
                         <input type='hidden' value='decline' name='req'>
                     

@@ -8,6 +8,8 @@ if (!isset($user)) {
     header("Location: index.php");
 }
 $user->update($dbCon, true);
+$user->updateFriends($dbCon);
+$user->updateRequests($dbCon);
 ?>
 
 
@@ -86,12 +88,15 @@ $user->update($dbCon, true);
 </script>
 <div class="menu" id="menu" style="display: none;">
     <a href="profile.php">
-        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "/img/space-for-avatar.png";} ?> " >
+        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "img/space-for-avatar.png";} ?> " >
         <div class="menu_header"><?php if ( isset($user->username)) {echo $user->username;} else { echo "dev/null/";}?></div>
         <div class="menu_status">Online</div>
     </a>
     <a href="javascript:void(0);"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
-    <a href="javascript:void(0);"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
+    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
+    <?php if ( count($user->incomingRequests) || count($user->outgoingRequests)) {
+        echo "<a href=\"requests.php\"><div class=\"menu_button\"><img src=\"img/requests.svg\" class=\"menu_image\">Requests</div></a>";
+    } ?>
     <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>
 </div>
@@ -117,7 +122,7 @@ $user->update($dbCon, true);
 
 <div id = "container-for-photo">
     <div class="profile-image">
-        <img class="profile-image" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "/img/space-for-avatar.png";} ?> " >
+        <img class="profile-image" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "img/space-for-avatar.png";} ?> " >
     </div>
     <div class="status" >
         <?php echo $user->status; ?>
@@ -125,22 +130,18 @@ $user->update($dbCon, true);
 
     <div class="all-info">
         <div class="text" >
-            <?php if ( isset($user->firstname)) {echo "First name: '".$user->firstname."'";} ?>
+            <?php if ( isset($user->firstname)) {echo "First name: ".$user->firstname;} ?>
         </div>
 <br>
         <div class="text" >
-            <?php if ( isset($user->lastname)) {echo "Last name: '".$user->lastname."'";} ?>
+            <?php if ( isset($user->lastname)) {echo "Last name: ".$user->lastname;} ?>
         </div>
 <br>
         <div class="text" >
-            <?php if ( isset($user->username)) {echo "username: '".$user->username."'";} ?>
+            <?php if ( isset($user->username)) {echo "username: ".$user->username;} ?>
         </div>
 <br>
-        <div class="text" >
-            <span><?php if ( isset($user->email)) {echo "@mail: '".$user->email."'";} ?></span>
-        </div>
-<br>
-        <div class="text" >
+        <div class="gender" >
             <?php if ( isset($user->gender) ) {echo $user->gender;} ?>
         </div>
 <br>

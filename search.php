@@ -15,7 +15,7 @@ if ( isset($_GET['search']) && trim(mysqli_real_escape_string($dbCon, $_GET['sea
     $searchString = mysqli_real_escape_string($dbCon, $_GET['search']);
     $sql = "SELECT username, first_name, last_name, image ".
            "FROM members ".
-           "WHERE username LIKE '%".$searchString."%' LIMIT 100;";
+           "WHERE username LIKE '".$searchString."%' LIMIT 100;";
     $query = mysqli_query($dbCon, $sql);
 
     if ( !mysqli_affected_rows($dbCon) ) {
@@ -41,7 +41,7 @@ if ( isset($_GET['search']) && trim(mysqli_real_escape_string($dbCon, $_GET['sea
 
     $sql = "SELECT username, first_name, last_name, image ".
         "FROM members ".
-        "WHERE first_name LIKE '%".$searchString."%' LIMIT 100;";
+        "WHERE first_name LIKE '".$searchString."%' LIMIT 100;";
     $query = mysqli_query($dbCon, $sql);
 
     if ( !mysqli_affected_rows($dbCon) ) {
@@ -68,7 +68,7 @@ if ( isset($_GET['search']) && trim(mysqli_real_escape_string($dbCon, $_GET['sea
 
     $sql = "SELECT username, first_name, last_name, image ".
         "FROM members ".
-        "WHERE last_name LIKE '%".$searchString."%' LIMIT 100;";
+        "WHERE last_name LIKE '".$searchString."%' LIMIT 100;";
     $query = mysqli_query($dbCon, $sql);
 
     if ( !mysqli_affected_rows($dbCon) ) {
@@ -186,7 +186,10 @@ $user->update($dbCon, false);
         <div class="menu_status">Online</div>
     </a>
     <a href="javascript:void(0);"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
-    <a href="javascript:void(0);"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
+    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
+    <?php if ( count($user->incomingRequests) || count($user->outgoingRequests)) {
+        echo "<a href=\"requests.php\"><div class=\"menu_button\"><img src=\"img/requests.svg\" class=\"menu_image\">Requests</div></a>";
+    } ?>
     <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>
 </div>
@@ -212,11 +215,11 @@ $user->update($dbCon, false);
 
 <form method="GET" action="search.php">
     <input type="text" id="search" name="search" placeholder="input search phrase" <?php if ( isset($_GET['search'])) echo "value='".$_GET['search']."'";?> >
-    <input type="image" src="img/search.svg">
+    <input type="image" src="img/search.png?v=<?=time();?>">
 </form>
 <div style="display: block; width: 100%; height: 15vw;" ></div>
 <?php
-if ( isset($_GET['search']) && !isset($result) ) {
+if ( isset($_GET['search']) && !$result ) {
     echo "<div class='no-result'>No results founded</div>";
 } elseif( isset($result) ) {
     foreach ($founded as $usr) {

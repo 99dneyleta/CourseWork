@@ -14,6 +14,10 @@ class User {
     var $books = null;
     var $music = null;
 
+    var $friends = array();
+    var $outgoingRequests = array();
+    var $incomingRequests = array();
+
     function __construct() {
 
     }
@@ -144,7 +148,237 @@ class User {
             $this->music = null;
             return $sql;
         }
+        $this->getOnline($dbCon);
         return null;
+    }
+
+    function updateRequests($dbCon) {
+        $this->incomingRequests = array();
+        $this->outgoingRequests = array();
+        $sql = "SELECT username FROM members m, requests r WHERE m.id = r.from_id AND r.to_id='$this->uid' AND r.decline=0 ;";
+        $query = mysqli_query($dbCon, $sql);
+        if ( !mysqli_affected_rows($dbCon) ) {
+            $this->incomingRequests = array();
+        } else {
+            while($rowData = mysqli_fetch_array($query,MYSQLI_NUM)) {
+                array_push($this->incomingRequests, $rowData[0]);
+            }
+        }
+
+        $sql = "SELECT username FROM members m, requests r WHERE m.id = r.to_id AND r.from_id='$this->uid';";
+        $query = mysqli_query($dbCon, $sql);
+        if ( !mysqli_affected_rows($dbCon) ) {
+            $this->outgoingRequests = array();
+        } else {
+            while($rowData = mysqli_fetch_array($query,MYSQLI_NUM)) {
+                array_push($this->outgoingRequests, $rowData[0]);
+            }
+        }
+
+        generateSessionAndCookie($this);
+        $this->getOnline($dbCon);
+        $this->update($dbCon, false);
+        setcookie("new", "old", time() + 600, "/");
+    }
+
+    function sendRequest($dbCon, $uid, $username) {
+        $this->updateFriends($dbCon);
+        foreach ($this->friends as $friend) {
+            if ( strtolower($friend) == strtolower($username)) {
+                $this->removeRequest($dbCon, $uid, $username);
+                return true;
+            }
+        }
+
+
+
+
+        $sql = "SELECT decline FROM requests WHERE from_id='$this->uid' AND to_id='$uid' ;";
+        $query = mysqli_query($dbCon, $sql);
+        if ( isset(mysqli_fetch_row($query)[0]) ) {
+            $this->updateRequests($dbCon);
+            return false;
+        }
+
+        $sql = "SELECT decline FROM requests WHERE to_id='$this->uid' AND from_id='$uid' ;";
+        $query = mysqli_query($dbCon, $sql);
+        if ( isset(mysqli_fetch_row($query)[0]) ) {
+            $this->acceptRequest($dbCon, $uid, $username);
+            $this->updateRequests($dbCon);
+            return false;
+        }
+
+        $sql = "INSERT INTO requests " .
+            "(from_id, to_id) " .
+            "VALUES ( '$this->uid','$uid' );";
+
+        if (!mysqli_query($dbCon, $sql)) {
+            die("Sorry, database is offline, try again later.");
+        }
+
+        array_push($this->outgoingRequests, $username);
+
+        $this->getOnline($dbCon);
+        return true;
+    }
+
+    function removeRequest($dbCon, $uid, $username) {
+        $this->getOnline($dbCon);
+
+        $sql = "SELECT decline FROM requests WHERE from_id='$this->uid' AND to_id='$uid' ;";
+        $query = mysqli_query($dbCon, $sql);
+        if ( mysqli_fetch_row($query)[0] == "1" ) {
+            return false;
+        }
+
+
+        $sql = "DELETE FROM requests " .
+            "WHERE from_id='$this->uid' AND to_id='$uid' ;";
+
+        if (!mysqli_query($dbCon, $sql)) {
+            die("Sorry, database is offline, try again later.");
+        }
+        $sql = "DELETE FROM requests " .
+            "WHERE to_id='$this->uid' AND from_id='$uid' ;";
+
+        if (!mysqli_query($dbCon, $sql)) {
+            die("Sorry, database is offline, try again later.");
+        }
+
+        $i = count($this->outgoingRequests);
+        while ($i) {
+            $x = array_shift($this->outgoingRequests);
+            if ( $x != $username) {
+                array_push($this->outgoingRequests, $x);
+            }
+            $i--;
+        }
+
+    }
+
+    function acceptRequest($dbCon, $uid, $username) {
+
+        $this->updateFriends($dbCon);
+        foreach ($this->friends as $friend) {
+            if ( strtolower($friend) == strtolower($username)) {
+                $this->removeRequest($dbCon, $uid, $username);
+                return true;
+            }
+        }
+
+
+        $sql = "SELECT decline FROM requests WHERE from_id='$this->uid' AND to_id='$uid' ;";
+        $query = mysqli_query($dbCon, $sql);
+        if ( mysqli_fetch_row($query)[0] == "1" ) {
+            $i = count($this->incomingRequests);
+            while ($i) {
+                $x = array_shift($this->incomingRequests);
+                if ( $x != $username) {
+                    array_push($this->incomingRequests, $x);
+                }
+                $i--;
+            }
+            return false;
+        }
+
+        $sql = "SELECT friends FROM members WHERE id='$uid' ;";
+        $friends = explode("|",mysqli_fetch_row(mysqli_query($dbCon, $sql))[0]);
+        $i = count($friends);
+        while ($i) {
+            $x = array_shift($friends);
+            if ( $x != $username) {
+                array_push($friends, $x);
+            }
+            $i--;
+        }
+        array_push($friends, $this->username);
+        $friends = implode("|", $friends);
+        $sql = "UPDATE members SET friends='$friends' WHERE id='$uid' ;";
+        if ( !mysqli_query($dbCon, $sql) ) {
+            die("Full!");
+        }
+
+        $this->removeRequest($dbCon, $uid, $username);
+        array_push($this->friends, $username);
+        $this->upgradeFriends($dbCon);
+
+        $this->getOnline($dbCon);
+
+    }
+
+    function declineRequest($dbCon, $uid, $username) {
+        $sql = "UPDATE requests SET decline=1 WHERE from_id='$uid' AND to_id='$this->uid' ;";
+        if ( !mysqli_query($dbCon, $sql)) {
+            die("DataBase is offline, try again later");
+        }
+
+        $i = count($this->incomingRequests);
+        while ($i) {
+            $x = array_shift($this->incomingRequests);
+            if ( $x != $username) {
+                array_push($this->incomingRequests, $x);
+            }
+            $i--;
+        }
+        $this->getOnline($dbCon);
+    }
+
+    function removeFromFriends($dbCon, $uid, $username) {
+        $i = count($this->friends);
+        while ($i>=0) {
+            $x = array_shift($this->friends);
+            if ( strtolower($x) != strtolower($username)) {
+                array_push($this->friends, $x);
+            }
+            $i--;
+        }
+
+
+        $sql = "INSERT INTO requests " .
+            "(to_id, from_id) " .
+            "VALUES ( '$this->uid','$uid' );";
+
+        if (!mysqli_query($dbCon, $sql)) {
+            die("Sorry, database is offline, try again later.");
+        }
+
+        array_push($this->incomingRequests, $username);
+
+        $sql = "SELECT friends FROM members WHERE id='$uid' ;";
+        $friends = explode("|",mysqli_fetch_row(mysqli_query($dbCon, $sql))[0]);
+        $i = count($friends);
+        while ($i) {
+            $x = array_shift($friends);
+            if ( strtolower($x) != strtolower($this->username)) {
+                array_push($friends, $x);
+            }
+            $i--;
+        }
+        $friends = implode("|", $friends);
+        $sql = "UPDATE members SET friends='$friends' WHERE id='$uid' ;";
+        if ( !mysqli_query($dbCon, $sql) ) {
+            die("Full!");
+        }
+
+        $this->upgradeFriends($dbCon);
+
+    }
+
+    function updateFriends($dbCon) {
+        $sql = "SELECT friends FROM members WHERE id='$this->uid' ;";
+        $query = mysqli_query($dbCon, $sql);
+        $row = mysqli_fetch_row($query);
+        $this->friends = explode("|", $row[0]);
+        $this->updateRequests($dbCon);
+        $this->getOnline($dbCon);
+    }
+
+    function upgradeFriends($dbCon) {
+        $sql = "UPDATE members SET friends='".implode("|", $this->friends)."' WHERE id='$this->uid' ;";
+        if ( !mysqli_query($dbCon, $sql)) {
+            die("DataBase is offline, try again later");
+        }
+        $this->getOnline($dbCon);
     }
 
     function getOnline($dbCon) {

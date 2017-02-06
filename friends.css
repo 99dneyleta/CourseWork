@@ -22,56 +22,6 @@
     to {left: 40vw;}
 }
 
-input[type=text] {
-    display: block;
-
-    position: absolute;
-    top: 10.4vw;
-    float: left;
-
-    width: 98%;
-    margin: auto;
-    margin-top: 10px;
-    margin-left: 1vw;
-    border: none;
-
-    background-color: #eee;
-
-    border-radius: 10px;
-    font-size: 7vw;
-    height: 11.6vw;
-
-    text-align: center;
-    color: #999;
-
-
-    font-family: Bebas Neue;
-    outline: none;
-
-}
-
-input[type=image] {
-    display: block;
-
-    position: absolute;
-    top: 11.5vw;
-    left: 88vw;
-
-
-    margin-top: 10px;
-
-
-    height: 10vw;
-
-}
-
-/*input animation(to right) default position*/
-input::-webkit-input-placeholder       {text-indent: 0;   transition: text-indent 0.3s ease;}
-
-/*focus position*/
-input:focus::-webkit-input-placeholder {text-indent: 100vw; transition: text-indent 0.3s ease;}
-
-
 .no-result {
     display: block;
     font-size: 10vw;

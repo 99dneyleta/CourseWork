@@ -1,7 +1,7 @@
 body {
     margin: 0;
-    background-color: white;
-    font-family: "Bodoni 72 Smallcaps";
+    background-color: #C88A96;
+    font-family: "Bodoni 72 Smallcaps, Tahoma";
 }
 
 /*here goes animation */
@@ -146,7 +146,7 @@ div.menu {
     float: left;
     padding: 0.5vw;
     border-radius: 50%;
-    width: 11vw;
+    width: 10vw;
 }
 
 .menu_header {
@@ -197,7 +197,7 @@ a {
 /*dashes*/
 
 #alone{
-    height: 10vw;
+    height: 8vw;
 
     /*margin: 50px auto;*/
     -webkit-transform: rotate(0deg);

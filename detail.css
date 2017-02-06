@@ -50,24 +50,26 @@
 
 #label {
     display: block;
-    margin: auto;
-    text-align: center;
-    font-size: 8vw;
-    color: #580EAD;
+    text-align: left;
+    margin-left: 6vw;
+    margin-top: 3vw;
+
+    font-size: 6vw;
+    color: #552A33;
 }
 
 textarea {
-    color: #580EAD;
-    background-color: #DDD;
+    color: #544067;
+    background-color: #90898A;
     border: 1px solid #000000;
-    border-radius: 50px;
+    border-radius: 20px;
     display: block;
     width: 90%;
     height: 21vw;
     margin: auto;
 
     font-size: 7vw;
-    text-align: center;
+    text-align: left;
 
     resize: none;
 

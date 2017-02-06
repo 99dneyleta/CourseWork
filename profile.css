@@ -29,13 +29,16 @@
     width: 60vw;
     height: 60vw;
     border-radius: 50%;
-    border: solid 1px #000;
 }
 
 .all-info {
-    margin: auto;
+
+    margin-top: 5vw;
+    margin-bottom: 5vw;
     display: inline-block;
-    max-width: 100%;
+    width: 100%;
+    border: 1px solid #580EAD;
+    border-width: 1px 0px 1px 0px;
 }
 
 .text {
@@ -48,7 +51,19 @@
 
     position: relative;
     left: 16%;
-    max-width: 70%;
+
+
+    word-wrap: break-word
+}
+
+.gender {
+    color: #580EAD;
+    font-size: 8vw;
+    display: block;
+    padding: 2vw;
+    margin: auto;
+    text-align: center;
+
 
     word-wrap: break-word
 }

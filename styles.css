@@ -44,27 +44,34 @@ input.input-on-start:focus::-webkit-input-placeholder {text-indent: 100vw; trans
 
 
 
-.input-on-start,.input-half,.input-for-prof {
-    /*width: 92vw;*/
+.input-on-start  {
+    color: #fff;
+}
+
+.input-half {
+    color: #580EAD;
+}
+
+input[type=text], input[type=password] {
+    width: 92vw;
     /*height: 3vh;*/
     height: 4vw;
-    color: #580EAD;
-    
+
+
     display:block;
     margin-left: auto;
     margin-right: auto;
-    
+
     outline: none;
     font-size: 32pt;
     font-family: Bebas Neue;
-    
+
     border-color: white;
     border-right: 0;
     border-left: 0;
     border-top: 0;
-    
+
     background: #580EAD;
-    
 }
 
 #container-for-photo {

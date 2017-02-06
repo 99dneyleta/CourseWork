@@ -106,10 +106,10 @@ if ( isset($_POST['wasloaded'])){
             <label for="file"><img src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "/img/space-for-avatar.png";} ?> " alt="avatar" id="avatar"></label>
 
         </div>
-        <div id = "Name"><input class="input-on-start" style="background-color: white; border-color:#580EAD; width:70vw;position: absolute;
+        <div id = "Name"><input class="input-half" style="background-color: white; border-color:#580EAD; width:70vw;position: absolute;
     bottom: 0;"type="text"  name="lastname" placeholder="Last Name" <?php if ( isset($user->lastname)) {echo "value='".$user->lastname."'";} ?>/></div>
 
-        <div id = "Name"><input class="input-on-start" style="
+        <div id = "Name"><input class="input-half" style="
                     position:absolute;margin-top:5%;background-color: white; border-color:#580EAD; width:70vw;"type="text"  name="firstname" placeholder="First Name" <?php if ( isset($user->firstname)) {echo "value='".$user->firstname."'";} ?> /></div>
 
     </div>
