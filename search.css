@@ -29,10 +29,11 @@ input[type=text] {
     top: 10.4vw;
     float: left;
 
-    width: 98%;
+    width: 98vw;
     margin: auto;
     margin-top: 10px;
     margin-left: 1vw;
+    margin-right: 1vw;
     border: none;
 
     background-color: #eee;

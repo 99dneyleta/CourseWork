@@ -109,6 +109,8 @@ $user->update($dbCon, false);
 <!-- HERE GOES MENU -->
 
 <script>
+
+
     var current = 1;
 
     function show_right(left, right, leftHeader, rightHeader) {
@@ -126,6 +128,9 @@ $user->update($dbCon, false);
         lh.style.backgroundColor = "#0EADA7";
         lh.style.color = "#580EAD";
 
+        l.style.position = "fixed";
+        r.style.position = "fixed";
+
         l.style.animation= 'moveforward-content-left 0.3s';
         l.style.webkitAnimationTimingFunction = 'ease-in';
         l.style.webkitAnimation = 'moveforward-content-left 0.3s';
@@ -136,7 +141,9 @@ $user->update($dbCon, false);
 
         setTimeout(function () {
             l.style.display = "none";
-        }, 250);
+            l.style.position = "absolute";
+            r.style.position = "absolute";
+        }, 290);
 
     }
 
@@ -157,6 +164,9 @@ $user->update($dbCon, false);
         rh.style.backgroundColor = "#0EADA7";
         rh.style.color = "#580EAD";
 
+        l.style.position = "fixed";
+        r.style.position = "fixed";
+
         l.style.animation= 'moveback-content-left 0.3s';
         l.style.webkitAnimationTimingFunction = 'ease-in';
         l.style.webkitAnimation = 'moveback-content-left 0.3s';
@@ -167,7 +177,9 @@ $user->update($dbCon, false);
 
         setTimeout(function () {
             r.style.display = "none";
-        }, 250);
+            l.style.position = "absolute";
+            r.style.position = "absolute";
+        }, 290);
     }
 
     function showFriends() {

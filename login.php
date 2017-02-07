@@ -109,7 +109,7 @@ if (isset($_POST['username'])) {
         <?php if ( $error ) {echo getAlert("Incorrect username or password", ""); } ?>
     </div>
 
-    <div style="margin-bottom: 19vh">
+    <div style="margin-bottom: 19vh;">
         <input type="submit" value="Sign In" id="butt"/>
     </div>
 

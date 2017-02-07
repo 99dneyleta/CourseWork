@@ -78,7 +78,7 @@
     margin-top: 15vw;
     width: 100%;
     text-align: center;
-    position: fixed;
+    position: absolute;
 }
 
 .result {
@@ -151,7 +151,7 @@
 }
 
 #income, #outcome, #friends {
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: auto;
 }
