@@ -394,7 +394,106 @@ class User {
         return true;
     }
 
+
+
+    function getConversationWithUser($user, $dbCon) {
+        return Conversation::withUser($user, $this, $dbCon);
+    }
+
 }
+
+class Message {
+    var $id = null;
+    var $fromUser = null;
+    var $toUser = null;
+    var $time = null;
+    var $read = null;
+    var $text = null;
+    var $attachment = null;
+
+    function __construct($id, $fromUser, $toUser, $time, $text, $att, $read)
+    {
+        $this->id = $id;
+        $this->fromUser = $fromUser;
+        $this->toUser = $toUser;
+        $this->time = $time;
+        $this->attachment = $att;
+        $this->read = $read;
+    }
+
+    //TODO: toString() for JS
+}
+
+class Conversation {
+    var $me = null;
+    var $interlocutor = null;
+    var $messages = array();
+
+    function __construct() { }
+
+    public static function withUser($user, $me, $dbCon) {
+        $instance = new self();
+        $instance->interlocutor = $user;
+        $instance->me = $me;
+        $instance->loadBasics($dbCon);
+        return $instance;
+    }
+
+    function loadBasics($dbCon) {
+
+        $myMess = array();
+        $toMeMess = array();
+
+        $sql = "SELECT id, text, attach, time, read FROM messages WHERE from_id=".$this->me->uid." AND to_id=".$this->interlocutor->uid." ODRER BY id DESC LIMIT 20;";
+        $query = mysqli_query($dbCon, $sql);
+        while ( $mess = mysqli_fetch_array($query, MYSQLI_NUM) ) {
+            //getting all my messages
+            array_push($myMess, new Message($mess[0], $this->me, $this->interlocutor, $mess[3], $mess[1], $mess[2], $mess[4]));
+        }
+
+        $sql = "SELECT id, text, attach, time, read FROM messages WHERE to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." ODRER BY id DESC LIMIT 20;";
+        $query = mysqli_query($dbCon, $sql);
+        while ( $ess = mysqli_fetch_array($query, MYSQLI_NUM) ) {
+            //getting all messages to me
+            array_push($toMeMess, new Message($mess[0], $this->me, $this->interlocutor, $mess[3], $mess[1], $mess[2], $mess[4]));
+        }
+
+        if ( !count($myMess) ) {
+            if ( !count($toMeMess) ) {
+                return ;
+            } else {
+                $this->messages = $toMeMess;
+            }
+        }
+        if ( !count($toMeMess) ) {
+            if ( !count($myMess) ) {
+                return ;
+            } else {
+                $this->messages = $myMess;
+            }
+        }
+
+        //merge sort between messages
+        while (count($myMess) && count($toMeMess)) {
+            $x = array_shift($myMess);
+            $y = array_shift($toMeMess);
+
+            ///////here time is 'date('d-m-Y; H:i:s',time());', comparable
+
+            if ( $x->time < $y->time ){
+                array_push($this->messages, $x );
+                array_unshift($toMeMess, $y);
+            } else {
+                array_push($this->messages, $y );
+                array_unshift($myMess, $x);
+            }
+        }
+    }
+
+    //TODO: add message, read message, delete message
+}
+
+
 
 function generateSessionAndCookie($user) {
     $_SESSION['user'] = serialize($user);

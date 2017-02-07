@@ -4,7 +4,6 @@ body {
     font-family: "Bodoni 72 Smallcaps, Tahoma";
     -webkit-appearance: none;
 
-    -webkit-overflow-scrolling: touch;
 
 }
 
@@ -138,8 +137,7 @@ div.menu {
     background-color: #DDDDDD;
     color: #580EAD;
     padding: 0;
-    /*min-height: 563px;*/
-    min-height: 1600px;
+    min-height: 563px;
     text-align: center;
 
 
@@ -176,6 +174,7 @@ div.menu {
 .menu_button {
     font-size: 8vw;
     text-align: left;
+    border-top: 1px solid #580EAD;
 }
 
 .menu_button_selected {

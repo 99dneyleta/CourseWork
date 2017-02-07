@@ -118,30 +118,32 @@
 
 #friends-hand {
     display: inline-block;
-    width: 33%;
+    width: 33.4vw;
     background-color: #580EAD;
     color: #0EADA7;
     font-size: 8vw;
     text-align: center;
     margin-top: 2vw;
     margin-bottom: 2vw;
+    border-right: 1px solid #580EAD;
 }
 
 #left-hand {
     display: inline-block;
-    width: 33%;
+    width: 33.3vw;
     background-color: #0EADA7;
     color: #580EAD;
     font-size: 8vw;
     text-align: center;
     margin-top: 2vw;
     margin-bottom: 2vw;
+    border-right: 1px solid #580EAD;
 }
 
 #right-hand {
-    display: inline-block;
-    float: right;
-    width: 33%;
+    display: inline;
+    /*float: right;*/
+    width: 33.3vw;
     background-color: #0EADA7;
     color: #580EAD;
     font-size: 8vw;

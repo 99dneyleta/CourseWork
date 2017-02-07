@@ -311,7 +311,7 @@ $user->update($dbCon, false);
 <!-- HERE ENDS HEADER -->
 
 
-<div style="display: block; width: 100%;" >
+<div style="display: inline-flex; width: 100%;" >
     <div id="friends-hand" onclick="showFriends()">Friends</div>
     <div id="left-hand" onclick="showIncome()">Incoming</div>
     <div id="right-hand" onclick="showOutcome()">Outgoing</div>
