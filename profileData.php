@@ -1,7 +1,6 @@
 <?php
 session_start();
 include_once("functionality.php");
-include_once("dbConnect.php");
 
 $user = getUser();
 if (!$user) {
@@ -20,7 +19,7 @@ if ( isset($_POST['wasloaded'])){
         $user->lastname = null;
     }
     if ( isset($_FILES)) {
-        proceedImageUpdate($user, "file", $dbCon);
+        proceedImageUpdate($user, "file");
     } else {
         $user->image = null;
     }
@@ -31,7 +30,7 @@ if ( isset($_POST['wasloaded'])){
         $user->gender = null;
     }
 
-    $user->upgrade($dbCon);
+    $user->upgrade();
     generateSessionAndCookie($user);
 
     header("Location: profile.php");

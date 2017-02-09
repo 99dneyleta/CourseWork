@@ -9,7 +9,6 @@ if (isset($_SESSION['user']) || isset($_COOKIE['user'])) {
 $error = null;
 if (isset($_POST['username'])) {
 
-    include_once("dbConnect.php");
 
     // Set the posted data from the form into local variables
     $username = strip_tags($_POST['username']);
@@ -28,7 +27,7 @@ if (isset($_POST['username'])) {
     if (password_verify($password,$dbPassword)) {
 
         $user = User::withUsername($username);
-        $user->update($dbCon, true);
+        $user->update(true);
         generateSessionAndCookie($user);
         // Now direct to users feed
         header("Location: profile.php");

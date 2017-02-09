@@ -1,0 +1,48 @@
+'chat.php' --> 'to('dd d (Denis)'): 0 from('Denis Dobynda (admin)') : 0  afterMerge: 0 after unread: 0not confirmed!' (time: 09-02-2017; 16:28:25)
+-----------------------------------
+
+'chat.php' --> 'to('dd d (Denis)'): 0 from('Denis Dobynda (admin)') : 0  afterMerge: 0 after unread: 0' (time: 09-02-2017; 16:30:54)
+-----------------------------------
+
+'chat.php' --> 'to('dd d (Denis)'): 0 from('Denis Dobynda (admin)') : 1  afterMerge: 1 after unread: 1' (time: 09-02-2017; 16:32:41)
+-----------------------------------
+
+'chat.php(not confirm)' --> 'to('Denis Dobynda (admin)'): 2 from('dd d (Denis)') : 0  afterMerge: 2 after unread: 2' (time: 09-02-2017; 16:37:38)
+-----------------------------------
+
+'chat.php' --> 'to('Denis Dobynda (admin)'): 2 from('dd d (Denis)') : 0  afterMerge: 2 after unread: 2' (time: 09-02-2017; 16:37:41)
+-----------------------------------
+
+'chat.php' --> 'to('dd d (Denis)'): 1 from('Denis Dobynda (admin)') : 2  afterMerge: 3 after unread: 3' (time: 09-02-2017; 16:37:49)
+-----------------------------------
+
+'chat.php' --> 'to('  (zvezda)'): 0 from('Denis Dobynda (admin)') : 0  afterMerge: 0 after unread: 0' (time: 09-02-2017; 16:49:32)
+-----------------------------------
+
+'chat.php(not confirm)' --> 'to('Denis Dobynda (admin)'): 1 from('  (zvezda)') : 0  afterMerge: 1 after unread: 1' (time: 09-02-2017; 16:51:23)
+-----------------------------------
+
+'chat.php' --> 'to('Denis Dobynda (admin)'): 1 from('  (zvezda)') : 0  afterMerge: 1 after unread: 1' (time: 09-02-2017; 16:51:33)
+-----------------------------------
+
+'chat.php' --> 'to('Denis Dobynda (admin)'): 1 from('  (zvezda)') : 1  afterMerge: 2 after unread: 2' (time: 09-02-2017; 16:51:34)
+-----------------------------------
+
+'chat.php' --> 'to('Denis Dobynda (admin)'): 1 from('  (zvezda)') : 2  afterMerge: 3 after unread: 3' (time: 09-02-2017; 16:51:35)
+-----------------------------------
+
+'chat.php' --> 'to('Denis Dobynda (admin)'): 1 from('  (zvezda)') : 3  afterMerge: 4 after unread: 4' (time: 09-02-2017; 16:52:37)
+-----------------------------------
+
+'chat.php' --> 'to('Denis Dobynda (admin)'): 1 from('  (zvezda)') : 4  afterMerge: 5 after unread: 5' (time: 09-02-2017; 16:52:50)
+-----------------------------------
+
+'chat.php' --> 'to('Denis Dobynda (admin)'): 1 from('  (zvezda)') : 5  afterMerge: 6 after unread: 6' (time: 09-02-2017; 16:52:57)
+-----------------------------------
+
+'chat.php' --> 'to('Denis Dobynda (admin)'): 1 from('  (zvezda)') : 6  afterMerge: 7 after unread: 7' (time: 09-02-2017; 16:52:58)
+-----------------------------------
+
+'chat.php' --> 'to('Denis Dobynda (admin)'): 1 from('  (zvezda)') : 7  afterMerge: 8 after unread: 8' (time: 09-02-2017; 16:52:59)
+-----------------------------------
+

@@ -60,3 +60,18 @@ input[type=submit] {
     margin: auto;
     text-align: center;
 }
+
+.startChat {
+    display: block;
+    margin: auto;
+    width: 70vw;
+    height: 10vw;
+    color: #fff;
+    background-color: #580EAD;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 8vw;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
+
+}

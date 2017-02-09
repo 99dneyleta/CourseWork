@@ -1,7 +1,6 @@
 <?php
 session_start();
 include_once("functionality.php");
-include_once("dbConnect.php");
 
 $user = getUser();
 if (!isset($user)) {
@@ -16,10 +15,10 @@ if ( isset($_POST['didLoad'])) {
     $user->books = trim(mysqli_real_escape_string($dbCon, $_POST['books']));
     $user->music = trim(mysqli_real_escape_string($dbCon, $_POST['music']));
 
-    $error = $user->upgradeDetail($dbCon);
+    $error = $user->upgradeDetail();
 }
 
-$user->update($dbCon, false);
+$user->update(false);
 ?>
 
 <!Doctype html>
@@ -112,7 +111,7 @@ $user->update($dbCon, false);
         <div class="menu_header"><?php if ( isset($user->username)) {echo $user->username;} else { echo "dev/null/";}?></div>
         <div class="menu_status">Online</div>
     </a>
-    <a href="javascript:void(0);"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
+    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
     <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
     <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>

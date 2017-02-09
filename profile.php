@@ -1,15 +1,14 @@
 <?php
 session_start();
 include_once("functionality.php");
-include_once("dbConnect.php");
 
 $user = getUser();
 if (!isset($user)) {
     header("Location: index.php");
 }
-$user->update($dbCon, true);
-$user->updateFriends($dbCon);
-$user->updateRequests($dbCon);
+$user->update(true);
+$user->updateFriends();
+$user->updateRequests();
 ?>
 
 
@@ -18,8 +17,8 @@ $user->updateRequests($dbCon);
 <head>
     <title>Profile</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/base.css?v=<?=time();?>">
-    <link rel="stylesheet" href="/profile.css?v=<?=time();?>">
+    <link rel="stylesheet" href="/base.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="/profile.css?v=<?php echo time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;
@@ -92,7 +91,7 @@ $user->updateRequests($dbCon);
         <div class="menu_header"><?php if ( isset($user->username)) {echo $user->username;} else { echo "dev/null/";}?></div>
         <div class="menu_status">Online</div>
     </a>
-    <a href="javascript:void(0);"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
+    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
     <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
     <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>

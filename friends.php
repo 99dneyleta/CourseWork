@@ -1,7 +1,6 @@
 <?php
 session_start();
 include_once("functionality.php");
-include_once("dbConnect.php");
 
 $user = getUser();
 if (!isset($user)) {
@@ -12,7 +11,7 @@ $result = null;
 $founded = array();
 $income = array();
 $outcome = array();
-$user->updateFriends($dbCon);
+$user->updateFriends();
 
 if ( isset($user->friends) ) {
 
@@ -84,7 +83,7 @@ if ( isset($user->outgoingRequests) ) {
     }
 }
 
-$user->update($dbCon, false);
+$user->update(false);
 ?>
 
 
@@ -119,10 +118,11 @@ $user->update($dbCon, false);
         var rh = document.getElementById(rightHeader);
         var lh = document.getElementById(leftHeader);
 
-        if ( r.style.display == "inline") {
+        if ( r.style.display == "block") {
             return ;
         }
-        r.style.display = "inline";
+        r.style.display = "block";
+
         rh.style.backgroundColor = "#580EAD";
         rh.style.color = "#0EADA7";
         lh.style.backgroundColor = "#0EADA7";
@@ -153,11 +153,11 @@ $user->update($dbCon, false);
         var rh = document.getElementById(rightHeader);
         var lh = document.getElementById(leftHeader);
 
-        if ( l.style.display == "inline") {
+        if ( l.style.display == "block") {
             return ;
         }
 
-        l.style.display = "inline";
+        l.style.display = "block";
 
         lh.style.backgroundColor = "#580EAD";
         lh.style.color = "#0EADA7";
@@ -285,7 +285,7 @@ $user->update($dbCon, false);
         <div class="menu_header"><?php if ( isset($user->username)) {echo $user->username;} else { echo "dev/null/";}?></div>
         <div class="menu_status">Online</div>
     </a>
-    <a href="javascript:void(0);"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
+    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
     <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
     <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>
@@ -317,7 +317,7 @@ $user->update($dbCon, false);
     <div id="right-hand" onclick="showOutcome()">Outgoing</div>
 </div>
 
-<div id="friends" style="display: inline;">
+<div id="friends" style="display: block;">
 <?php
 if ( count($founded) == 0 ) {
     echo "<div class='no-result'>No friends founded</div>";

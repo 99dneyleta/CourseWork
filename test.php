@@ -1,12 +1,23 @@
 <?php
-$options = array('cost' => 12);
-echo "Bcrypt: ";
-echo $hash = password_hash("pass", PASSWORD_BCRYPT, $options);
-echo "<br>";
-echo "Verify now:<br>";
-if (password_verify('pass', $hash)) {
-    echo 'Password is valid!';
-} else {
-    echo 'Invalid password.';
-}
-?>
+/**
+ * Created by PhpStorm.
+ * User: deniz
+ * Date: 09/02/2017
+ * Time: 11:31 AM
+ */
+
+include("functionality.php");
+
+$me = User::withUsername("admin");
+$he = User::withUsername("Denis");
+
+echo "\n---------------------------------------------\n\n";
+
+$conv = $me->getConversationWithUser($he);
+
+
+echo ($conv->reverse)? "yes": "no";
+
+
+
+echo "\n\n---------------------------------------------\n";

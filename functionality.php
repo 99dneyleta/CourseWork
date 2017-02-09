@@ -1,4 +1,7 @@
 <?php
+
+include_once("dbConnect.php");
+
 class User {
     var $username;
     var $uid = null;
@@ -25,6 +28,13 @@ class User {
     public static function withUsername($username) {
         $instance = new self();
         $instance->username = $username;
+        $sql = "SELECT id FROM members WHERE username='$username' ;";
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            die("No such username");
+        }
+        $row = mysqli_fetch_row($query);
+        $instance->uid = $row[0];
+        $instance->updateBasic();
         return $instance;
     }
 
@@ -45,18 +55,18 @@ class User {
         }
     }
 
-    function toString() {
+    public function __toString() {
         return "".$this->firstname." ".$this->lastname." (".$this->username.")";
     }
 
-    function update($dbCon, $forceUpdate) {
+    function update($forceUpdate) {
         if ( $forceUpdate == false && isset($_COOKIE['new'])) {
             return true;
         }
         $sql = "SELECT id, first_name, last_name, email, image, gender, hobby, city, books, music FROM members WHERE username = '$this->username' AND activated = '1' LIMIT 1";
-        $query = mysqli_query($dbCon, $sql);
+        $query = mysqli_query($GLOBALS['dbCon'], $sql);
         $row = mysqli_fetch_row($query);
-        if ( mysqli_error($dbCon) ) {
+        if ( mysqli_error($GLOBALS['dbCon']) ) {
             return false;
         }
         $this->uid = $row[0];
@@ -71,11 +81,28 @@ class User {
         $this->music = $row[9];
 
         generateSessionAndCookie($this);
-        $this->getOnline($dbCon);
+        $this->getOnline();
         setcookie("new", "old", time() + 600, "/");
     }
 
-    function upgrade($dbCon) {
+    function updateBasic() {
+        $sql = "SELECT username, first_name, last_name, image, gender, city FROM members WHERE id='$this->uid' AND activated = '1' LIMIT 1";
+        if (!$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return $sql;
+        }
+        $row = mysqli_fetch_row($query);
+        if ( mysqli_error($GLOBALS['dbCon']) ) {
+            return "updateBasic";
+        }
+        $this->username = $row[0];
+        $this->firstname = $row[1];
+        $this->lastname = $row[2];
+        $this->image = $row[3];
+        $this->gender = $row[4];
+        $this->city = $row[5];
+    }
+
+    function upgrade() {
         $sql = "UPDATE members " .
             "SET ";
 
@@ -107,14 +134,14 @@ class User {
         $sql = $sql . "username='".$this->username."' ".
                 "WHERE id='$this->uid';";
 
-        if( !mysqli_query($dbCon, $sql) ) {
+        if( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
             die($sql);
         }
         setcookie("new", "old", time() + 600, "/");
-        return $this->getOnline($dbCon);
+        return $this->getOnline();
     }
 
-    function upgradeDetail($dbCon) {
+    function upgradeDetail() {
         $sql = "UPDATE members " .
             "SET ";
 
@@ -141,23 +168,23 @@ class User {
 
         $sql = $sql . "WHERE id='$this->uid';";
 
-        if( !mysqli_query($dbCon, $sql) ) {
+        if( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
             $this->hobby = null;
             $this->city = null;
             $this->books = null;
             $this->music = null;
             return $sql;
         }
-        $this->getOnline($dbCon);
+        $this->getOnline();
         return null;
     }
 
-    function updateRequests($dbCon) {
+    function updateRequests() {
         $this->incomingRequests = array();
         $this->outgoingRequests = array();
         $sql = "SELECT username FROM members m, requests r WHERE m.id = r.from_id AND r.to_id='$this->uid' AND r.decline=0 ;";
-        $query = mysqli_query($dbCon, $sql);
-        if ( !mysqli_affected_rows($dbCon) ) {
+        $query = mysqli_query($GLOBALS['dbCon'], $sql);
+        if ( !mysqli_affected_rows($GLOBALS['dbCon']) ) {
             $this->incomingRequests = array();
         } else {
             while($rowData = mysqli_fetch_array($query,MYSQLI_NUM)) {
@@ -166,8 +193,8 @@ class User {
         }
 
         $sql = "SELECT username FROM members m, requests r WHERE m.id = r.to_id AND r.from_id='$this->uid';";
-        $query = mysqli_query($dbCon, $sql);
-        if ( !mysqli_affected_rows($dbCon) ) {
+        $query = mysqli_query($GLOBALS['dbCon'], $sql);
+        if ( !mysqli_affected_rows($GLOBALS['dbCon']) ) {
             $this->outgoingRequests = array();
         } else {
             while($rowData = mysqli_fetch_array($query,MYSQLI_NUM)) {
@@ -176,16 +203,16 @@ class User {
         }
 
         generateSessionAndCookie($this);
-        $this->getOnline($dbCon);
-        $this->update($dbCon, false);
+        $this->getOnline();
+        $this->update(false);
         setcookie("new", "old", time() + 600, "/");
     }
 
-    function sendRequest($dbCon, $uid, $username) {
-        $this->updateFriends($dbCon);
+    function sendRequest($uid, $username) {
+        $this->updateFriends();
         foreach ($this->friends as $friend) {
             if ( strtolower($friend) == strtolower($username)) {
-                $this->removeRequest($dbCon, $uid, $username);
+                $this->removeRequest($uid, $username);
                 return true;
             }
         }
@@ -194,17 +221,17 @@ class User {
 
 
         $sql = "SELECT decline FROM requests WHERE from_id='$this->uid' AND to_id='$uid' ;";
-        $query = mysqli_query($dbCon, $sql);
+        $query = mysqli_query($GLOBALS['dbCon'], $sql);
         if ( isset(mysqli_fetch_row($query)[0]) ) {
-            $this->updateRequests($dbCon);
+            $this->updateRequests();
             return false;
         }
 
         $sql = "SELECT decline FROM requests WHERE to_id='$this->uid' AND from_id='$uid' ;";
-        $query = mysqli_query($dbCon, $sql);
+        $query = mysqli_query($GLOBALS['dbCon'], $sql);
         if ( isset(mysqli_fetch_row($query)[0]) ) {
-            $this->acceptRequest($dbCon, $uid, $username);
-            $this->updateRequests($dbCon);
+            $this->acceptRequest($uid, $username);
+            $this->updateRequests();
             return false;
         }
 
@@ -212,21 +239,21 @@ class User {
             "(from_id, to_id) " .
             "VALUES ( '$this->uid','$uid' );";
 
-        if (!mysqli_query($dbCon, $sql)) {
+        if (!mysqli_query($GLOBALS['dbCon'], $sql)) {
             die("Sorry, database is offline, try again later.");
         }
 
         array_push($this->outgoingRequests, $username);
 
-        $this->getOnline($dbCon);
+        $this->getOnline();
         return true;
     }
 
-    function removeRequest($dbCon, $uid, $username) {
-        $this->getOnline($dbCon);
+    function removeRequest($uid, $username) {
+        $this->getOnline();
 
         $sql = "SELECT decline FROM requests WHERE from_id='$this->uid' AND to_id='$uid' ;";
-        $query = mysqli_query($dbCon, $sql);
+        $query = mysqli_query($GLOBALS['dbCon'], $sql);
         if ( mysqli_fetch_row($query)[0] == "1" ) {
             return false;
         }
@@ -235,13 +262,13 @@ class User {
         $sql = "DELETE FROM requests " .
             "WHERE from_id='$this->uid' AND to_id='$uid' ;";
 
-        if (!mysqli_query($dbCon, $sql)) {
+        if (!mysqli_query($GLOBALS['dbCon'], $sql)) {
             die("Sorry, database is offline, try again later.");
         }
         $sql = "DELETE FROM requests " .
             "WHERE to_id='$this->uid' AND from_id='$uid' ;";
 
-        if (!mysqli_query($dbCon, $sql)) {
+        if (!mysqli_query($GLOBALS['dbCon'], $sql)) {
             die("Sorry, database is offline, try again later.");
         }
 
@@ -256,19 +283,19 @@ class User {
 
     }
 
-    function acceptRequest($dbCon, $uid, $username) {
+    function acceptRequest( $uid, $username) {
 
-        $this->updateFriends($dbCon);
+        $this->updateFriends();
         foreach ($this->friends as $friend) {
             if ( strtolower($friend) == strtolower($username)) {
-                $this->removeRequest($dbCon, $uid, $username);
+                $this->removeRequest( $uid, $username);
                 return true;
             }
         }
 
 
         $sql = "SELECT decline FROM requests WHERE from_id='$this->uid' AND to_id='$uid' ;";
-        $query = mysqli_query($dbCon, $sql);
+        $query = mysqli_query($GLOBALS['dbCon'], $sql);
         if ( mysqli_fetch_row($query)[0] == "1" ) {
             $i = count($this->incomingRequests);
             while ($i) {
@@ -282,7 +309,7 @@ class User {
         }
 
         $sql = "SELECT friends FROM members WHERE id='$uid' ;";
-        $friends = explode("|",mysqli_fetch_row(mysqli_query($dbCon, $sql))[0]);
+        $friends = explode("|",mysqli_fetch_row(mysqli_query($GLOBALS['dbCon'], $sql))[0]);
         $i = count($friends);
         while ($i) {
             $x = array_shift($friends);
@@ -294,21 +321,21 @@ class User {
         array_push($friends, $this->username);
         $friends = implode("|", $friends);
         $sql = "UPDATE members SET friends='$friends' WHERE id='$uid' ;";
-        if ( !mysqli_query($dbCon, $sql) ) {
+        if ( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
             die("Full!");
         }
 
-        $this->removeRequest($dbCon, $uid, $username);
+        $this->removeRequest($uid, $username);
         array_push($this->friends, $username);
-        $this->upgradeFriends($dbCon);
+        $this->upgradeFriends();
 
-        $this->getOnline($dbCon);
+        $this->getOnline();
 
     }
 
-    function declineRequest($dbCon, $uid, $username) {
+    function declineRequest($uid, $username) {
         $sql = "UPDATE requests SET decline=1 WHERE from_id='$uid' AND to_id='$this->uid' ;";
-        if ( !mysqli_query($dbCon, $sql)) {
+        if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
             die("DataBase is offline, try again later");
         }
 
@@ -320,10 +347,10 @@ class User {
             }
             $i--;
         }
-        $this->getOnline($dbCon);
+        $this->getOnline();
     }
 
-    function removeFromFriends($dbCon, $uid, $username) {
+    function removeFromFriends($uid, $username) {
         $i = count($this->friends);
         while ($i>=0) {
             $x = array_shift($this->friends);
@@ -338,14 +365,14 @@ class User {
             "(to_id, from_id) " .
             "VALUES ( '$this->uid','$uid' );";
 
-        if (!mysqli_query($dbCon, $sql)) {
+        if (!mysqli_query($GLOBALS['dbCon'], $sql)) {
             die("Sorry, database is offline, try again later.");
         }
 
         array_push($this->incomingRequests, $username);
 
         $sql = "SELECT friends FROM members WHERE id='$uid' ;";
-        $friends = explode("|",mysqli_fetch_row(mysqli_query($dbCon, $sql))[0]);
+        $friends = explode("|",mysqli_fetch_row(mysqli_query($GLOBALS['dbCon'], $sql))[0]);
         $i = count($friends);
         while ($i) {
             $x = array_shift($friends);
@@ -356,48 +383,97 @@ class User {
         }
         $friends = implode("|", $friends);
         $sql = "UPDATE members SET friends='$friends' WHERE id='$uid' ;";
-        if ( !mysqli_query($dbCon, $sql) ) {
+        if ( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
             die("Full!");
         }
 
-        $this->upgradeFriends($dbCon);
+        $this->upgradeFriends();
 
     }
 
-    function updateFriends($dbCon) {
+    function updateFriends() {
         $sql = "SELECT friends FROM members WHERE id='$this->uid' ;";
-        $query = mysqli_query($dbCon, $sql);
+        $query = mysqli_query($GLOBALS['dbCon'], $sql);
         $row = mysqli_fetch_row($query);
         $this->friends = explode("|", $row[0]);
-        $this->updateRequests($dbCon);
-        $this->getOnline($dbCon);
+        $this->updateRequests();
+        $this->getOnline();
     }
 
-    function upgradeFriends($dbCon) {
+    function upgradeFriends() {
         $sql = "UPDATE members SET friends='".implode("|", $this->friends)."' WHERE id='$this->uid' ;";
-        if ( !mysqli_query($dbCon, $sql)) {
+        if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
             die("DataBase is offline, try again later");
         }
-        $this->getOnline($dbCon);
+        $this->getOnline();
     }
 
-    function getOnline($dbCon) {
+    function getOnline() {
         if (  isset($_COOKIE['new'])) {
             return true;
         }
         $sql = "UPDATE members " .
             "SET online='".time()."'".
             "WHERE username='$this->username';";
-        if( !mysqli_query($dbCon, $sql) ) {
+        if( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
             return false;
         }
         return true;
     }
 
+    function getAllConversations() {
+        $all = array();
 
+        $sql = "SELECT id FROM conversations WHERE (participant1=".$this->uid." OR participant2=".$this->uid.") AND confirm=1 ORDER BY last_time DESC;";
 
-    function getConversationWithUser($user, $dbCon) {
-        return Conversation::withUser($user, $this, $dbCon);
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return null;
+        } else {
+            while ($row = mysqli_fetch_array($query, MYSQLI_NUM)) {
+                array_push($all, $row[0]);
+            }
+        }
+        $conv = array();
+
+        foreach ($all as $id) {
+            $con = Conversation::withID($this, $id);
+            array_push($conv, $con);
+        }
+
+        return $conv;
+    }
+
+    function getPendingConversations() {
+        $all = array();
+
+        $sql = "SELECT id FROM conversations WHERE (participant1=".$this->uid." OR participant2=".$this->uid.") AND confirm=0 ORDER BY last_time DESC;";
+
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return null;
+        } else {
+            while ($row = mysqli_fetch_array($query, MYSQLI_NUM)) {
+                array_push($all, $row[0]);
+            }
+        }
+        $conv = array();
+
+        foreach ($all as $id) {
+            $con = Conversation::withID($this, $id);
+            array_push($conv, $con);
+        }
+
+        return $conv;
+    }
+
+    function isFriend($username) {
+        foreach ($this->friends as $friend) {
+            if ( $friend == $username) return true;
+        }
+        return false;
+    }
+
+    function getConversationWithUser($user) {
+        return Conversation::withUser($user, $this);
     }
 
 }
@@ -419,78 +495,230 @@ class Message {
         $this->time = $time;
         $this->attachment = $att;
         $this->read = $read;
+        $this->text = $text;
     }
 
-    //TODO: toString() for JS
+    function pushToDB() {
+        $att = ($this->attachment)? "NULL" : "'$this->attachment'";
+        $sql = "INSERT INTO messages (from_id, to_id, textt, attach, timee, readd) VALUES ('".$this->fromUser->uid."', '".$this->toUser->uid."', '$this->text', ".$att.", '$this->time', NULL) ;";
+        if ( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
+            return $sql;
+        }
+
+        $sql = "SELECT id FROM messages WHERE from_id='".$this->fromUser->uid."' AND to_id='".$this->toUser->uid."' ORDER BY id DESC LIMIT 1; ";
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return "cannot push!: ".$sql;
+        }
+        $row = mysqli_fetch_array($query);
+        $this->id = $row[0];
+    }
 }
 
 class Conversation {
+    var $id = null;
     var $me = null;
     var $interlocutor = null;
     var $messages = array();
+    var $confirm = null;
+    var $reverse = false;
 
     function __construct() { }
 
-    public static function withUser($user, $me, $dbCon) {
+    public static function withUser($user, $me) {
         $instance = new self();
         $instance->interlocutor = $user;
         $instance->me = $me;
-        $instance->loadBasics($dbCon);
+        $instance->loadBasics();
         return $instance;
     }
 
-    function loadBasics($dbCon) {
+    public static function withID($self, $id) {
+        $instance = new self();
+        $instance->id = $id;
+        $instance->interlocutor = new User();
+        $instance->me = $self;
+
+        $sql = "SELECT participant1, participant2 FROM conversations WHERE id=".$instance->id." ;";
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return null;
+        } else {
+            $res = mysqli_fetch_row($query);
+            if ( $self->uid == $res[0]) {
+                $instance->interlocutor->uid = $res[1];
+            } else {
+                $instance->interlocutor->uid = $res[0];
+            }
+        }
+
+        $instance->interlocutor->updateBasic();
+
+
+        //$instance->loadBasics();
+        return $instance;
+    }
+
+    function loadBasics() {
 
         $myMess = array();
         $toMeMess = array();
 
-        $sql = "SELECT id, text, attach, time, read FROM messages WHERE from_id=".$this->me->uid." AND to_id=".$this->interlocutor->uid." ODRER BY id DESC LIMIT 20;";
-        $query = mysqli_query($dbCon, $sql);
+        $sql = "SELECT id, textt, attach, timee, readd FROM messages WHERE from_id=".$this->me->uid." AND to_id=".$this->interlocutor->uid."  ORDER BY id DESC LIMIT 20;";
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return "544: ".$sql;
+        }
+
         while ( $mess = mysqli_fetch_array($query, MYSQLI_NUM) ) {
             //getting all my messages
             array_push($myMess, new Message($mess[0], $this->me, $this->interlocutor, $mess[3], $mess[1], $mess[2], $mess[4]));
         }
 
-        $sql = "SELECT id, text, attach, time, read FROM messages WHERE to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." ODRER BY id DESC LIMIT 20;";
-        $query = mysqli_query($dbCon, $sql);
-        while ( $ess = mysqli_fetch_array($query, MYSQLI_NUM) ) {
+        $sql = "SELECT id, textt, attach, timee, readd FROM messages WHERE to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." AND readd IS NOT NULL ORDER BY id DESC LIMIT 20;";
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return "497";
+        }
+
+        while ( $mess = mysqli_fetch_array($query, MYSQLI_NUM) ) {
             //getting all messages to me
-            array_push($toMeMess, new Message($mess[0], $this->me, $this->interlocutor, $mess[3], $mess[1], $mess[2], $mess[4]));
+            $this->reverse = true;
+            array_push($toMeMess, new Message($mess[0], $this->interlocutor, $this->me, $mess[3], $mess[1], $mess[2], $mess[4]));
         }
 
-        if ( !count($myMess) ) {
-            if ( !count($toMeMess) ) {
-                return ;
+        $result = "to('$this->me'): ".count($toMeMess)." from('$this->interlocutor') : ".count($myMess)."  ";
+
+        mergeSort($myMess, $toMeMess, $this->messages);
+
+        $result .= "afterMerge: " . count($this->messages);
+
+        $sql = "SELECT id, confirm FROM conversations WHERE participant1='".$this->me->uid."' AND participant2='".$this->interlocutor->uid."' ;";
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return "Load Basics: ".$sql;
+        }
+        if ( mysqli_affected_rows($GLOBALS['dbCon']) ) {
+            $row = mysqli_fetch_row($query);
+            $this->id = $row[0];
+            $this->confirm = $row[1];
+        } else {
+
+            $sql = "SELECT id, confirm FROM conversations WHERE participant2='" . $this->me->uid . "' AND participant1='" . $this->interlocutor->uid . "' ;";
+            if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+                return "Load Basics: ".$sql;
+            }
+            if (mysqli_affected_rows($GLOBALS['dbCon'])) {
+                $row = mysqli_fetch_row($query);
+                $this->id = $row[0];
+                $this->confirm = $row[1];
             } else {
-                $this->messages = $toMeMess;
+
+                $sql = "INSERT INTO conversations (participant1, participant2, last_time, confirm) VALUES ('" . $this->me->uid . "', '" . $this->interlocutor->uid . "', '".date('d-m-Y; H:i:s',time())."' , 0) ;";
+                if (!mysqli_query($GLOBALS['dbCon'], $sql)) {
+                    return "524: " . $sql;
+                }
+
+                $sql = "SELECT id, confirm FROM conversations WHERE participant1='" . $this->me->uid . "' AND participant2='" . $this->interlocutor->uid . "' ;";
+                if (!$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+                    return "529";
+                }
+                if (mysqli_affected_rows($GLOBALS['dbCon'])) {
+                    $row = mysqli_fetch_row($query);
+                    $this->id = $row[0];
+                    $this->confirm = $row[1];
+                } else {
+                    return "DataBase is offline now, try again later";
+                }
             }
         }
-        if ( !count($toMeMess) ) {
-            if ( !count($myMess) ) {
-                return ;
-            } else {
-                $this->messages = $myMess;
-            }
+
+        return $result . $this->loadUnread();
+    }
+
+    function loadUnread() {
+        $unread = array();
+
+        $sql = "SELECT id, textt, attach, timee, readd FROM messages WHERE to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." AND readd IS NULL ORDER BY id DESC;";
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return "Unread: ".$sql;
+        }
+        while ( $mess = mysqli_fetch_array($query, MYSQLI_NUM) ) {
+            //getting all my messages
+            array_push($unread, new Message($mess[0], $this->interlocutor, $this->me, $mess[3], $mess[1], $mess[2], $mess[4]));
         }
 
-        //merge sort between messages
-        while (count($myMess) && count($toMeMess)) {
-            $x = array_shift($myMess);
-            $y = array_shift($toMeMess);
+        $loadedMess = $this->messages;
+        $this->messages = array();
 
-            ///////here time is 'date('d-m-Y; H:i:s',time());', comparable
+        mergeSort($unread, $loadedMess, $this->messages);
 
-            if ( $x->time < $y->time ){
-                array_push($this->messages, $x );
-                array_unshift($toMeMess, $y);
-            } else {
-                array_push($this->messages, $y );
-                array_unshift($myMess, $x);
+        $sql = "UPDATE messages SET readd='".date('d-m-Y; H:i:s',time())."' WHERE to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." ;";
+        if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return "unread update: ".$sql;
+        }
+
+
+        return " after unread: ". count($this->messages);
+    }
+
+    function addMessage($text, $att) {
+        if ( $this->confirm == 0 && $this->reverse) {
+            echo "not confirmed!";
+            return ;
+        }
+        $mess = new Message(0, $this->me, $this->interlocutor, date('d-m-Y; H:i:s',time()), $text, $att, null);
+        $mess->pushToDB();
+
+        $sql = "UPDATE conversations SET last_time='".date('d-m-Y; H:i:s',time())."' WHERE id=".$this->id." ;";
+        if ( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
+            echo $sql;
+        }
+
+        array_unshift($this->messages, $mess);
+    }
+
+    function deleteMessage($messId) {
+        $sql = "DELETE FROM messages WHERE id='$messId' ;";
+        mysqli_query($GLOBALS['dbCon'], $sql);
+
+        $i = count($this->messages);
+        while ($i) {
+            $x = array_shift($this->messages);
+            if ( $x->id != $messId ){
+                array_push($this->messages, $x);
             }
+            --$i;
         }
     }
 
-    //TODO: add message, read message, delete message
+    function howMuchUnread() {
+        $sql = "SELECT id FROM messages WHERE to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." AND readd IS NULL;";
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return null;
+        } else {
+            return mysqli_affected_rows($GLOBALS['dbCon']);
+        }
+    }
+
+    function lastMessage() {
+        $sql = "SELECT textt FROM messages WHERE (from_id=".$this->me->uid." AND to_id=".$this->interlocutor->uid." ) OR (to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." ) ORDER BY id DESC LIMIT 1;";
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            echo "678: ".$sql;
+        }
+        $text = mysqli_fetch_row($query)[0];
+        if ( strlen($text) > 10 ) {
+            $text = substr($text, 0, 10)."...";
+        }
+        return $text;
+    }
+
+    function gotConfirmation() {
+        $sql = "UPDATE conversations SET confirm=1 WHERE id=".$this->id." ;";
+        if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return "sql: cannot confirm! ";
+        }
+    }
+
+    public function __toString() {
+        return $this->me." conversation(id='$this->id') with ".$this->interlocutor. "\nTotal mess: " . count($this->messages);
+    }
+
 }
 
 
@@ -543,7 +771,7 @@ function generateRandomString($length = 10) {
     return $randomString;
 }
 
-function proceedImageUpdate($user, $image, $dbCon) {
+function proceedImageUpdate($user, $image) {
 
     if (isset($_FILES) && isset($_FILES[$image])){
         if ( $_FILES[$image]['error'] != "0") {
@@ -590,8 +818,8 @@ function proceedImageUpdate($user, $image, $dbCon) {
                 "SET image='$file_name' " .
                 "WHERE id='$uid';";
 
-            if (!mysqli_query($dbCon, $sql)) {
-                return "SQL";
+            if (!mysqli_query($GLOBALS['dbCon'], $sql)) {
+                die("DataBase is offline");
             }
         }
     }
@@ -603,5 +831,51 @@ function getAlert($strong, $msg) {
               '<span class="closebtn" onclick="this.parentElement.style.display='.'\'none\''.';">&times;</span>'.
               '<strong>'.$strong.' </strong> '.$msg.'</div>';
     return $result;
+}
+
+function mergeSort(&$first, &$second, &$output) {
+    if ( !count($first) ) {
+        if ( !count($second) ) {
+            return ;
+        } else {
+            $output = $second;
+            return ;
+        }
+    }
+    if ( !count($second) ) {
+        if ( !count($first) ) {
+            return ;
+        } else {
+            $output = $first;
+            return ;
+        }
+    }
+
+    //merge sort between messages
+    while (count($first) && count($second)) {
+        $x = array_shift($first);
+        $y = array_shift($second);
+
+        ///////here time is 'date('d-m-Y; H:i:s',time());', comparable
+
+        if ( $x->time > $y->time ){
+            array_push($output, $x );
+            array_unshift($second, $y);
+        } else {
+            array_push($output, $y );
+            array_unshift($first, $x);
+        }
+    }
+
+    while (count($first)) {
+        $x = array_shift($first);
+        array_push($output, $x);
+    }
+
+    while (count($second)) {
+        $x = array_shift($second);
+        array_push($output, $x);
+    }
+
 }
 ?>

@@ -1,14 +1,13 @@
 <?php
 session_start();
 include_once("functionality.php");
-include_once("dbConnect.php");
 
 $user = getUser();
 if (!isset($user)) {
     header("Location: index.php");
 }
-$user->updateFriends($dbCon);
-$user->updateRequests($dbCon);
+$user->updateFriends();
+$user->updateRequests();
 $usr = null;
 
 if ( !isset($_GET['username'])) {
@@ -44,28 +43,28 @@ if ( !isset($_GET['username'])) {
 if ( isset($_POST['req'])) {
     switch ($_POST['req']) {
         case "send":
-            $user->sendRequest($dbCon, $usr->uid, $usr->username);
+            $user->sendRequest($usr->uid, $usr->username);
             break;
         case "sent":
-            $user->removeRequest($dbCon, $usr->uid, $usr->username);
+            $user->removeRequest($usr->uid, $usr->username);
             break;
         case "accept":
-            $user->acceptRequest($dbCon, $usr->uid, $usr->username);
+            $user->acceptRequest($usr->uid, $usr->username);
             break;
         case "decline":
-            $user->declineRequest($dbCon, $usr->uid, $usr->username);
+            $user->declineRequest($usr->uid, $usr->username);
             break;
         case "remove":
-            $user->removeFromFriends($dbCon, $usr->uid, $usr->username);
+            $user->removeFromFriends($usr->uid, $usr->username);
             break;
         default: break;
     }
 }
-$user->updateFriends($dbCon);
-$user->updateRequests($dbCon);
+$user->updateFriends();
+$user->updateRequests();
 
 
-$user->update($dbCon, false);
+$user->update(false);
 ?>
 
 
@@ -108,6 +107,12 @@ $user->update($dbCon, false);
     <div class="<?php if ( $usr->status == "online" ) { echo "status"; } else { echo "offline"; };?>" >
         <?php echo $usr->status; ?>
     </div>
+
+    <?php
+    if ( $user->isFriend($usr->username)) {
+        echo "<a href='chat.php?user=".$usr->username."' class='startChat'>Write message</a>";
+    }
+    ?>
 
     <form method="post" action="userInfo.php?username=<?php echo $_GET['username']?>&query=<?php echo $_GET['query']?>" >
         <input type="submit"
