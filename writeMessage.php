@@ -18,7 +18,7 @@ if ( !isset($_POST['uid']) || !isset($_POST['partUid']) || !isset($_POST['text']
     $conversation = new Conversation();
     $conversation->me = $me;
     $conversation->interlocutor = $part;
-    echo $conversation->loadBasics();
+    $conversation->loadBasics();
 
     $conversation->addMessage($text, $att);
 

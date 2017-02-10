@@ -12,7 +12,7 @@ $founded = array();
 if ( isset($_GET['search']) && trim(mysqli_real_escape_string($dbCon, $_GET['search'])) != "") {
 
     $searchString = mysqli_real_escape_string($dbCon, $_GET['search']);
-    $sql = "SELECT username, first_name, last_name, image ".
+    $sql = "SELECT username, first_name, last_name, image, online ".
            "FROM members ".
            "WHERE username LIKE '".$searchString."%' LIMIT 100;";
     $query = mysqli_query($dbCon, $sql);
@@ -23,7 +23,7 @@ if ( isset($_GET['search']) && trim(mysqli_real_escape_string($dbCon, $_GET['sea
         while($rowData = mysqli_fetch_array($query,MYSQLI_NUM)) {
             $exist = false;
 
-            if ( $rowData[0] == $user->username) {
+            if ( strcmp($rowData[0], $user->username) == 0 ) {
                 $exist = true;
                 break;                                                  //    <<<<<<<<<  LOOK HERE !!!!!!!!
             }
@@ -32,13 +32,17 @@ if ( isset($_GET['search']) && trim(mysqli_real_escape_string($dbCon, $_GET['sea
                 $u->firstname = $rowData[1];
                 $u->lastname = $rowData[2];
                 $u->image = $rowData[3];
+                $lastLogged = $rowData[4];
+                if ( round(abs(time() - $lastLogged) / 60,2) > 10) {
+                    $u->status = "offline";
+                }
                 array_push($founded, $u);
             }
         }
         $result = true;
     }
 
-    $sql = "SELECT username, first_name, last_name, image ".
+    $sql = "SELECT username, first_name, last_name, image, online ".
         "FROM members ".
         "WHERE first_name LIKE '".$searchString."%' LIMIT 100;";
     $query = mysqli_query($dbCon, $sql);
@@ -49,23 +53,31 @@ if ( isset($_GET['search']) && trim(mysqli_real_escape_string($dbCon, $_GET['sea
         while($rowData = mysqli_fetch_array($query,MYSQLI_NUM)) {
             $exist = false;
             foreach ($founded as $usr) {
-                if ( $rowData[0] == $usr->username || $rowData[0] == $user->username) {
+                if ( strcmp($rowData[0], $usr->username) == 0 || strcmp($rowData[0], $user->username) == 0 ) {
                     $exist = true;
                     break;                                                  //    <<<<<<<<<  LOOK HERE !!!!!!!!
                 }
+            }
+            if ( strcmp($rowData[0], $user->username) == 0 ) {
+                $exist = true;
+                break;                                                  //    <<<<<<<<<  LOOK HERE !!!!!!!!
             }
             if ( !$exist ) {
                 $u = User::withUsername($rowData[0]);
                 $u->firstname = $rowData[1];
                 $u->lastname = $rowData[2];
                 $u->image = $rowData[3];
+                $lastLogged = $rowData[4];
+                if ( round(abs(time() - $lastLogged) / 60,2) > 10) {
+                    $u->status = "offline";
+                }
                 array_push($founded, $u);
             }
         }
         $result = true;
     }
 
-    $sql = "SELECT username, first_name, last_name, image ".
+    $sql = "SELECT username, first_name, last_name, image, online ".
         "FROM members ".
         "WHERE last_name LIKE '".$searchString."%' LIMIT 100;";
     $query = mysqli_query($dbCon, $sql);
@@ -76,16 +88,24 @@ if ( isset($_GET['search']) && trim(mysqli_real_escape_string($dbCon, $_GET['sea
         while($rowData = mysqli_fetch_array($query,MYSQLI_NUM)) {
             $exist = false;
             foreach ($founded as $usr) {
-                if ( $rowData[0] == $usr->username || $rowData[0] == $user->username) {
+                if ( strcmp($rowData[0], $usr->username) == 0 || strcmp($rowData[0], $user->username) == 0) {
                     $exist = true;
                     break;                                                  //    <<<<<<<<<  LOOK HERE !!!!!!!!
                 }
+            }
+            if ( strcmp($rowData[0], $user->username) == 0 ) {
+                $exist = true;
+                break;                                                  //    <<<<<<<<<  LOOK HERE !!!!!!!!
             }
             if ( !$exist ) {
                 $u = User::withUsername($rowData[0]);
                 $u->firstname = $rowData[1];
                 $u->lastname = $rowData[2];
                 $u->image = $rowData[3];
+                $lastLogged = $rowData[4];
+                if ( round(abs(time() - $lastLogged) / 60,2) > 10) {
+                    $u->status = "offline";
+                }
                 array_push($founded, $u);
             }
         }
@@ -180,12 +200,12 @@ $user->update(false);
 </script>
 <div class="menu" id="menu" style="display: none;">
     <a href="profile.php">
-        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "/img/space-for-avatar.png";} ?> " >
+        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "img/space-for-avatar.png";} ?> " >
         <div class="menu_header"><?php if ( isset($user->username)) {echo $user->username;} else { echo "dev/null/";}?></div>
         <div class="menu_status">Online</div>
     </a>
-    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
-    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
+    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats<?php if ( $user->hasPendingMessages() || $user->hasNewMessages()) { echo "<div id=notify></div>"; } ?></div></a>
+    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends<?php if ( $user->hasPendingFriends()) { echo "<div id=notify></div>"; } ?></div></a>
     <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>
 </div>
@@ -197,7 +217,7 @@ $user->update(false);
     <div class="dash" id="dash" onclick="show_menu()">
         <div id="alone">
             <span></span>
-            <span></span>
+            <span <?php if ( $user->hasNews()) { echo "style='background: #ff1001'"; } ?> ></span>
             <span></span>
         </div>
 
@@ -213,16 +233,20 @@ $user->update(false);
     <input type="text" id="search" name="search" placeholder="input search phrase" <?php if ( isset($_GET['search'])) echo "value='".$_GET['search']."'";?> >
     <input type="image" src="img/search.png?v=<?=time();?>">
 </form>
-<div style="display: block; width: 100%; height: 15vw;" ></div>
+<div style="display: block; width: 100%; height: 15vh;" ></div>
 <?php
 if ( isset($_GET['search']) && !$result ) {
     echo "<div class='no-result'>No results founded</div>";
 } elseif( isset($result) ) {
     foreach ($founded as $usr) {
+        $st = null;
+        if ( $usr->status == "online") {
+            $st = "<div id='online'></div>";
+        }
         $img = ( isset($usr->image) )?  "images/".$usr->image : "/img/space-for-avatar.png";
         echo "<a href='userInfo.php?username=".$usr->username."&query=".$_GET['search']."'><div class='result'>
                     <img src='".$img."' class=\"image-tiny\" >
-                    <div class=\"username\" >".$usr->username." </div>
+                    <div class=\"username\" >".$usr->username.$st." </div>
                     <div class=\"fullname\" >".$usr->getName()." </div>
               </div></a>";
     }

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once("functionality.php");
+header('Content-Type: text/html; charset=utf-8');
 
 $user = getUser();
 if (!$user) {

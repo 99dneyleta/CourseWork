@@ -60,10 +60,11 @@ class User {
     }
 
     function update($forceUpdate) {
+        $this->getOnline();
         if ( $forceUpdate == false && isset($_COOKIE['new'])) {
             return true;
         }
-        $sql = "SELECT id, first_name, last_name, email, image, gender, hobby, city, books, music FROM members WHERE username = '$this->username' AND activated = '1' LIMIT 1";
+        $sql = "SELECT id, first_name, last_name, email, image, gender, hobby, city, books, music, online FROM members WHERE username = '$this->username' AND activated = '1' LIMIT 1";
         $query = mysqli_query($GLOBALS['dbCon'], $sql);
         $row = mysqli_fetch_row($query);
         if ( mysqli_error($GLOBALS['dbCon']) ) {
@@ -79,14 +80,18 @@ class User {
         $this->city = $row[7];
         $this->books = $row[8];
         $this->music = $row[9];
+        $lastLogged = $row[10];
+        if ( round(abs(time() - $lastLogged) / 60,2) > 10) {
+            $this->status = "offline";
+        }
 
-        generateSessionAndCookie($this);
-        $this->getOnline();
-        setcookie("new", "old", time() + 600, "/");
+        //generateSessionAndCookie($this);
+
+        //setcookie("new", "old", time() + 600, "/");
     }
 
     function updateBasic() {
-        $sql = "SELECT username, first_name, last_name, image, gender, city FROM members WHERE id='$this->uid' AND activated = '1' LIMIT 1";
+        $sql = "SELECT username, first_name, last_name, image, gender, city, online FROM members WHERE id='$this->uid' AND activated = '1' LIMIT 1";
         if (!$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
             return $sql;
         }
@@ -100,6 +105,10 @@ class User {
         $this->image = $row[3];
         $this->gender = $row[4];
         $this->city = $row[5];
+        $lastLogged = $row[6];
+        if ( round(abs(time() - $lastLogged) / 60,2) > 10) {
+            $this->status = "offline";
+        }
     }
 
     function upgrade() {
@@ -134,8 +143,9 @@ class User {
         $sql = $sql . "username='".$this->username."' ".
                 "WHERE id='$this->uid';";
 
+        mysqli_query($GLOBALS['dbCon'], "SET NAMES UTF8");
         if( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
-            die($sql);
+            die(mysqli_error($GLOBALS['dbCon']));
         }
         setcookie("new", "old", time() + 600, "/");
         return $this->getOnline();
@@ -202,10 +212,10 @@ class User {
             }
         }
 
-        generateSessionAndCookie($this);
+        //generateSessionAndCookie($this);
         $this->getOnline();
         $this->update(false);
-        setcookie("new", "old", time() + 600, "/");
+        //setcookie("new", "old", time() + 600, "/");
     }
 
     function sendRequest($uid, $username) {
@@ -389,6 +399,13 @@ class User {
 
         $this->upgradeFriends();
 
+        if ( !$this->deleteConversationWith($uid) ) {
+            $myfile = fopen("logs.txt", "a");
+            $txt = "Delete conversation: ".$this." with ".$username."(time: ". date("d-m-Y; H:i:s", time()).")\n"."-----------------------------------\n";
+            fputs($myfile, $txt);
+            fclose($myfile);
+        }
+
     }
 
     function updateFriends() {
@@ -413,11 +430,12 @@ class User {
             return true;
         }
         $sql = "UPDATE members " .
-            "SET online='".time()."'".
+            "SET online='".date('d-m-Y; H:i:s',time())."'".
             "WHERE username='$this->username';";
         if( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
             return false;
         }
+        setcookie("new", "old", time() + 600, "/");
         return true;
     }
 
@@ -474,6 +492,48 @@ class User {
 
     function getConversationWithUser($user) {
         return Conversation::withUser($user, $this);
+    }
+
+    function hasPendingFriends() {
+        $this->updateRequests();
+        return count($this->incomingRequests) > 0;
+    }
+
+    function hasPendingMessages() {
+        $sql = "SELECT id FROM conversations WHERE (participant1=".$this->uid." OR participant2=".$this->uid.") AND confirm=0 ORDER BY last_time DESC;";
+
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return null;
+        } else {
+            return mysqli_affected_rows($GLOBALS['dbCon']) > 0;
+        }
+    }
+
+    function hasNewMessages() {
+        $sql = "SELECT id FROM messages WHERE to_id=".$this->uid." AND readd IS NULL ;";
+
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return null;
+        } else {
+            return mysqli_affected_rows($GLOBALS['dbCon']) > 0;
+        }
+    }
+
+    function hasNews() {
+        return $this->hasNewMessages() || $this->hasPendingFriends() || $this->hasPendingMessages();
+    }
+
+    function deleteConversationWith($id) {
+        $sql = "DELETE FROM messages WHERE ( to_id=".$this->uid." AND from_id=".$id.") OR (from_id=".$this->uid." AND to_id=".$id.") ; ";
+        if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return false;
+        }
+        $sql = "DELETE FROM conversations WHERE ( participant1=".$this->uid." AND participant2=".$id.") OR (participant2=".$this->uid." AND participant1=".$id.") ; ";
+        if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return false;
+        }
+
+        return true;
     }
 
 }
@@ -579,7 +639,6 @@ class Conversation {
 
         while ( $mess = mysqli_fetch_array($query, MYSQLI_NUM) ) {
             //getting all messages to me
-            $this->reverse = true;
             array_push($toMeMess, new Message($mess[0], $this->interlocutor, $this->me, $mess[3], $mess[1], $mess[2], $mess[4]));
         }
 
@@ -597,6 +656,7 @@ class Conversation {
             $row = mysqli_fetch_row($query);
             $this->id = $row[0];
             $this->confirm = $row[1];
+            $this->reverse = false;
         } else {
 
             $sql = "SELECT id, confirm FROM conversations WHERE participant2='" . $this->me->uid . "' AND participant1='" . $this->interlocutor->uid . "' ;";
@@ -607,6 +667,7 @@ class Conversation {
                 $row = mysqli_fetch_row($query);
                 $this->id = $row[0];
                 $this->confirm = $row[1];
+                $this->reverse = true;
             } else {
 
                 $sql = "INSERT INTO conversations (participant1, participant2, last_time, confirm) VALUES ('" . $this->me->uid . "', '" . $this->interlocutor->uid . "', '".date('d-m-Y; H:i:s',time())."' , 0) ;";
@@ -622,6 +683,7 @@ class Conversation {
                     $row = mysqli_fetch_row($query);
                     $this->id = $row[0];
                     $this->confirm = $row[1];
+                    $this->reverse = false;
                 } else {
                     return "DataBase is offline now, try again later";
                 }
@@ -658,14 +720,14 @@ class Conversation {
     }
 
     function addMessage($text, $att) {
-        if ( $this->confirm == 0 && $this->reverse) {
+        if ( ($this->confirm == 0 && $this->reverse) || ($this->confirm == 2 && !$this->reverse ) ){
             echo "not confirmed!";
             return ;
         }
         $mess = new Message(0, $this->me, $this->interlocutor, date('d-m-Y; H:i:s',time()), $text, $att, null);
         $mess->pushToDB();
 
-        $sql = "UPDATE conversations SET last_time='".date('d-m-Y; H:i:s',time())."' WHERE id=".$this->id." ;";
+        $sql = "UPDATE conversations SET last_time='".date('d-m-Y; H:i:s',time())."', confirm=1 WHERE id=".$this->id." ;";
         if ( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
             echo $sql;
         }
@@ -715,6 +777,17 @@ class Conversation {
         }
     }
 
+    function denyConfirmation() {
+        $sql = "UPDATE conversations SET confirm=2 WHERE id=".$this->id." ;";
+        if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return "sql: cannot deny! ";
+        }
+        $sql = "DELETE FROM messages WHERE (from_id=".$this->interlocutor->uid." AND to_id=".$this->me->uid." ) OR (to_id=".$this->interlocutor->uid." AND from_id=".$this->me->uid." ) ;";
+        if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
+            return "sql: cannot delete! ";
+        }
+    }
+
     public function __toString() {
         return $this->me." conversation(id='$this->id') with ".$this->interlocutor. "\nTotal mess: " . count($this->messages);
     }
@@ -726,6 +799,7 @@ class Conversation {
 function generateSessionAndCookie($user) {
     $_SESSION['user'] = serialize($user);
     setcookie("user", serialize($user), time() + (86400 * 1), "/"); // 86400 = 1 day
+    $user->getOnline();
 }
 
 function getUser() {
@@ -810,7 +884,7 @@ function proceedImageUpdate($user, $image) {
             }
 
             $user->image = $file_name;
-            generateSessionAndCookie($user);
+            //generateSessionAndCookie($user);
 
             $uid = $user->uid;
 

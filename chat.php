@@ -21,6 +21,10 @@ $conversation = $user->getConversationWithUser($interlocutor);
 
 $confirm = $conversation->confirm;
 
+if ( $confirm == 2 && !$conversation->reverse) {
+    header("Location: chats.php");
+}
+
 ?>
 
 <!DOCTYPE html >
@@ -115,7 +119,7 @@ $confirm = $conversation->confirm;
             http.send(params);
 
             form.setAttribute("onsubmit", "return sendMessage(this);");
-            form.butt.setAttribute("type", "hidden");
+            form2.butt.setAttribute("type", "hidden");
             form.textt.setAttribute("type", "text");
             return false;
         }
@@ -140,7 +144,7 @@ $confirm = $conversation->confirm;
                     var res = String(str.split("◊", 1));
                     var responseText = str.substring(res.length+1);
 
-                    lastId = parseInt(res);
+
 
                     var objDiv = document.getElementById("chat");
 
@@ -148,6 +152,7 @@ $confirm = $conversation->confirm;
                     if ( responseText != "") {
                         objDiv.scrollTop = objDiv.scrollHeight;
                     }
+                    lastId = parseInt(res);
                     http = null;
                 }
             };
@@ -223,8 +228,8 @@ $confirm = $conversation->confirm;
         <div class="menu_header"><?php if ( isset($user->username)) {echo $user->username;} else { echo "dev/null/";}?></div>
         <div class="menu_status">Online</div>
     </a>
-    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
-    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
+    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats<?php if ( $user->hasPendingMessages() || $user->hasNewMessages()) { echo "<div id=notify></div>"; } ?></div></a>
+    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends<?php if ( $user->hasPendingFriends()) { echo "<div id=notify></div>"; } ?></div></a>
     <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>
 </div>
@@ -236,7 +241,7 @@ $confirm = $conversation->confirm;
     <div class="dash" id="dash" onclick="show_menu()">
         <div id="alone">
             <span></span>
-            <span></span>
+            <span <?php if ( $user->hasNews()) { echo "style='background: #ff1001'"; } ?> ></span>
             <span></span>
         </div>
 
@@ -251,12 +256,19 @@ $confirm = $conversation->confirm;
 <div id="chat" ></div>
 
 <?php
+//echo ($conversation->reverse)? "rev, ".$confirm: "no, ". $confirm;
     if ( $confirm == 0 && $conversation->reverse ) {
         echo "
             <form id=\"form\" action=\"javascript:void(0);\" onsubmit=\"return allowConversation(this);\">
-                <input type=\"submit\" id='confirmButt' name=\"butt\" class=\"allow\" value='Start conversation' >
+                <input type=\"submit\" id='confirmButt' name=\"butt\" class=\"allow\" value='Allow' >
                 <input type=\"hidden\" id='confirm' name=\"textt\" class=\"inputMessage\" placeholder=\"your message\" >
                 <input type=\"hidden\" name=\"myUid\" value=\"$user->uid\">
+                <input type=\"hidden\" name=\"partUid\" value=\"$interlocutor->uid\">
+            </form>
+            <form id=\"form2\" action=\"denyConversation.php\" method='post'>
+                <input type=\"submit\" id='confirmButt' name=\"butt\" class=\"deny\" value='Deny' >
+                <input type=\"hidden\" id='confirm' name=\"textt\" class=\"inputMessage\" placeholder=\"your message\" >
+                <input type=\"hidden\" name=\"uid\" value=\"$user->uid\">
                 <input type=\"hidden\" name=\"partUid\" value=\"$interlocutor->uid\">
             </form>
         ";

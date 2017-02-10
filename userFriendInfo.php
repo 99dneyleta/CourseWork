@@ -160,24 +160,16 @@ $user->update(false);
 
 
     <div class="all-info">
-        <div class="text" >
-            <?php if ( isset($usr->firstname)) {echo "First name: ".$usr->firstname;} ?>
-        </div>
-        <br>
-        <div class="text" >
-            <?php if ( isset($usr->lastname)) {echo "Last name: ".$usr->lastname;} ?>
-        </div>
-        <br>
-        <div class="text" >
-            <?php if ( isset($usr->username)) {echo "username: ".$usr->username;} ?>
-        </div>
-        <br>
+
+        <?php if ( isset($usr->firstname)) {echo "<div class=\"text\" >First name: ".$usr->firstname." </div><br>";} ?>
+
+        <?php if ( isset($usr->lastname)) {echo "<div class=\"text\" >Last name: ".$usr->lastname."</div> <br>";} ?>
+
+        <?php if ( isset($usr->username)) {echo "<div class=\"text\" >username: ".$usr->username."</div><br>";} ?>
+
         <?php if ( isset($usr->city)) {echo "<div class=\"text\" ><span>City: ".$usr->city."</span></div>";} ?>
 
-        <div class="gender" >
-            <?php if ( isset($user->gender) ) {echo $user->gender;} ?>
-        </div>
-
+        <?php if ( isset($user->gender) ) {echo " <div class=\"gender\" >".$user->gender."</div>";} ?>
 
     </div>
 

@@ -4,12 +4,12 @@ body {
     font-family: "Bodoni 72 Smallcaps, Tahoma";
     -webkit-appearance: none;
 
-
 }
 
 input {
     -webkit-appearance: none;
     -webkit-box-sizing: border-box;
+    -webkit-user-select: auto;
 }
 
 /*here goes animation */
@@ -71,7 +71,7 @@ header {
     background-color: #580EAD;
     /*position:inherit;*/
     width: 100vw;
-    height: 10vw;
+    height: 7vh;
     position:absolute; /*or  absolute*/
     top:0;
     left:0;
@@ -79,7 +79,7 @@ header {
 }
 
 .header-empty {
-    height: 10vw;
+    height: 7vh;
     position: inherit;
 
 }
@@ -91,9 +91,10 @@ div p {
 
 .dash {
     float: left;
-    width: 10vw;
-    height: 10vw;
+    width: 6vh;
+    height: 6vh;
     margin-left: 10px;
+    margin-top: 0.2vh;
     vertical-align: middle;
     position: absolute;
     top:0;
@@ -104,7 +105,7 @@ div p {
 
 .header-title {
     /*padding-right: 10vw;*/
-    font-size: 8vw;
+    font-size: 5vh;
     margin: auto;
     text-align: center;
     color: white;
@@ -115,14 +116,14 @@ div p {
 
 .unused-box-for-decoration {
     /*for header*/
-    height: 10vw;
+    height: 10vh;
     float: right;
 }
 
 .search {
     top: 0;
     float: right;
-    height: 10vw;
+    height: 7vh;
     width: auto;
 }
 
@@ -207,7 +208,7 @@ a {
 /*dashes*/
 
 #alone{
-    height: 8vw;
+    height: 8vh;
 
     /*margin: 50px auto;*/
     -webkit-transform: rotate(0deg);
@@ -227,9 +228,9 @@ a {
 
     display: block;
     position: inherit;
-    margin-top: 1.3vw;
-    margin-bottom: 1vw;
-    height: 1.6vw;
+    margin-top: 0.9vh;
+    margin-bottom: 0.7vh;
+    height: 1.0vh;
     width: inherit;
     background: #fff;
     border-radius: 9px;
@@ -247,7 +248,7 @@ a {
 
 #alone.open span:nth-child(1) {
 
-    margin-top: 4vw;
+    margin-top: 2.6vh;
     -webkit-transform: rotate(135deg);
     -moz-transform: rotate(135deg);
     -o-transform: rotate(135deg);
@@ -261,7 +262,7 @@ a {
 }
 
 #alone.open span:nth-child(3) {
-    margin-top: -5.7vw;
+    margin-top: -3.6vh;
     -webkit-transform: rotate(-135deg);
     -moz-transform: rotate(-135deg);
     -o-transform: rotate(-135deg);
@@ -297,3 +298,22 @@ a {
     color: black;
 }
 /* end of alerts */
+
+#notify {
+    display: block;
+    float: right;
+    width: 5vw;
+    height: 5vw;
+    margin-top: 2.5vw;
+    margin-right: 1.5vw;
+    border-radius: 50%;
+    background-color: #ff1001;
+}
+
+#online {
+    display: inline-flex;
+    width: 5vw;
+    height: 5vw;
+    border-radius: 50%;
+    background-color: #ff1001;
+}

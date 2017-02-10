@@ -1,5 +1,6 @@
 <?php
 session_start();
+header("Content-Type: text/html; charset=utf-8");
 include_once("functionality.php");
 
 $user = getUser();
@@ -9,6 +10,8 @@ if (!isset($user)) {
 $user->update(true);
 $user->updateFriends();
 $user->updateRequests();
+
+generateSessionAndCookie($user);
 ?>
 
 
@@ -91,8 +94,8 @@ $user->updateRequests();
         <div class="menu_header"><?php if ( isset($user->username)) {echo $user->username;} else { echo "dev/null/";}?></div>
         <div class="menu_status">Online</div>
     </a>
-    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
-    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
+    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats<?php if ( $user->hasPendingMessages() || $user->hasNewMessages()) { echo "<div id=notify></div>"; } ?></div></a>
+    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends<?php if ( $user->hasPendingFriends()) { echo "<div id=notify></div>"; } ?></div></a>
     <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>
 </div>
@@ -104,7 +107,7 @@ $user->updateRequests();
     <div class="dash" id="dash" onclick="show_menu()">
         <div id="alone">
         <span></span>
-        <span></span>
+        <span <?php if ( $user->hasNews()) { echo "style='background: #ff1001'"; } ?> ></span>
         <span></span>
         </div>
 

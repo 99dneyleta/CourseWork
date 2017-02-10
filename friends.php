@@ -17,7 +17,7 @@ if ( isset($user->friends) ) {
 
     foreach ($user->friends as $friend) {
 
-        $sql = "SELECT username, first_name, last_name, image " .
+        $sql = "SELECT username, first_name, last_name, image, online " .
             "FROM members " .
             "WHERE username='" . $friend . "' ;";
         $query = mysqli_query($dbCon, $sql);
@@ -31,6 +31,10 @@ if ( isset($user->friends) ) {
             $u->firstname = $rowData[1];
             $u->lastname = $rowData[2];
             $u->image = $rowData[3];
+            $lastLogged = $rowData[4];
+            if ( round(abs(time() - $lastLogged) / 60,2) > 10) {
+                $u->status = "offline";
+            }
             array_push($founded, $u);
         }
     }
@@ -41,7 +45,7 @@ if ( isset($user->incomingRequests) ) {
 
     foreach ($user->incomingRequests as $friend) {
 
-        $sql = "SELECT username, first_name, last_name, image " .
+        $sql = "SELECT username, first_name, last_name, image, online " .
             "FROM members " .
             "WHERE username='" . $friend . "' ;";
         $query = mysqli_query($dbCon, $sql);
@@ -55,6 +59,10 @@ if ( isset($user->incomingRequests) ) {
             $u->firstname = $rowData[1];
             $u->lastname = $rowData[2];
             $u->image = $rowData[3];
+            $lastLogged = $rowData[4];
+            if ( round(abs(time() - $lastLogged) / 60,2) > 10) {
+                $u->status = "offline";
+            }
             array_push($income, $u);
         }
     }
@@ -64,7 +72,7 @@ if ( isset($user->outgoingRequests) ) {
 
     foreach ($user->outgoingRequests as $friend) {
 
-        $sql = "SELECT username, first_name, last_name, image " .
+        $sql = "SELECT username, first_name, last_name, image, online " .
             "FROM members " .
             "WHERE username='" . $friend . "' ;";
         $query = mysqli_query($dbCon, $sql);
@@ -78,6 +86,10 @@ if ( isset($user->outgoingRequests) ) {
             $u->firstname = $rowData[1];
             $u->lastname = $rowData[2];
             $u->image = $rowData[3];
+            $lastLogged = $rowData[4];
+            if ( round(abs(time() - $lastLogged) / 60,2) > 10) {
+                $u->status = "offline";
+            }
             array_push($outcome, $u);
         }
     }
@@ -90,7 +102,7 @@ $user->update(false);
 <!Doctype html>
 <html>
 <head>
-    <title>Profile</title>
+    <title>Friends</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/base.css?v=<?=time();?>">
     <link rel="stylesheet" href="/friends.css?v=<?=time();?>">
@@ -281,12 +293,12 @@ $user->update(false);
 </script>
 <div class="menu" id="menu" style="display: none;">
     <a href="profile.php">
-        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "/img/space-for-avatar.png";} ?> " >
+        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "img/space-for-avatar.png";} ?> " >
         <div class="menu_header"><?php if ( isset($user->username)) {echo $user->username;} else { echo "dev/null/";}?></div>
         <div class="menu_status">Online</div>
     </a>
-    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
-    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
+    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats<?php if ( $user->hasPendingMessages() || $user->hasNewMessages()) { echo "<div id=notify></div>"; } ?></div></a>
+    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends<?php if ( $user->hasPendingFriends()) { echo "<div id=notify></div>"; } ?></div></a>
     <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>
 </div>
@@ -298,7 +310,7 @@ $user->update(false);
     <div class="dash" id="dash" onclick="show_menu()">
         <div id="alone">
             <span></span>
-            <span></span>
+            <span <?php if ( $user->hasNews()) { echo "style='background: #ff1001'"; } ?> ></span>
             <span></span>
         </div>
 
@@ -320,13 +332,17 @@ $user->update(false);
 <div id="friends" style="display: block;">
 <?php
 if ( count($founded) == 0 ) {
-    echo "<div class='no-result'>No friends founded</div>";
+    echo "<div class='no-result'>No friends founded<br><a href='search.php'>Find friends</a> </div>";
 } else {
     foreach ($founded as $usr) {
+        $st = null;
+        if ( $usr->status == "online") {
+            $st = "<div id='online'></div>";
+        }
         $img = ( isset($usr->image) )?  "images/".$usr->image : "/img/space-for-avatar.png";
         echo "<a href='userFriendInfo.php?username=".$usr->username."'><div class='result'>
                     <img src='".$img."' class=\"image-tiny\" >
-                    <div class=\"username\" >".$usr->username." </div>
+                    <div class=\"username\" >".$usr->username.$st." </div>
                     <div class=\"fullname\" >".$usr->getName()." </div>
               </div></a>";
     }
@@ -342,10 +358,14 @@ if ( count($founded) == 0 ) {
         echo "<div class='no-result'>No requests founded</div>";
     } else {
         foreach ($income as $usr) {
+            $st = null;
+            if ( $usr->status == "online") {
+                $st = "<div id='online'></div>";
+            }
             $img = ( isset($usr->image) )?  "images/".$usr->image : "/img/space-for-avatar.png";
             echo "<a href='userFriendInfo.php?username=".$usr->username."'><div class='result'>
                     <img src='".$img."' class=\"image-tiny\" >
-                    <div class=\"username\" >".$usr->username." </div>
+                    <div class=\"username\" >".$usr->username.$st." </div>
                     <div class=\"fullname\" >".$usr->getName()." </div>
               </div></a>";
         }
@@ -359,10 +379,14 @@ if ( count($founded) == 0 ) {
         echo "<div class='no-result'>No requests founded</div>";
     } else {
         foreach ($outcome as $usr) {
+            $st = null;
+            if ( $usr->status == "online") {
+                $st = "<div id='online'></div>";
+            }
             $img = ( isset($usr->image) )?  "images/".$usr->image : "/img/space-for-avatar.png";
             echo "<a href='userFriendInfo.php?username=".$usr->username."'><div class='result'>
                     <img src='".$img."' class=\"image-tiny\" >
-                    <div class=\"username\" >".$usr->username." </div>
+                    <div class=\"username\" >".$usr->username.$st." </div>
                     <div class=\"fullname\" >".$usr->getName()." </div>
               </div></a>";
         }

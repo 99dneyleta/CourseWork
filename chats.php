@@ -10,8 +10,8 @@ if (!isset($user)) {
 $result = null;
 $founded = $user->getAllConversations();
 $pending = $user->getPendingConversations();
-$user->update(false);
 
+$user->update(false);
 ?>
 
 
@@ -162,12 +162,12 @@ $user->update(false);
 </script>
 <div class="menu" id="menu" style="display: none;">
     <a href="profile.php">
-        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "/img/space-for-avatar.png";} ?> " >
+        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "img/space-for-avatar.png";} ?> " >
         <div class="menu_header"><?php if ( isset($user->username)) {echo $user->username;} else { echo "dev/null/";}?></div>
         <div class="menu_status">Online</div>
     </a>
-    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats</div></a>
-    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends</div></a>
+    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats<?php if ( $user->hasPendingMessages() || $user->hasNewMessages()) { echo "<div id=notify></div>"; } ?></div></a>
+    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends<?php if ( $user->hasPendingFriends()) { echo "<div id=notify></div>"; } ?></div></a>
     <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>
 </div>
@@ -179,7 +179,7 @@ $user->update(false);
     <div class="dash" id="dash" onclick="show_menu()">
         <div id="alone">
             <span></span>
-            <span></span>
+            <span <?php if ( $user->hasNews()) { echo "style='background: #ff1001'"; } ?> ></span>
             <span></span>
         </div>
 
@@ -200,7 +200,7 @@ $user->update(false);
 <div id="exists" style="display: block;">
     <?php
     if ( count($founded) == 0 ) {
-        echo "<div class='no-result'>No friends founded</div>";
+        echo "<div class='no-result'>No opened chats founded<br><a href='friends.php'>Pick a friend</a> </div>";
     } else {
         foreach ($founded as $usr) {
             $count = $usr->howMuchUnread();
@@ -210,11 +210,15 @@ $user->update(false);
                 $count = "";
             }
             $last = $usr->lastMessage();
+            $st = null;
+            if ( $usr->interlocutor->status == "online") {
+                $st = "<div id='online'></div>";
+            }
             $img = ( isset($usr->image) )?  "images/".$usr->interlocutor->image : "/img/space-for-avatar.png";
             echo "<a href='chat.php?user=".$usr->interlocutor->username."'><div class='result'>
                     <img src='".$img."' class=\"image-tiny\" >
                     <div class='inf' >
-                    <div class=\"username\" >".$usr->interlocutor->getName()." </div>
+                    <div class=\"username\" >".$usr->interlocutor->getName().$st." </div>
                     <div class=\"last-message\" >".$last." </div>
                     </div>
                     $count
@@ -229,7 +233,7 @@ $user->update(false);
 <div id="pending" style="display: none;">
     <?php
     if ( count($pending) == 0 ) {
-        echo "<div class='no-result'>No requests founded</div>";
+        echo "<div class='no-result'>No incoming requests</div>";
     } else {
         foreach ($pending as $usr) {
             $count = $usr->howMuchUnread();
@@ -238,12 +242,16 @@ $user->update(false);
             } else {
                 $count = "";
             }
+            $st = null;
+            if ( $usr->interlocutor->status == "online") {
+                $st = "<div id='online'></div>";
+            }
             $last = $usr->lastMessage();
             $img = ( isset($usr->image) )?  "images/".$usr->interlocutor->image : "/img/space-for-avatar.png";
             echo "<a href='chat.php?user=".$usr->interlocutor->username."'><div class='result'>
                     <img src='".$img."' class=\"image-tiny\" >
                     <div class='inf' >
-                    <div class=\"username\" >".$usr->interlocutor->getName()." </div>
+                    <div class=\"username\" >".$usr->interlocutor->getName().$st." </div>
                     <div class=\"last-message\" >".$last." </div>
                     </div>
                     $count
