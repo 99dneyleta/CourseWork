@@ -1,0 +1,28 @@
+'chat.php(not confirm)' --> 'to('Роман Чубак (romanchubak)'): 1 from('Denis Dobynda (admin)') : 0  afterMerge: 1 after unread: 1' (time: 09-02-2017; 17:07:13)
+-----------------------------------
+
+deny --> to('dd d (Denis)'): 0 from('Роман Чубак (romanchubak)') : 0  afterMerge: 0 after unread: 0 (time: 09-02-2017; 19:17:27)
+-----------------------------------
+
+deny --> to('dd d (Denis)'): 0 from('Роман Чубак (romanchubak)') : 0  afterMerge: 0 after unread: 0 (time: 09-02-2017; 19:19:09)
+-----------------------------------
+
+deny --> to('Denis Dobynda (admin)'): 3 from('dd d (Denis)') : 1  afterMerge: 4 after unread: 4 (time: 09-02-2017; 19:28:39)
+-----------------------------------
+
+'chat.php' --> 'not confirmed!' (time: 09-02-2017; 19:29:15)
+-----------------------------------
+
+'chat.php' --> 'not confirmed!' (time: 09-02-2017; 19:29:19)
+-----------------------------------
+
+deny --> to('dd d (Denis)'): 0 from('Роман Чубак (romanchubak)') : 0  afterMerge: 0 after unread: 0 (time: 09-02-2017; 19:32:05)
+-----------------------------------
+
+deny --> to('Denis Dobynda (admin)'): 2 from('dd d (Denis)') : 4  afterMerge: 6 after unread: 6 (time: 09-02-2017; 19:33:10)
+-----------------------------------
+
+Delete conversation: Denis Dobynda (admin) with Denis(time: 10-02-2017; 10:01:45)
+-----------------------------------
+'chat.php(not confirm)' --> 'to('Денис d (Denis)'): 0 from('Denis Dobynda (admin)') : 0  afterMerge: 0 after unread: 0' (time: 10-02-2017; 10:04:47)
+-----------------------------------

@@ -1,0 +1,112 @@
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveup-title {
+    from {top: 0;}
+    to {top: -10vw;}
+}
+
+/* Standard syntax */
+@keyframes moveup-title {
+    from {top: 0;}
+    to {top: -10vw;}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes movedown-title {
+    from {top: -10vw;}
+    to {top: 0;}
+}
+
+/* Standard syntax */
+@keyframes movedown-title {
+    from {top: -10vw;}
+    to {top: 0;}
+}
+
+
+#message {
+    display: block;
+    width: 100vw;
+    height: auto;
+}
+
+#chat {
+    display: block;
+    width: 100vw;
+    height: 80vh;
+    overflow-y: auto;
+    font-size: 4vh;
+}
+
+.outgoing {
+    display: block;
+    border: 1px solid #DDD;
+    background-color: #990ef4;
+    color: #fff;
+    max-width: 70%;
+    border-radius: 10px;
+    text-align: right;
+    margin-top: 2vh;
+    left: 26%;
+    position: relative;
+    /*float: right;*/
+    padding-right: 2vw;
+
+    word-break: break-word;
+}
+
+.incoming {
+    display: block;
+    border: 1px solid #DDD;
+    background-color: #DDD;
+    color: #000;
+    border-radius: 10px;
+    margin-top: 2vh;
+    max-width: 70%;
+    position: relative;
+    left: 2vw;
+    padding-left: 2vw;
+
+    word-break: break-word;
+}
+
+.attach {
+
+}
+
+.inputMessage {
+    width: 100%;
+    height: 10vh;
+    overflow-y: auto;
+    word-break: break-all;
+
+    font-size: 6vh;
+    position: absolute;
+    top:89%;
+    border-radius: 10px;
+    color: #580EAD;
+    background-color: #CCC;
+
+    border: none;
+}
+
+.allow {
+    border: none;
+    border-radius: 5px;
+    background-color: #63AD0E;
+    color: #580EAD;
+    width: 50%;
+    height: 7vh;
+    float: left;
+    font-size: 5vh;
+}
+
+.deny {
+    border: none;
+    border-radius: 5px;
+    background-color: #AD0E13;
+    color: #0EADA7;
+    width: 50%;
+    height: 7vh;
+    float: right;
+    font-size: 5vh;
+}
