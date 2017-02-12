@@ -83,6 +83,8 @@ class User {
         $lastLogged = $row[10];
         if ( round(abs(time() - $lastLogged) / 60,2) > 10) {
             $this->status = "offline";
+        } else {
+            $this->status = "online";
         }
 
         //generateSessionAndCookie($this);
@@ -140,14 +142,34 @@ class User {
         } else {
             $sql = $sql . "email=NULL, ";
         }
+        if ( isset($this->hobby)){
+            $sql = $sql . "hobby='".$this->firstname."', ";
+        } else {
+            $sql = $sql . "hobby=NULL, ";
+        }
+        if ( isset($this->city)){
+            $sql = $sql . "city='".$this->firstname."', ";
+        } else {
+            $sql = $sql . "city=NULL, ";
+        }
+        if ( isset($this->books)){
+            $sql = $sql . "books='".$this->firstname."', ";
+        } else {
+            $sql = $sql . "books=NULL, ";
+        }
+        if ( isset($this->music)){
+            $sql = $sql . "music='".$this->firstname."', ";
+        } else {
+            $sql = $sql . "music=NULL, ";
+        }
         $sql = $sql . "username='".$this->username."' ".
                 "WHERE id='$this->uid';";
 
-        mysqli_query($GLOBALS['dbCon'], "SET NAMES UTF8");
         if( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
             die(mysqli_error($GLOBALS['dbCon']));
         }
-        setcookie("new", "old", time() + 600, "/");
+        //setcookie("new", "old", time() + 600, "/");
+        generateSessionAndCookie($this);
         return $this->getOnline();
     }
 
@@ -426,16 +448,12 @@ class User {
     }
 
     function getOnline() {
-        if (  isset($_COOKIE['new'])) {
-            return true;
-        }
         $sql = "UPDATE members " .
-            "SET online='".date('d-m-Y; H:i:s',time())."'".
+            "SET online='".time()."'".
             "WHERE username='$this->username';";
         if( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
             return false;
         }
-        setcookie("new", "old", time() + 600, "/");
         return true;
     }
 
@@ -799,6 +817,7 @@ class Conversation {
 function generateSessionAndCookie($user) {
     $_SESSION['user'] = serialize($user);
     setcookie("user", serialize($user), time() + (86400 * 1), "/"); // 86400 = 1 day
+    setcookie("new", "old", time() + 10, "/");
     $user->getOnline();
 }
 
@@ -833,6 +852,7 @@ function generateSession($user) {
 
 function generateCookie($user) {
     setcookie("user", serialize($user), time() + (86400 * 1), "/"); // 86400 = 1 day
+    setcookie("new", "old", time() + 10, "/");
 }
 
 function generateRandomString($length = 10) {
