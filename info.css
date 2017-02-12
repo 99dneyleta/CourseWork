@@ -1,0 +1,77 @@
+.sent {
+    background-color: #08fE0D;
+    color: #580EAD;
+    width: 70%;
+    height: 11vw;
+    font-size: 8vw;
+}
+
+.send {
+    background-color: #580EAD;
+    color: #fff;
+    width: 70%;
+    height: 11vw;
+    margin: auto;
+    font-size: 8vw;
+}
+
+.accept {
+    background-color: #63AD0E;
+    color: #580EAD;
+    width: 50%;
+    float: left;
+    font-size: 8vw;
+}
+
+.decline {
+    background-color: #AD0E13;
+    color: #0EADA7;
+    width: 50%;
+    float: right;
+    font-size: 8vw;
+}
+
+.remove {
+    background-color: #AD0E13;
+    color: #0EADA7;
+    width: 70%;
+    height: 10vw;
+    margin: auto;
+    font-size: 6vw;
+}
+
+input[type=submit] {
+    display: block;
+    margin: auto;
+
+
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid;
+    border-radius: 10px;
+    margin-bottom: 6vw;
+}
+
+.offline {
+    color: #555;
+    font-size: 5vw;
+    display: block;
+    padding: 0;
+    margin: auto;
+    text-align: center;
+}
+
+.startChat {
+    display: block;
+    margin: auto;
+    width: 70vw;
+    height: 10vw;
+    color: #fff;
+    background-color: #580EAD;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 8vw;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
+
+}

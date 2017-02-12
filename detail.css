@@ -1,0 +1,95 @@
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveforward-title {
+    from {left: 55vw;}
+    to {left: 66vw;}
+}
+
+/* Standard syntax */
+@keyframes moveforward-title {
+    from {left: 55vw;}
+    to {left: 66vw;}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveback-title {
+    from {left: 66vw;}
+    to {left: 55vw;}
+}
+
+/* Standard syntax */
+@keyframes moveback-title {
+    from {left: 66vw;}
+    to {left: 55vw;}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveforward-title-first {
+    from {left: 32vw;}
+    to {left: 0;}
+}
+
+/* Standard syntax */
+@keyframes moveforward-title-first {
+    from {left: 32vw;}
+    to {left: 0;}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes moveback-title-first {
+    from {left: 0;}
+    to {left: 32vw;}
+}
+
+/* Standard syntax */
+@keyframes moveback-title-first {
+    from {left: 0;}
+    to {left: 32vw;}
+}
+
+
+
+#label {
+    display: block;
+    text-align: left;
+    margin-left: 6vw;
+    margin-top: 3vw;
+
+    font-size: 6vw;
+    color: #552A33;
+}
+
+textarea {
+    color: #040097;
+    background-color: #90898A;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    display: block;
+    width: 90%;
+    height: 21vw;
+    margin: auto;
+
+    font-size: 7vw;
+    text-align: left;
+
+    resize: none;
+
+}
+
+input[type=submit] {
+    display: block;
+    margin: auto;
+    text-align: center;
+    font-size: 8vw;
+    width: 40vw;
+    height: 12vw;
+
+
+    color: white;
+    background: #444BDF;
+    font-family: Tahoma;
+    border:1px solid #444BDF;
+    border-radius: 2px;
+
+    margin: auto;
+    margin-top: 4vw;
+}
