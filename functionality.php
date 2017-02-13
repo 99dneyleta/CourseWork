@@ -2,6 +2,11 @@
 
 include_once("dbConnect.php");
 
+
+/*
+ * Class represents user
+ * all information about user without messages
+ */
 class User {
     var $username;
     var $uid = null;
@@ -21,10 +26,16 @@ class User {
     var $outgoingRequests = array();
     var $incomingRequests = array();
 
+    /*
+     * constructor with no parameters, no use
+     */
     function __construct() {
 
     }
 
+    /*
+     * custom 'constructor' with username, used by variable=User::withUsername(str)
+     */
     public static function withUsername($username) {
         $instance = new self();
         $instance->username = $username;
@@ -38,6 +49,9 @@ class User {
         return $instance;
     }
 
+    /*
+     * custom 'constructor' with username, uid, email, used by variable=User::withBasicStuff(str, int, str)
+     */
     public static function withBasicStuff($username, $uid, $email) {
         $instance = new self();
         $instance->username = $username;
@@ -46,6 +60,9 @@ class User {
         return $instance;
     }
 
+    /*
+     * function getting name in case full name was set or not
+     */
     function getName()
     {
         if (!isset($this->firstname) && !isset($this->lastname)) {
@@ -55,10 +72,16 @@ class User {
         }
     }
 
+    /*
+     * overloading standard function tostring
+     */
     public function __toString() {
         return "".$this->firstname." ".$this->lastname." (".$this->username.")";
     }
 
+    /*
+     * function for updating all info about user from DB
+     */
     function update($forceUpdate) {
         $this->getOnline();
         if ( $forceUpdate == false && isset($_COOKIE['new'])) {
@@ -92,6 +115,9 @@ class User {
         //setcookie("new", "old", time() + 600, "/");
     }
 
+    /*
+     * update basic info about user, public use
+     */
     function updateBasic() {
         $sql = "SELECT username, first_name, last_name, image, gender, city, online FROM members WHERE id='$this->uid' AND activated = '1' LIMIT 1";
         if (!$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
@@ -113,6 +139,9 @@ class User {
         }
     }
 
+    /*
+     * writes user current state to DB
+     */
     function upgrade() {
         $sql = "UPDATE members " .
             "SET ";
@@ -173,6 +202,9 @@ class User {
         return $this->getOnline();
     }
 
+    /*
+     * reading all detail info from DB
+     */
     function upgradeDetail() {
         $sql = "UPDATE members " .
             "SET ";
@@ -211,6 +243,9 @@ class User {
         return null;
     }
 
+    /*
+     * updates all incoming and outgoing requests
+     */
     function updateRequests() {
         $this->incomingRequests = array();
         $this->outgoingRequests = array();
@@ -233,13 +268,11 @@ class User {
                 array_push($this->outgoingRequests, $rowData[0]);
             }
         }
-
-        //generateSessionAndCookie($this);
-        $this->getOnline();
-        $this->update(false);
-        //setcookie("new", "old", time() + 600, "/");
     }
 
+    /*
+     * sending request to user by uid and username
+     */
     function sendRequest($uid, $username) {
         $this->updateFriends();
         foreach ($this->friends as $friend) {
@@ -281,6 +314,9 @@ class User {
         return true;
     }
 
+    /*
+     * removing request to user in case haven't received yet
+     */
     function removeRequest($uid, $username) {
         $this->getOnline();
 
@@ -315,6 +351,9 @@ class User {
 
     }
 
+    /*
+     * accepting request from user
+     */
     function acceptRequest( $uid, $username) {
 
         $this->updateFriends();
@@ -365,6 +404,9 @@ class User {
 
     }
 
+    /*
+     * declining request from user and writing decline state to DB
+     */
     function declineRequest($uid, $username) {
         $sql = "UPDATE requests SET decline=1 WHERE from_id='$uid' AND to_id='$this->uid' ;";
         if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
@@ -382,6 +424,9 @@ class User {
         $this->getOnline();
     }
 
+    /*
+     * removing user from friends as username from array and DB field from both users
+     */
     function removeFromFriends($uid, $username) {
         $i = count($this->friends);
         while ($i>=0) {
@@ -430,6 +475,9 @@ class User {
 
     }
 
+    /*
+     * reading all friends from DB
+     */
     function updateFriends() {
         $sql = "SELECT friends FROM members WHERE id='$this->uid' ;";
         $query = mysqli_query($GLOBALS['dbCon'], $sql);
@@ -439,6 +487,9 @@ class User {
         $this->getOnline();
     }
 
+    /*
+     * writing all friends to DB
+     */
     function upgradeFriends() {
         $sql = "UPDATE members SET friends='".implode("|", $this->friends)."' WHERE id='$this->uid' ;";
         if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
@@ -447,6 +498,9 @@ class User {
         $this->getOnline();
     }
 
+    /*
+     * updating online status - writing exact time to DB
+     */
     function getOnline() {
         $sql = "UPDATE members " .
             "SET online='".time()."'".
@@ -457,6 +511,9 @@ class User {
         return true;
     }
 
+    /*
+     * getting all conversation in which user participate in array()
+     */
     function getAllConversations() {
         $all = array();
 
@@ -479,6 +536,9 @@ class User {
         return $conv;
     }
 
+    /*
+     * getting all pending conversations from DB
+     */
     function getPendingConversations() {
         $all = array();
 
@@ -501,6 +561,9 @@ class User {
         return $conv;
     }
 
+    /*
+     * is user is in friend list
+     */
     function isFriend($username) {
         foreach ($this->friends as $friend) {
             if ( $friend == $username) return true;
@@ -508,15 +571,26 @@ class User {
         return false;
     }
 
+    /*
+     * getting all (mostly) conversation with specific user
+     */
     function getConversationWithUser($user) {
         return Conversation::withUser($user, $this);
     }
 
+    /*
+     * is user have pending friends
+     * returns bool
+     */
     function hasPendingFriends() {
         $this->updateRequests();
         return count($this->incomingRequests) > 0;
     }
 
+    /*
+     * is user has pending messages
+     * returns bool
+     */
     function hasPendingMessages() {
         $sql = "SELECT id FROM conversations WHERE (participant1=".$this->uid." OR participant2=".$this->uid.") AND confirm=0 ORDER BY last_time DESC;";
 
@@ -527,6 +601,10 @@ class User {
         }
     }
 
+    /*
+     * is user has new messages
+     * returns bool
+     */
     function hasNewMessages() {
         $sql = "SELECT id FROM messages WHERE to_id=".$this->uid." AND readd IS NULL ;";
 
@@ -537,10 +615,17 @@ class User {
         }
     }
 
+    /*
+     * is user has pending friends or pending messages or new messages
+     * returns bool
+     */
     function hasNews() {
         return $this->hasNewMessages() || $this->hasPendingFriends() || $this->hasPendingMessages();
     }
 
+    /*
+     * deletes conversation with specific user
+     */
     function deleteConversationWith($id) {
         $sql = "DELETE FROM messages WHERE ( to_id=".$this->uid." AND from_id=".$id.") OR (from_id=".$this->uid." AND to_id=".$id.") ; ";
         if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
@@ -556,6 +641,10 @@ class User {
 
 }
 
+/*
+ * represents messages
+ * contains all information
+ */
 class Message {
     var $id = null;
     var $fromUser = null;
@@ -565,6 +654,9 @@ class Message {
     var $text = null;
     var $attachment = null;
 
+    /*
+     * the only one constructor with all parameters
+     */
     function __construct($id, $fromUser, $toUser, $time, $text, $att, $read)
     {
         $this->id = $id;
@@ -576,6 +668,9 @@ class Message {
         $this->text = $text;
     }
 
+    /*
+     * writing this message to DB
+     */
     function pushToDB() {
         $att = ($this->attachment)? "NULL" : "'$this->attachment'";
         $sql = "INSERT INTO messages (from_id, to_id, textt, attach, timee, readd) VALUES ('".$this->fromUser->uid."', '".$this->toUser->uid."', '$this->text', ".$att.", '$this->time', NULL) ;";
@@ -592,6 +687,10 @@ class Message {
     }
 }
 
+/*
+ * class conversation represents conversation between me and interlocutor
+ * contains id, 2 users, array of messages, confirmation status and reverse status(if chat initiated by me - false)
+ */
 class Conversation {
     var $id = null;
     var $me = null;
@@ -600,8 +699,14 @@ class Conversation {
     var $confirm = null;
     var $reverse = false;
 
+    /*
+     * constructor with no parameters
+     */
     function __construct() { }
 
+    /*
+     * returns conversation with specific user with basic information
+     */
     public static function withUser($user, $me) {
         $instance = new self();
         $instance->interlocutor = $user;
@@ -610,6 +715,9 @@ class Conversation {
         return $instance;
     }
 
+    /*
+     * returns conversation with specific user with basic information
+     */
     public static function withID($self, $id) {
         $instance = new self();
         $instance->id = $id;
@@ -635,6 +743,9 @@ class Conversation {
         return $instance;
     }
 
+    /*
+     * loads basic information (up to 20 messages in both ways) with loadUnread afterwards
+     */
     function loadBasics() {
 
         $myMess = array();
@@ -711,6 +822,12 @@ class Conversation {
         return $result . $this->loadUnread();
     }
 
+    /*
+     * loading unread messages
+     * !IMPORTANT!
+     * currently not working
+     *   :)
+     */
     function loadUnread() {
         $unread = array();
 
@@ -737,6 +854,9 @@ class Conversation {
         return " after unread: ". count($this->messages);
     }
 
+    /*
+     * adds new message to conversation and sending it to user
+     */
     function addMessage($text, $att) {
         if ( ($this->confirm == 0 && $this->reverse) || ($this->confirm == 2 && !$this->reverse ) ){
             echo "not confirmed!";
@@ -753,6 +873,12 @@ class Conversation {
         array_unshift($this->messages, $mess);
     }
 
+    /*
+     * deletes specific message in this conversation
+     * !IMPORTANT!
+     * currently having no use in frontend
+     *      :)
+     */
     function deleteMessage($messId) {
         $sql = "DELETE FROM messages WHERE id='$messId' ;";
         mysqli_query($GLOBALS['dbCon'], $sql);
@@ -767,6 +893,9 @@ class Conversation {
         }
     }
 
+    /*
+     * returns count of unread messages
+     */
     function howMuchUnread() {
         $sql = "SELECT id FROM messages WHERE to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." AND readd IS NULL;";
         if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
@@ -776,6 +905,9 @@ class Conversation {
         }
     }
 
+    /*
+     * returns last message in this conversation
+     */
     function lastMessage() {
         $sql = "SELECT textt FROM messages WHERE (from_id=".$this->me->uid." AND to_id=".$this->interlocutor->uid." ) OR (to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." ) ORDER BY id DESC LIMIT 1;";
         if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
@@ -788,6 +920,9 @@ class Conversation {
         return $text;
     }
 
+    /*
+     * if user confirm to start chat
+     */
     function gotConfirmation() {
         $sql = "UPDATE conversations SET confirm=1 WHERE id=".$this->id." ;";
         if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
@@ -795,6 +930,9 @@ class Conversation {
         }
     }
 
+    /*
+     * if user denies to start chat - chat blocks from view - confirm = 2
+     */
     function denyConfirmation() {
         $sql = "UPDATE conversations SET confirm=2 WHERE id=".$this->id." ;";
         if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
@@ -806,6 +944,9 @@ class Conversation {
         }
     }
 
+    /*
+     * overload of standard function toString()
+     */
     public function __toString() {
         return $this->me." conversation(id='$this->id') with ".$this->interlocutor. "\nTotal mess: " . count($this->messages);
     }
@@ -813,7 +954,9 @@ class Conversation {
 }
 
 
-
+/*
+ * function generates session and cookies with specific user
+ */
 function generateSessionAndCookie($user) {
     $_SESSION['user'] = serialize($user);
     setcookie("user", serialize($user), time() + (86400 * 1), "/"); // 86400 = 1 day
@@ -821,6 +964,9 @@ function generateSessionAndCookie($user) {
     $user->getOnline();
 }
 
+/*
+ * reading user info from session or cookies
+ */
 function getUser() {
     if (isset($_SESSION['user'])) {
         return unserialize($_SESSION['user']);
@@ -831,6 +977,9 @@ function getUser() {
 
 }
 
+/*
+ * deleting all info about user from session and cookies
+ */
 function clearSessionAndCookie() {
     session_destroy();
     if (isset($_COOKIE['user'])) {
@@ -843,6 +992,9 @@ function clearSessionAndCookie() {
     }
 }
 
+/*
+ * generating only session with specific user
+ */
 function generateSession($user) {
     session_start();
     session_destroy();
@@ -850,11 +1002,17 @@ function generateSession($user) {
     $_SESSION['user'] = serialize($user);
 }
 
+/*
+ * generates only cookies with specific user
+ */
 function generateCookie($user) {
     setcookie("user", serialize($user), time() + (86400 * 1), "/"); // 86400 = 1 day
     setcookie("new", "old", time() + 10, "/");
 }
 
+/*
+ * generates random string of length in parameter, default = 10
+ */
 function generateRandomString($length = 10) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -865,6 +1023,9 @@ function generateRandomString($length = 10) {
     return $randomString;
 }
 
+/*
+ * updates user image
+ */
 function proceedImageUpdate($user, $image) {
 
     if (isset($_FILES) && isset($_FILES[$image])){
@@ -920,6 +1081,10 @@ function proceedImageUpdate($user, $image) {
     return null;
 }
 
+/*
+ * returns alert message as div, class alert, id alert, and with close button, class closebtn
+ * receiving specific message first parameter - string text, second - regular
+ */
 function getAlert($strong, $msg) {
     $result = '<div class="alert" id="alert">'.
               '<span class="closebtn" onclick="this.parentElement.style.display='.'\'none\''.';">&times;</span>'.
@@ -927,6 +1092,10 @@ function getAlert($strong, $msg) {
     return $result;
 }
 
+/*
+ * merging two arrays of messages into third
+ * sorting by time
+ */
 function mergeSort(&$first, &$second, &$output) {
     if ( !count($first) ) {
         if ( !count($second) ) {
