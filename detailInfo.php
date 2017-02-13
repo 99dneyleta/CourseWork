@@ -39,11 +39,70 @@ $user->update(false);
     </style>
 
     <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
-    <script type="text/javascript" src="jgestures.min.js"></script>
+    <script type="text/javascript" src="jgestures.js"></script>
     <script type="text/javascript">
         $(function(){
-            $('body').bind('swipeone', function(){show_menu();});
+            $('body').bind('swiperight', function(){
+                var el = document.getElementById("menu");
+                var title = document.getElementById("title");
+                var dash = document.getElementById("dash");
+                var dashes = document.getElementById("alone");
+
+                el.style.display = 'inline';
+                el.style.animation= 'moveforward 0.3s';
+                el.style.webkitAnimationTimingFunction = 'ease-in';
+                el.style.webkitAnimation = 'moveforward 0.3s';
+
+                dash.style.animation= 'moveforward-dash 0.3s';
+                dash.style.webkitAnimationTimingFunction = 'ease-in';
+                dash.style.webkitAnimation = 'moveforward-dash 0.3s';
+
+                title.style.animation= 'moveup-title 0.3s';
+                title.style.webkitAnimationTimingFunction = 'ease-in';
+                title.style.webkitAnimation = 'moveup-title 0.3s';
+
+                dashes.className = "open";
+
+                dash.style.left = '45vw';
+
+                title.style.top = '-10vw';
+            });
         });
+        $(function(){
+            $('body').bind('swipeleft', function(){
+                var el = document.getElementById("menu");
+                var title = document.getElementById("title");
+                var dash = document.getElementById("dash");
+                var dashes = document.getElementById("alone");
+
+                if ( el.style.display == "none") {
+                    return ;
+                }
+
+                el.style.animation= 'moveback 0.3s';
+                el.style.webkitAnimationTimingFunction = 'ease-out';
+                el.style.webkitAnimation = 'moveback 0.3s';
+
+                dash.style.animation= 'moveback-dash 0.3s';
+                dash.style.webkitAnimationTimingFunction = 'ease-out';
+                dash.style.webkitAnimation = 'moveback-dash 0.3s';
+
+                title.style.animation= 'movedown-title 0.3s';
+                title.style.webkitAnimationTimingFunction = 'ease-out';
+                title.style.webkitAnimation = 'movedown-title 0.3s';
+
+                setTimeout(function(){
+                    el.style.display = 'none';
+                }, 290);
+
+                dashes.className = "";
+
+                dash.style.left = '0';
+
+                title.style.top = '0';
+            });
+        });
+
     </script>
 </head>
 
