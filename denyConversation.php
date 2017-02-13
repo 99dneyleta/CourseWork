@@ -1,4 +1,9 @@
 <?php
+/*
+ * File for denying conversation
+ * Just like allowConversation.php, but without returning. Instead write log and locate user to chats.php
+ */
+
 include_once("functionality.php");
 if ( !isset($_POST['uid']) || !isset($_POST['partUid'])) {
     return "error: uid: ".$_POST['uid']." partUid: ".$_POST['partUid'];

@@ -1,4 +1,5 @@
 <?php
+//standard
 session_start();
 include_once("functionality.php");
 
@@ -7,9 +8,12 @@ if (!isset($user)) {
     header("Location: index.php");
 }
 
+//error in case of sql error
 $error = null;
 
+//if page has been already loaded and pressed the Update button
 if ( isset($_POST['didLoad'])) {
+    //using trim, mysqli_real_escape_string reading all info
     $user->hobby = trim(mysqli_real_escape_string($dbCon, $_POST['hobby']));
     $user->city = trim(mysqli_real_escape_string($dbCon, $_POST['city']));
     $user->books = trim(mysqli_real_escape_string($dbCon, $_POST['books']));
@@ -34,6 +38,15 @@ $user->update(false);
         }
     </style>
 
+    <script src="jquery-1.11.3.min.js"></script>
+    <script src="jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        $(document).on("pagecreate","body",function(){
+            $("body").on("swipe",function(){
+                show_menu();
+            });
+        });
+    </script>
 </head>
 
 <body>

@@ -137,7 +137,16 @@ $user->update(false);
             color:    black;
         }
     </style>
-
+    
+    <script src="jquery-1.11.3.min.js"></script>
+    <script src="jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        $(document).on("pagecreate","body",function(){
+            $("body").on("swipe",function(){
+                show_menu();
+            });
+        });
+    </script>
 </head>
 
 

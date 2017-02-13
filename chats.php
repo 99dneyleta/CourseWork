@@ -1,4 +1,7 @@
 <?php
+/*
+ * here goes standard syntax with 2 variables $founded (opened chats) and $pending (waiting for confirmation) which I use later in html
+ */
 session_start();
 include_once("functionality.php");
 
@@ -28,6 +31,15 @@ $user->update(false);
         }
     </style>
 
+    <script src="jquery-1.11.3.min.js"></script>
+    <script src="jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        $(document).on("pagecreate","body",function(){
+            $("body").on("swipe",function(){
+                show_menu();
+            });
+        });
+    </script>
 </head>
 
 
@@ -37,6 +49,7 @@ $user->update(false);
 
 <script>
 
+    //this function is a little copy of show_menu() except this one uses for swapping between chat classes
     function show_right(left, right, leftHeader, rightHeader) {
         var r = document.getElementById(right);
         var l = document.getElementById(left);
@@ -199,6 +212,7 @@ $user->update(false);
 
 <div id="exists" style="display: block;">
     <?php
+    //depends on count of exists chats displaying different info
     if ( count($founded) == 0 ) {
         echo "<div class='no-result'>No opened chats founded<br><a href='friends.php'>Pick a friend</a> </div>";
     } else {

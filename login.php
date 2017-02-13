@@ -7,8 +7,8 @@ if (isset($_SESSION['user']) || isset($_COOKIE['user'])) {
 }
 
 $error = null;
+//if user trying to login
 if (isset($_POST['username'])) {
-
 
     // Set the posted data from the form into local variables
     $username = strip_tags($_POST['username']);
@@ -113,7 +113,7 @@ if (isset($_POST['username'])) {
     </div>
 
     <div style="margin-bottom: 3vh">
-        <a  id="sign-up"href="signup.php">Registration</a>
+        <a  id="sign-up" href="signup.php">Registration</a>
     </div>
 </form>
 

@@ -1,4 +1,5 @@
 <?php
+//ok, very standard
 session_start();
 include_once("functionality.php");
 
@@ -13,8 +14,10 @@ $income = array();
 $outcome = array();
 $user->updateFriends();
 
+//if user got friends
 if ( isset($user->friends) ) {
 
+    //loading basic info
     foreach ($user->friends as $friend) {
 
         $sql = "SELECT username, first_name, last_name, image, online " .
@@ -41,6 +44,7 @@ if ( isset($user->friends) ) {
     $result = true;
 }
 
+//same with requests
 if ( isset($user->incomingRequests) ) {
 
     foreach ($user->incomingRequests as $friend) {
@@ -112,6 +116,15 @@ $user->update(false);
         }
     </style>
 
+    <script src="jquery-1.11.3.min.js"></script>
+    <script src="jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        $(document).on("pagecreate","body",function(){
+            $("body").on("swipe",function(){
+                show_menu();
+            });
+        });
+    </script>
 </head>
 
 
@@ -121,7 +134,7 @@ $user->update(false);
 
 <script>
 
-
+    //I must explain this by words, bu basically it the same as in chats.php but more accurate
     var current = 1;
 
     function show_right(left, right, leftHeader, rightHeader) {
@@ -331,6 +344,7 @@ $user->update(false);
 
 <div id="friends" style="display: block;">
 <?php
+//displaying friends
 if ( count($founded) == 0 ) {
     echo "<div class='no-result'>No friends founded<br><a href='search.php'>Find friends</a> </div>";
 } else {

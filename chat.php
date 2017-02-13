@@ -213,6 +213,16 @@ if ( $confirm == 2 && !$conversation->reverse) {
         $(document).ready( function () { $.ajaxSetup({cache:false}); setInterval(function () { fetch(); }, 1000)} );
 
     </script>
+
+    <script src="jquery-1.11.3.min.js"></script>
+    <script src="jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        $(document).on("pagecreate","body",function(){
+            $("body").on("swipe",function(){
+                show_menu();
+            });
+        });
+    </script>
 </head>
 
 <body>
