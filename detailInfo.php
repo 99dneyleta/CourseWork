@@ -38,13 +38,11 @@ $user->update(false);
         }
     </style>
 
-    <script src="jquery-1.11.3.min.js"></script>
-    <script src="jquery.mobile-1.4.5.min.js"></script>
-    <script>
-        $(document).on("pagecreate","body",function(){
-            $("body").on("swipe",function(){
-                show_menu();
-            });
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="jgestures.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('body').bind('swipeone', function(){show_menu();});
         });
     </script>
 </head>
