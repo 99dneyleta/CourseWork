@@ -46,15 +46,15 @@ generateSessionAndCookie($user);
                 dash.style.webkitAnimationTimingFunction = 'ease-in';
                 dash.style.webkitAnimation = 'moveforward-dash 0.3s';
 
-                title.style.animation= 'moveup-title 0.3s';
+                title.style.animation= 'moveforward-title 0.3s';
                 title.style.webkitAnimationTimingFunction = 'ease-in';
-                title.style.webkitAnimation = 'moveup-title 0.3s';
+                title.style.webkitAnimation = 'moveforward-title 0.3s';
 
                 dashes.className = "open";
 
                 dash.style.left = '45vw';
 
-                title.style.top = '-10vw';
+                title.style.left = '61vw';
             });
         });
         $(function(){
@@ -76,9 +76,9 @@ generateSessionAndCookie($user);
                 dash.style.webkitAnimationTimingFunction = 'ease-out';
                 dash.style.webkitAnimation = 'moveback-dash 0.3s';
 
-                title.style.animation= 'movedown-title 0.3s';
+                title.style.animation= 'moveback-title 0.3s';
                 title.style.webkitAnimationTimingFunction = 'ease-out';
-                title.style.webkitAnimation = 'movedown-title 0.3s';
+                title.style.webkitAnimation = 'moveback-title 0.3s';
 
                 setTimeout(function(){
                     el.style.display = 'none';
@@ -88,7 +88,7 @@ generateSessionAndCookie($user);
 
                 dash.style.left = '0';
 
-                title.style.top = '0';
+                title.style.left = '38vw';
             });
         });
 
