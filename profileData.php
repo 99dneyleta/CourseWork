@@ -45,7 +45,7 @@ if ( isset($_POST['wasloaded'])){
 <head>
     <title>LogIn</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/styles.css?v<?=time();?>">
+    <link rel="stylesheet" href="./styles.css?v<?=time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;

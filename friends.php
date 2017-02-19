@@ -108,8 +108,8 @@ $user->update(false);
 <head>
     <title>Friends</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/base.css?v=<?=time();?>">
-    <link rel="stylesheet" href="/friends.css?v=<?=time();?>">
+    <link rel="stylesheet" href="./base.css?v=<?=time();?>">
+    <link rel="stylesheet" href="./friends.css?v=<?=time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;

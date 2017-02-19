@@ -23,8 +23,8 @@ $user->update(false);
 <head>
     <title>Chats</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/base.css?v=<?=time();?>">
-    <link rel="stylesheet" href="/chats.css?v=<?=time();?>">
+    <link rel="stylesheet" href="./base.css?v=<?=time();?>">
+    <link rel="stylesheet" href="./chats.css?v=<?=time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;

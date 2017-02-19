@@ -40,8 +40,8 @@ if ( $confirm == 2 && !$conversation->reverse) {
 <head>
     <title>Chat</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/chat.css?v=<?php echo time();?>">
-    <link rel="stylesheet" href="/base.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="./chat.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="./base.css?v=<?php echo time();?>">
 
     <script src="jquery-3.1.1.min.js"></script>
     <script>

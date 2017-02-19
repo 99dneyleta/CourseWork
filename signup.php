@@ -49,7 +49,7 @@
 <head>
     <title>Sign up</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/styles.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="./styles.css?v=<?php echo time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;

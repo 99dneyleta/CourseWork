@@ -15,12 +15,11 @@ generateSessionAndCookie($user);
 
 
 <!Doctype html>
-<html xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Profile</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/base.css?v=<?php echo time();?>">
-    <link rel="stylesheet" href="/profile.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="./base.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="./profile.css?v=<?php echo time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;
