@@ -285,7 +285,7 @@ $user->update(false);
             if ( $usr->interlocutor->status == "online") {
                 $st = "<div id='online'></div>";
             }
-            $img = ( isset($usr->image) )?  "images/".$usr->interlocutor->image : "/img/space-for-avatar.png";
+            $img = ( isset($usr->interlocutor->image) )?  "images/".$usr->interlocutor->image : "/img/space-for-avatar.png";
             echo "<a href='chat.php?user=".$usr->interlocutor->username."'><div class='result'>
                     <img src='".$img."' class=\"image-tiny\" >
                     <div class='inf' >
@@ -318,7 +318,7 @@ $user->update(false);
                 $st = "<div id='online'></div>";
             }
             $last = $usr->lastMessage();
-            $img = ( isset($usr->image) )?  "images/".$usr->interlocutor->image : "/img/space-for-avatar.png";
+            $img = ( isset($usr->interlocutor->image) )?  "images/".$usr->interlocutor->image : "/img/space-for-avatar.png";
             echo "<a href='chat.php?user=".$usr->interlocutor->username."'><div class='result'>
                     <img src='".$img."' class=\"image-tiny\" >
                     <div class='inf' >

@@ -8,7 +8,7 @@
 
 include("functionality.php");
 
-$user = User::withUsername("Denis");
+$user = User::withUsername("admin");
 
-$user->getOnline();
-$user->update(true);
+$founded = $user->getAllConversations();
+
