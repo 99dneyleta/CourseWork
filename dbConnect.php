@@ -1,6 +1,6 @@
 <?php
 //just connector (driver) to mysql on my mac with my login and password to a specific database (Users)
-$dbCon = mysqli_connect("denizmac.ddns.net", "root", "pass", "Users");
+$dbCon = mysqli_connect("eu-cdbr-west-01.cleardb.com", "b38032f194eeca", "74f878ef", "heroku_a42b2b8203907e2");
 
 //this lines should never appear, just in case of connection error, thought it is not an execute file, just for include
 if ( mysqli_connect_error() ) {
