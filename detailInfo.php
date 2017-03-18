@@ -1,7 +1,7 @@
 <?php
 //standard
 session_start();
-include_once("functionality.php");
+include_once("Brain/functionality.php");
 
 $user = getUser();
 if (!isset($user)) {
@@ -30,16 +30,16 @@ $user->update(false);
 <head>
     <title>Detail info</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="./base.css?v=<?=time();?>">
-    <link rel="stylesheet" href="./detail.css?v=<?=time();?>">
+    <link rel="stylesheet" href="./Styles/base.css?v=<?=time();?>">
+    <link rel="stylesheet" href="./Styles/detail.css?v=<?=time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;
         }
     </style>
 
-    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
-    <script type="text/javascript" src="jgestures.js"></script>
+    <script type="text/javascript" src="./JS/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="./JS/jgestures.js"></script>
     <script type="text/javascript">
         $(function(){
             $('body').bind('swiperight', function(){

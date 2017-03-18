@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once("functionality.php");
+include_once("Brain/functionality.php");
 clearSessionAndCookie();
 header("Location: index.php");
 ?>

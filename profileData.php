@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once("functionality.php");
+include_once("Brain/functionality.php");
 header('Content-Type: text/html; charset=utf-8');
 
 $user = getUser();
@@ -45,7 +45,7 @@ if ( isset($_POST['wasloaded'])){
 <head>
     <title>LogIn</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="./styles.css?v<?=time();?>">
+    <link rel="stylesheet" href="Styles/styles.css?v<?=time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;
@@ -71,7 +71,7 @@ if ( isset($_POST['wasloaded'])){
 
                 reader.onload = function (e) {
                     document.getElementById("avatar").setAttribute("src", e.target.result);
-                }
+                };
 
                 reader.readAsDataURL(input.files[0]);
             }

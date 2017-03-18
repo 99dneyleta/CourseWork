@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once("functionality.php");
+include_once("Brain/functionality.php");
 
 $user = getUser();
 if (!isset($user)) {
@@ -73,9 +73,9 @@ $user->update(false);
 <head>
     <title>Info</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="./base.css?v=<?=time();?>">
-    <link rel="stylesheet" href="./profile.css?v=<?=time();?>">
-    <link rel="stylesheet" href="./info.css?v=<?=time();?>">
+    <link rel="stylesheet" href="Styles/base.css?v=<?=time();?>">
+    <link rel="stylesheet" href="Styles/profile.css?v=<?=time();?>">
+    <link rel="stylesheet" href="Styles/info.css?v=<?=time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;

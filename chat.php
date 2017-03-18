@@ -1,7 +1,7 @@
 <?php
 //session start - standard syntax for user-interface web page
 session_start();
-include_once("functionality.php");
+include_once("Brain/functionality.php");
 
 //getting user from cache or session
 $user = getUser();
@@ -40,10 +40,10 @@ if ( $confirm == 2 && !$conversation->reverse) {
 <head>
     <title>Chat</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="./chat.css?v=<?php echo time();?>">
-    <link rel="stylesheet" href="./base.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="./Styles/chat.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="./Styles/base.css?v=<?php echo time();?>">
 
-    <script src="jquery-3.1.1.min.js"></script>
+    <script src="./JS/jquery-3.1.1.min.js"></script>
     <script>
         var lastId = 0;
 
@@ -62,7 +62,7 @@ if ( $confirm == 2 && !$conversation->reverse) {
             var http = new XMLHttpRequest();
 
             //setting server's program url
-            var url = "writeMessage.php";
+            var url = "Brain/writeMessage.php";
             var params = "uid="+me+"&partUid="+part+"&text="+text+"&attachment='null'";
 
             //opening connection
@@ -78,7 +78,7 @@ if ( $confirm == 2 && !$conversation->reverse) {
                     if ( http.responseText ) {
                         //sending all respond to log again via php+post
                         var httpLog = new XMLHttpRequest();
-                        var url = "addLog.php";
+                        var url = "Brain/addLog.php";
                         var params = "page='chat.php'&error='"+http.responseText+"'";
                         httpLog.open("POST", url, true);
 
@@ -113,7 +113,7 @@ if ( $confirm == 2 && !$conversation->reverse) {
             var part = form.partUid.value;
 
             var http = new XMLHttpRequest();
-            var url = "allowConversation.php";
+            var url = "Brain/allowConversation.php";
             var params = "uid="+me+"&partUid="+part;
             http.open("POST", url, true);
 
@@ -124,7 +124,7 @@ if ( $confirm == 2 && !$conversation->reverse) {
                 if(http.readyState == 4 && http.status == 200) {
 
                     var httpLog = new XMLHttpRequest();
-                    var url = "addLog.php";
+                    var url = "Brain/addLog.php";
                     var params = "page='chat.php(not confirm)'&error='"+http.responseText+"'";
                     httpLog.open("POST", url, true);
 
@@ -156,7 +156,7 @@ if ( $confirm == 2 && !$conversation->reverse) {
             var part = form.partUid.value;
 
             var http = new XMLHttpRequest();
-            var url = "fetchMessages.php";
+            var url = "Brain/fetchMessages.php";
             var params = "uid="+me+"&partUid="+part+"&lastId="+lastId;
             http.open("POST", url, true);
 
@@ -214,8 +214,8 @@ if ( $confirm == 2 && !$conversation->reverse) {
 
     </script>
 
-    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
-    <script type="text/javascript" src="jgestures.js"></script>
+    <script type="text/javascript" src="JS/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="JS/jgestures.js"></script>
     <script type="text/javascript">
         $(function(){
             $('body').bind('swiperight', function(){
@@ -400,18 +400,7 @@ if ( $confirm == 2 && !$conversation->reverse) {
 
     if ( $confirm == 0 && $conversation->reverse ) {
         //so, if conversation is pending and its initiated by friend - give to user some buttons)
-        echo "
-            <form id=\"form\" action=\"javascript:void(0);\" onsubmit=\"return allowConversation(this);\">
-                <input type=\"submit\" id='confirmButt' name=\"butt\" class=\"allow\" value='Allow' >
-                <input type=\"hidden\" id='confirm' name=\"textt\" class=\"inputMessage\" placeholder=\"your message\" >
-                <input type=\"hidden\" name=\"myUid\" value=\"$user->uid\">
-                <input type=\"hidden\" name=\"partUid\" value=\"$interlocutor->uid\">
-            </form>
-            <form id=\"form2\" action=\"denyConversation.php\" method='post'>
-                <input type=\"submit\" id='confirmButt' name=\"butt\" class=\"deny\" value='Deny' >
-                <input type=\"hidden\" id='confirm' name=\"textt\" class=\"inputMessage\" placeholder=\"your message\" >
-                <input type=\"hidden\" name=\"uid\" value=\"$user->uid\">
-                <input type=\"hidden\" name=\"partUid\" value=\"$interlocutor->uid\">
+        echo ">
             </form>
         ";
     } else  {

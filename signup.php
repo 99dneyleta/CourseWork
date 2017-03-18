@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    include_once("functionality.php");
+    include_once("Brain/functionality.php");
 
     $occupied = null;
     if ( isset($_POST['username']) && isset($_POST["password"])) {
@@ -49,7 +49,7 @@
 <head>
     <title>Sign up</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="./styles.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="Styles/styles.css?v=<?php echo time();?>">
     <style>
         ::-webkit-input-placeholder { /* WebKit browsers input color*/
             color:    black;
