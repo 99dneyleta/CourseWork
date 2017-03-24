@@ -32,7 +32,7 @@
 
 <div id = "container-for-photo">
     <div class="profile-image">
-        <img class="profile-image" src=" <?php if ( isset($usr->image) ) {echo "images/".$usr->image;} else {echo "/img/space-for-avatar.png";} ?> " >
+        <img class="profile-image" src=" <?php if ( isset($usr->image) ) {echo $usr->image;} else {echo "/img/space-for-avatar.png";} ?> " >
     </div>
     <div class="<?php if ( $usr->status == "online" ) { echo "status"; } else { echo "offline"; };?>" >
         <?php echo $usr->status; ?>

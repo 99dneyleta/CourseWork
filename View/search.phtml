@@ -139,7 +139,7 @@
 </script>
 <div class="menu" id="menu" style="display: none;">
     <a href="profile.php">
-        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "img/space-for-avatar.png";} ?> " >
+        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo $user->image;} else {echo "img/space-for-avatar.png";} ?> " >
         <div class="menu_header"><?php if ( isset($user->username)) {echo $user->username;} else { echo "dev/null/";}?></div>
         <div class="menu_status">Online</div>
     </a>
@@ -182,7 +182,7 @@ if ( isset($_GET['search']) && !$result ) {
         if ( $usr->status == "online") {
             $st = "<div id='online'></div>";
         }
-        $img = ( isset($usr->image) )?  "images/".$usr->image : "/img/space-for-avatar.png";
+        $img = ( isset($usr->image) )?  $usr->image : "/img/space-for-avatar.png";
         echo "<a href='userInfo.php?username=".$usr->username."&query=".$_GET['search']."'><div class='result'>
                     <img src='".$img."' class=\"image-tiny\" >
                     <div class=\"username\" >".$usr->username.$st." </div>

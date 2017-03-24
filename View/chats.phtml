@@ -212,7 +212,7 @@
 </script>
 <div class="menu" id="menu" style="display: none;">
     <a href="profile.php">
-        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo "images/".$user->image;} else {echo "img/space-for-avatar.png";} ?> " >
+        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo $user->image;} else {echo "img/space-for-avatar.png";} ?> " >
         <div class="menu_header"><?php if ( isset($user->username)) {echo $user->username;} else { echo "dev/null/";}?></div>
         <div class="menu_status">Online</div>
     </a>
@@ -265,7 +265,7 @@
             if ( $usr->interlocutor->status == "online") {
                 $st = "<div id='online'></div>";
             }
-            $img = ( isset($usr->interlocutor->image) )?  "images/".$usr->interlocutor->image : "/img/space-for-avatar.png";
+            $img = ( isset($usr->interlocutor->image) )?  $usr->interlocutor->image : "/img/space-for-avatar.png";
             echo "<a href='chat.php?user=".$usr->interlocutor->username."'><div class='result'>
                     <img src='".$img."' class=\"image-tiny\" >
                     <div class='inf' >
@@ -298,7 +298,7 @@
                 $st = "<div id='online'></div>";
             }
             $last = $usr->lastMessage();
-            $img = ( isset($usr->interlocutor->image) )?  "images/".$usr->interlocutor->image : "/img/space-for-avatar.png";
+            $img = ( isset($usr->interlocutor->image) )?  $usr->interlocutor->image : "/img/space-for-avatar.png";
             echo "<a href='chat.php?user=".$usr->interlocutor->username."'><div class='result'>
                     <img src='".$img."' class=\"image-tiny\" >
                     <div class='inf' >
