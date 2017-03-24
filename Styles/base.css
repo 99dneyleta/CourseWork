@@ -1,3 +1,9 @@
+/*html {*/
+    /*::-webkit-input-placeholder { !* WebKit browsers input color*!*/
+        /*color:    black;*/
+    /*}*/
+/*}*/
+
 body {
     margin: 0;
     background-color: white;

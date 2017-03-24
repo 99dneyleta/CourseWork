@@ -1,0 +1,115 @@
+<!Doctype html>
+<html>
+<head>
+    <title>Info</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="Styles/base.css?v=<?=time();?>">
+    <link rel="stylesheet" href="Styles/profile.css?v=<?=time();?>">
+    <link rel="stylesheet" href="Styles/info.css?v=<?=time();?>">
+    <style>
+        ::-webkit-input-placeholder { /* WebKit browsers input color*/
+            color:    black;
+        }
+        .text {
+            max-width: 96%;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- HERE GOES HEADER-->
+
+<header style="margin-bottom: 50px;">
+    <div class="dash"><a href="search.php?search=<?php echo $_GET['query']; ?>"><img src="img/back.svg"></a></div>
+    <div class="header-title" id="title" style="display: block; left: 44vw;">Info</div>
+    <div class = "search"><a href="search.php"><img class="search" src="img/search.svg"></a></div>
+</header>
+<div class="header-empty"></div>
+
+<!-- HERE ENDS HEADER -->
+
+<div id = "container-for-photo">
+    <div class="profile-image">
+        <img class="profile-image" src=" <?php if ( isset($usr->image) ) {echo "images/".$usr->image;} else {echo "/img/space-for-avatar.png";} ?> " >
+    </div>
+    <div class="<?php if ( $usr->status == "online" ) { echo "status"; } else { echo "offline"; };?>" >
+        <?php echo $usr->status; ?>
+    </div>
+
+    <?php
+    if ( $user->isFriend($usr->username)) {
+        echo "<a href='chat.php?user=".$usr->username."' class='startChat'>Write message</a>";
+    }
+    ?>
+
+    <form method="post" action="userInfo.php?username=<?php echo $_GET['username']?>&query=<?php echo $_GET['query']?>" >
+        <input type="submit"
+        <?php
+        $isExist = false;
+        $i = 0;
+        while ( !$isExist && $i < count($user->outgoingRequests) ) {
+            if ( $user->outgoingRequests[$i] == $usr->username) $isExist = true;
+            ++$i;
+        }
+        if ( $isExist ) {
+            echo " value=\"Request sent\" class=\"sent\" > <input type='hidden' value='sent' name='req'>";
+        } else {
+            $isExist = false;
+            $i = 0;
+            while ( !$isExist && $i < count($user->incomingRequests) ) {
+                if ( $user->incomingRequests[$i] == $usr->username) $isExist = true;
+                ++$i;
+            }
+            if ( $isExist ) {
+                echo " value=\"Accept\" class=\"accept\" > <input type='hidden' value='accept' name='req'>
+                    </form> <form method='post' action='userInfo.php?username=".$_GET['username']."&query=".$_GET['query']."' > 
+                        <input type='submit' value='Decline' class='decline'>
+                        <input type='hidden' value='decline' name='req'>
+                    
+                    ";
+            } else {
+                $isExist = false;
+                $i = 0;
+                while ( !$isExist && $i < count($user->friends) ) {
+                    if ( strtolower($user->friends[$i]) == strtolower($usr->username)) $isExist = true;
+                    ++$i;
+                }
+                if ( $isExist ) {
+                    echo " value=\"Remove from friends\" class=\"remove\" > <input type='hidden' value='remove' name='req'> ";
+                } else {
+                    echo " value=\"Add to friends\" class=\"send\" > <input type='hidden' value='send' name='req'>";
+                }
+            }
+        }
+        ?>
+    </form>
+
+
+
+
+    <div class="all-info">
+
+        <?php if ( isset($usr->firstname)) {echo "<div class=\"text\" >First name: ".$usr->firstname." </div><br>";} ?>
+
+        <?php if ( isset($usr->lastname)) {echo "<div class=\"text\" >Last name: ".$usr->lastname."</div> <br>";} ?>
+
+        <?php if ( isset($usr->username)) {echo "<div class=\"text\" >username: ".$usr->username."</div><br>";} ?>
+
+        <?php if ( isset($usr->city)) {echo "<div class=\"text\" ><span>City: ".$usr->city."</span></div>";} ?>
+
+        <?php if ( isset($user->gender) ) {echo " <div class=\"gender\" >".$user->gender."</div>";} ?>
+
+
+
+    </div>
+
+
+
+
+
+</div>
+
+</body>
+</html>

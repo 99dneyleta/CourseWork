@@ -6,4 +6,3 @@ if(!isset($_COOKIE['user'])) {
     $_SESSION['user'] = $_COOKIE['user'];
     header("Location: profile.php");
 }
-?>

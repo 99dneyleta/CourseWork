@@ -1,0 +1,42 @@
+<!Doctype html>
+<html>
+<head>
+    <title>LogIn</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="Styles/styles.css?v=<?php echo time(); ?>">
+    <style>
+        ::-webkit-input-placeholder { /* WebKit browsers input color*/
+            color:    white;
+
+        }
+
+    </style>
+</head>
+<body style="position: relative; min-height: 100%; top: 0px;">
+<div class = "logo-row" style="margin-top: 25px;">
+    <div class = "logo-position" style="margin: 200px 0 150px 0;">
+        <a class = "logo"> <img src="/img/logo.png" alt="Logo">
+        </a>
+    </div>
+</div>
+
+<form action="login.php" name="signIn" method="post" enctype="multipart/form-data">
+    <div style="margin-bottom: 5vh">
+        <input class="input-on-start" type="text" name="username" placeholder="Nickname"/>
+    </div>
+    <div style="margin-bottom: 15vh">
+        <input class="input-on-start" type="password" name="password" placeholder="Password"/>
+        <?php if ( $error ) {echo getAlert("Incorrect username or password", ""); } ?>
+    </div>
+
+    <div style="margin-bottom: 19vh;">
+        <input type="submit" value="Sign In" id="butt"/>
+    </div>
+
+    <div style="margin-bottom: 3vh">
+        <a  id="sign-up" href="signup.php">Registration</a>
+    </div>
+</form>
+
+</body>
+</html>

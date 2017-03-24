@@ -1025,7 +1025,7 @@ function generateRandomString($length = 10) {
 
 /*
  * updates user image
- */
+ *
 function proceedImageUpdate($user, $image) {
 
     if (isset($_FILES) && isset($_FILES[$image])){
@@ -1079,6 +1079,29 @@ function proceedImageUpdate($user, $image) {
         }
     }
     return null;
+}
+
+*/
+
+function proceedImageUpdate($user, $image) {
+    include_once ("images.php");
+
+    $url = uploadImage($image);
+
+    $user->image = $url;
+    //generateSessionAndCookie($user);
+
+    $uid = $user->uid;
+
+    $sql = "UPDATE members " .
+        "SET image='$url' " .
+        "WHERE id='$uid';";
+
+    if (!mysqli_query($GLOBALS['dbCon'], $sql)) {
+        die("DataBase is offline");
+    }
+
+
 }
 
 /*
