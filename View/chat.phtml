@@ -147,10 +147,9 @@
                     var objDiv = document.getElementById("chat");
 
                     //adding my new mess
-                    objDiv.innerHTML += responseText;
-
                     //scrolling down in case of new messages
                     if ( responseText != "") {
+                        objDiv.innerHTML += responseText;
                         objDiv.scrollTop = objDiv.scrollHeight;
                     }
 
@@ -173,7 +172,7 @@
         //so I'm using function set interval, that execute code inside after time T - second parameter
         //1000 = 1 sec
 
-        $(document).ready( function () { $.ajaxSetup({cache:false}); setInterval(function () { fetch(); }, 1000)} );
+        $(document).ready( function () { $.ajaxSetup({cache:false}); fetch(); setInterval(function () {  }, 10000)} );
 
     </script>
 
