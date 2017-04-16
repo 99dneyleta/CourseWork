@@ -1,107 +1,401 @@
-/* Safari 4.0 - 8.0 */
-@-webkit-keyframes moveforward-title {
-    from {left: 38vw;}
-    to {left: 61vw;}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
 }
-
-/* Standard syntax */
-@keyframes moveforward-title {
-    from {left: 38vw;}
-    to {left: 61vw;}
-}
-
-/* Safari 4.0 - 8.0 */
-@-webkit-keyframes moveback-title {
-    from {left: 61vw;}
-    to {left: 38vw;}
-}
-
-/* Standard syntax */
-@keyframes moveback-title {
-    from {left: 61vw;}
-    to {left: 38vw;}
-}
-
-
-.profile-image {
-    display: block;
-    margin: auto;
-    width: 60vw;
-    height: 60vw;
-    border-radius: 50%;
-}
-
-.all-info {
-
-    margin-top: 5vw;
-    margin-bottom: 5vw;
-    display: inline-block;
+.background{
+    position:fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    border: 1px solid #580EAD;
-    border-width: 1px 0px 1px 0px;
+    height: 100vh;
+    /*background-image : url(../img/imgs/photo.jpg);-webkit-linear-gradient(top,rgba(125,185,232,0)0%,rgba(0,185,232,0)0%, rgba(30,87,153,1)  120%);*/
+    /*background-color: #CFBCBC;*/
+    background-blend-mode: overlay;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+
 }
 
-.text {
-    color: #580EAD;
-    font-size: 8vw;
-    display: inline-block;
-    padding: 2vw;
-    margin: auto;
-    text-align: left;
 
-    position: relative;
-    left: 16%;
-
-
-    word-wrap: break-word
-}
-
-.gender {
-    color: #580EAD;
-    font-size: 8vw;
-    display: block;
-    padding: 2vw;
-    margin: auto;
-    text-align: center;
-
-
-    word-wrap: break-word
-}
-
-.detail {
+h2 {
     display: block;
     margin: auto;
     text-align: center;
-    font-size: 8vw;
-    width: 40vw;
-    height: 10vw;
-
-
+    position: absolute;
+    top: 80vh;
+    width: 100%;
+    height: 6vh;
+    font-size: 6em;
+    font-family: 'Lato', sans-serif;
+    font-weight: lighter;
     color: white;
-    background: #444BDF;
-    font-family: Tahoma;
-    border:1px solid #444BDF;
-    border-radius: 2px;
-
-
 }
 
-a.detail {
-    text-decoration: none;
-    color: #FFFFFF;
+.info {
+}
+
+.pos {
+    top: 60vh;
+    width: 100vw;
+    height: 5vh;
+    margin: auto;
 }
 
 .status {
-    color: #20DD10;
-    font-size: 5vw;
+    font-size: 0.5em;
+}
+
+/*menu*/
+#nav-icon2 {
+    z-index: 100;
+    display: inline-block;
+    width: 60px;
+    height: 45px;
+    position: relative;
+    margin-top: 3vh;
+    margin-left: 4vw;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .5s ease-in-out;
+    -moz-transition: .5s ease-in-out;
+    -o-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+    cursor: pointer;
+}
+
+
+#nav-icon2 span {
     display: block;
-    padding: 0;
-    margin: auto;
+    position: absolute;
+    height: 7px;
+    width: 53%;
+    background: white;
+    opacity: 1;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: 0.25s ease-in-out;
+    -moz-transition: 0.25s ease-in-out;
+    -o-transition: 0.25s ease-in-out;
+    transition: 0.25s ease-in-out;
+}
+
+#nav-icon2 span:nth-child(even) {
+    left: 50%;
+    border-radius: 0 9px 9px 0;
+}
+
+#nav-icon2 span:nth-child(odd) {
+    left:0;
+    border-radius: 9px 0 0 9px;
+}
+
+#nav-icon2 span:nth-child(1), #nav-icon2 span:nth-child(2) {
+    top: 0;
+}
+
+#nav-icon2 span:nth-child(3), #nav-icon2 span:nth-child(4) {
+    top: 18px;
+}
+
+#nav-icon2 span:nth-child(5), #nav-icon2 span:nth-child(6) {
+    top: 36px;
+}
+
+#nav-icon2.open span:nth-child(1),#nav-icon2.open span:nth-child(6) {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+#nav-icon2.open span:nth-child(2),#nav-icon2.open span:nth-child(5) {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+#nav-icon2.open span:nth-child(1) {
+    left: 5px;
+    top: 7px;
+}
+
+#nav-icon2.open span:nth-child(2) {
+    left: calc(50% - 5px);
+    top: 7px;
+}
+
+#nav-icon2.open span:nth-child(3) {
+    left: -50%;
+    opacity: 0;
+}
+
+#nav-icon2.open span:nth-child(4) {
+    left: 100%;
+    opacity: 0;
+}
+
+#nav-icon2.open span:nth-child(5) {
+    left: 5px;
+    top: 29px;
+}
+
+#nav-icon2.open span:nth-child(6) {
+    left: calc(50% - 5px);
+    top: 29px;
+}
+/*button +*/
+.more-actions {
+    float: right;
+    width: 54px;
+    margin-top: 2.5vh;
+    margin-right: 4vw;
+}
+
+
+.more-actions:active {
+
+    width: 58px;
+    height: 58px;
+    border-radius: 10px;
+}
+
+
+/*more actions button(ma)*/
+.ma-sidenav {
+    height: 0;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 1vh;
+    right: 1vw;
+    background-color: white;
+    opacity: 1;
+    overflow-x: hidden;
+    transition: 0.1s;
+    border-radius: 6px;
+}
+
+.ma-sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.ma-sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+
+
+@media screen and (max-height: 450px) {
+    .ma-sidenav {padding-top: 15px;}
+    .ma-sidenav a {font-size: 18px;}
+}
+
+
+.more-actions-text {
+    font-family: 'Roboto', sans-serif;
+    font-style: oblique;
+    font-size: 2.2vh;
+    color: black;
+    text-align: left;
+}
+
+
+.ma-closebtn {
+    position: absolute;
+    top: 0;
+    left: 20px;
+}
+
+
+.pos1 {
+    width: 80%;
+    height: 90%;
+    margin-left: auto;
+}
+
+
+/*active menu*/
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    opacity: 0.8;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+/*
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+*/
+
+.sidenav a, a:visited, a:active, a:default, a:focus, a:hover, a:checked {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+/*menu elements*/
+
+
+.avatar-pos {
+    margin-left: 3vw;
+}
+.menu-avatar {
+    background-color: white;
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+
+}
+
+h1{
+    color: white;
+}
+.back {
+    display: inline-block;
+    margin-left: 2vw;
+    width: 156px;
+    height:156px;
+    border-radius: 50%;
+}
+
+.menu-status {
+    margin-top: 1vh;
+    color: white;
+    font-size: 2em;
+}
+
+.menu-pos {
+    width: 156px;
+    margin-left: 2vw;
     text-align: center;
 }
 
-#container-for-photo {
-    position: relative;
-    float:left;
+.menu-name {
+    color: white;
+
+    font-size: 2.5em;
+}
+.head {
+    width: 50vw;
+    height: 10vh;
+}
+.usrname{
+    width: 32.4vw;
+    display: inline-block;
+    position: absolute;
+    margin-left: 2vw;
+}
+
+.m-status {
+    width: 24.2vw;
+    text-align: center;
+}
+
+hr {
+    position: absolute;
+    left: 0;
+    width: 50vw;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+ul {
+    margin-top: 5vh;
+    list-style: none;
+    color: white;
+}
+
+li span {
+    font-size: 4em;
+    padding-left: 2vw;
+}
+
+li {
+    margin-top: 5vh;
+}
+
+
+.menu-img {
+    width: 96px;
+    height: 96px;
+}
+
+
+li hr {
+    margin-top: 4.88vh;
+}
+
+
+.logout {
+    margin-top: 9.88vh;
+}
+
+
+/* All Chats*/
+
+.body-chats {
+    background:  radial-gradient(circle at 25.52% 30.34%, #686996, transparent 100%),radial-gradient(circle at 86.93% 84.49%, #59607D, transparent 100%),radial-gradient(circle at 50% 50%, #000000, #000000 100%);
+    height: 100%;
     width: 100%;
 }
+
+header{
+    z-index: -1;
+    width: 100%;
+    height: 6.5%;
+    background: rgba(0,0,0,0.4);
+}
+
+
+.chats-photo {
+    width:200px;
+    height:200px;
+}
+
+
+
+.chats-user {
+    width: 100%;
+    height: 200px;
+    background-color: white;
+}
+
+
+
+
+
