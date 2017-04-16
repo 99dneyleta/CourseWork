@@ -208,19 +208,23 @@
     <link rel="stylesheet" href="../Styles/profile.css">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>-->
+    <script type="text/javascript" src="JS/jquery-1.4.4.min.js"></script>
+<!--    <script type="text/javascript" src="JS/jquery-3.1.1.min.js"></script>-->
+
+
 </head>
 
 
 <body>
-<div class="background" style="background-image : url(<?php if ( isset($user->image) ) {echo $user->image;} else {echo "img/space-for-avatar.png";} ?>);-webkit-linear-gradient(top,rgba(125,185,232,0)0%,rgba(0,185,232,0)0%, rgba(30,87,153,1)  120%);">
+<div class="background" style="background-image : url(<?php if ( isset($userForeign->image) ) {echo $userForeign->image;} else {echo "img/space-for-avatar.png";} ?>),-webkit-linear-gradient(top,rgba(125,185,232,0)0%,rgba(0,185,232,0)0%, rgba(30,87,153,1)  120%);">
     <div class="info">
-        <h2><?php if ( isset($user->firstname)) {echo $user->firstname." ";}; if ( isset($user->lastname)) { echo $user->lastname;}   ?><div class="status"><?php echo $user->status; ?></div></h2>
+        <h2><?php if ( isset($userForeign->firstname)) {echo $userForeign->firstname." ";}; if ( isset($userForeign->lastname)) { echo $userForeign->lastname;}   ?><div class="status"><?php echo $userForeign->status; ?></div></h2>
     </div>
 
     <div menu-pos>
         <div id="nav-icon2" onclick="openNav()">
-            <span ></span>
+            <span></span>
             <span></span>
             <span></span>
             <span></span>
@@ -228,7 +232,12 @@
             <span></span>
         </div>
 
-        <img onclick="openMaNav()" class="more-actions" src="../img/imgs/more-actions.png" />
+
+        <?php
+        $threeDots =  "<img onclick=\"openMaNav()\" class=\"more-actions\" src=\"../img/imgs/more-actions.png\" />";
+        if ( isset($foreign)) { echo $threeDots; }
+        ?>
+
     </div>
 </div>
 
@@ -237,10 +246,10 @@
 
         <img class="back" src="<?php if ( isset($user->image) ) {echo $user->image;} else {echo "img/space-for-avatar.png";} ?>">
 
-        <div class="usrname"><span class="menu-name"><?php if ( isset($user->firstname)) {echo $user->firstname." ";}; if ( isset($user->lastname)) { echo $user->lastname;}   ?><br><div class="m-status"><?php echo $user->status; ?></div></span></div>
+        <div class="usrname"><span class="menu-name"><?php if ( isset($user->firstname)) {echo $user->firstname." ";}; if ( isset($user->lastname)) { echo $user->lastname;}   ?><br><div class="m-status">WTF status?</div></span></div>
         <br>
         <div class="menu-pos">
-<!--            <span class="menu-status">--><?php //echo $user->status; ?><!--</span>-->
+            <span class="menu-status"><?php echo $user->status; ?></span>
             <hr>
         </div>
         <ul>
@@ -253,26 +262,37 @@
     </div>
 
 </div>
-<div id="ma-mySidenav" class="ma-sidenav">
-    <a class="ma-closebtn" onclick="closeMaNav()">&times;</a>
-    <div class="pos1">
-        <h1 class="more-actions-text">Add to friend</h1>
-        <h1 class="more-actions-text">Write message</h1>
-        <h1 class="more-actions-text">About "username"</h1>
-        <h1 class="more-actions-text">Add to Black List</h1>
+
+<?php
+$srt = "<div id=\"ma-mySidenav\" class=\"ma-sidenav\">
+    <a class=\"ma-closebtn\" onclick=\"closeMaNav()\">&times;</a>
+    <div class=\"pos1\">
+        <h1 class=\"more-actions-text\">Add to friend</h1>
+        <h1 class=\"more-actions-text\">Write message</h1>
+        <h1 class=\"more-actions-text\">About \"username\"</h1>
+        <h1 class=\"more-actions-text\">Add to Black List</h1>
     </div>
-</div>
+</div>";
+
+if ( isset($foreign) ) {
+    echo $srt;
+}
+?>
+
 <script>
 
-    $(document).ready(function(){
-        $('#nav-icon2').click(function(){
-            $(this).toggleClass('open');
-
-        });
-    });
+//    $(document).ready(function(){
+//        $('#nav-icon2').click(function(){
+//            $(this).toggleClass('open');
+//
+//        });
+//    });
 
     function openNav() {
         var k = document.getElementById("mySidenav").style.width;
+
+            $('#nav-icon2').toggleClass('open');
+
         if(k == "50vw") {
             closeNav();
         }
@@ -310,7 +330,41 @@
         document.getElementById("ma-mySidenav").style.width = "0vw";
     }
 </script>
-<script>
+
+
+<script type="text/javascript" src="JS/jgestures.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('body').bind('swiperight', function(){
+            openNav();
+        });
+    });
+    $(function(){
+        $('body').bind('swipeleft', function(){
+            openNav();
+        });
+    });
+    $(function(){
+        $('div').bind('swiperight', function(){
+            openNav();
+        });
+    });
+    $(function(){
+        $('div').bind('swipeleft', function(){
+            openNav();
+        });
+    });
+    $(function(){
+        $('img').bind('swiperight', function(){
+            openNav();
+        });
+    });
+    $(function(){
+        $('img').bind('swipeleft', function(){
+            openNav();
+        });
+    });
+
 
 </script>
 </body>

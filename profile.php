@@ -9,6 +9,7 @@ if (!isset($user)) {
 $user->update(true);
 $user->updateFriends();
 $user->updateRequests();
+$userForeign = $user;
 
 generateSessionAndCookie($user);
 
