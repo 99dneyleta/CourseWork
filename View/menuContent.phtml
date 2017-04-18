@@ -1,0 +1,36 @@
+
+<div id="mySidenav" class="sidenav">
+    <div class="head">
+
+        <a href="profile.php">
+            <img class="back" src="<?php if ( isset($user->image) ) {echo $user->image;} else {echo "img/space-for-avatar.png";} ?>">
+
+            <div class="usrname">
+                <span class="menu-name">
+                    <?php echo $user->getName(); ?>
+                    <br>
+                    <div class="m-status">
+                        WTF status?
+                    </div>
+                </span>
+            </div>
+            <br>
+        </a>
+        <div class="menu-pos">
+            <span class="menu-status">
+                <?php echo $user->status; ?>
+            </span>
+            <hr>
+        </div>
+
+
+        <ul>
+            <li><img class="menu-img" src="../img/imgs/chats.png"><span><a href="chats.php">Chats</a></span></li>
+            <li><img class="menu-img" src="../img/imgs/friends.png"><span><a href="friends.php">Friends</a></span></li>
+            <li><img class="menu-img" src="../img/imgs/blocked.png"><span>Black List</span></li>
+            <li><img class="menu-img" src="../img/imgs/Settings.png"><span><a href="profileData.php">Settings</a></span><hr></li>
+            <li class="logout"><img class="menu-img" src="../img/imgs/logout.png"><span><a href="logout.php">Log out</a></span></li>
+        </ul>
+    </div>
+
+</div>

@@ -12,7 +12,7 @@ if (!isset($user)) {
 
 $result = null;
 $founded = $user->getAllConversations();
-$pending = $user->getPendingConversations();
+//$pending = $user->getPendingConversations();
 
 $user->update(false);
 

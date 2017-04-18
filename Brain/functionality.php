@@ -897,7 +897,7 @@ class Conversation {
      * returns count of unread messages
      */
     function howMuchUnread() {
-        $sql = "SELECT id FROM messages WHERE to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." AND readd IS NULL;";
+        $sql = "SELECT id FROM messages WHERE ((from_id=".$this->me->uid." AND to_id=".$this->interlocutor->uid." ) OR (to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." )) AND readd IS NULL;";
         if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
             return null;
         } else {
@@ -919,6 +919,36 @@ class Conversation {
         }
         return $text;
     }
+
+    function lastMessageSenderId() {
+        $sql = "SELECT from_id FROM messages WHERE (from_id=".$this->me->uid." AND to_id=".$this->interlocutor->uid." ) OR (to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." ) ORDER BY id DESC LIMIT 1;";
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            echo "678: ".$sql;
+        }
+        $id = mysqli_fetch_row($query)[0];
+
+        return $id;
+    }
+
+    function lastMessageDate() {
+        $sql = "SELECT timee FROM messages WHERE (from_id=".$this->me->uid." AND to_id=".$this->interlocutor->uid." ) OR (to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." ) ORDER BY id DESC LIMIT 1;";
+        if ( !$query = mysqli_query($GLOBALS['dbCon'], $sql)) {
+            echo "936: ".$sql;
+        }
+        $time = mysqli_fetch_row($query)[0];
+
+        //var_dump($time);
+        $today = date("Y-m-d");
+
+        if ( $today ==  date("Y-m-d", strtotime(explode(";",$time)[0])) ) {
+            $time = date("H:i", strtotime($time));
+        } else {
+            $time = date("D", strtotime($time));
+        }
+        //var_dump($time);
+        return $time;
+    }
+
 
     /*
      * if user confirm to start chat

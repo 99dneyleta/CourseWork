@@ -32,15 +32,15 @@
 
 <div id = "container-for-photo">
     <div class="profile-image">
-        <img class="profile-image" src=" <?php if ( isset($usr->image) ) {echo $usr->image;} else {echo "/img/space-for-avatar.png";} ?> " >
+        <img class="profile-image" src=" <?php if ( isset($userForeign->image) ) {echo $userForeign->image;} else {echo "/img/space-for-avatar.png";} ?> " >
     </div>
-    <div class="<?php if ( $usr->status == "online" ) { echo "status"; } else { echo "offline"; };?>" >
-        <?php echo $usr->status; ?>
+    <div class="<?php if ( $userForeign->status == "online" ) { echo "status"; } else { echo "offline"; };?>" >
+        <?php echo $userForeign->status; ?>
     </div>
 
     <?php
-    if ( $user->isFriend($usr->username)) {
-        echo "<a href='chat.php?user=".$usr->username."' class='startChat'>Write message</a>";
+    if ( $user->isFriend($userForeign->username)) {
+        echo "<a href='chat.php?user=".$userForeign->username."' class='startChat'>Write message</a>";
     }
     ?>
 
@@ -50,7 +50,7 @@
         $isExist = false;
         $i = 0;
         while ( !$isExist && $i < count($user->outgoingRequests) ) {
-            if ( $user->outgoingRequests[$i] == $usr->username) $isExist = true;
+            if ( $user->outgoingRequests[$i] == $userForeign->username) $isExist = true;
             ++$i;
         }
         if ( $isExist ) {
@@ -59,7 +59,7 @@
             $isExist = false;
             $i = 0;
             while ( !$isExist && $i < count($user->incomingRequests) ) {
-                if ( $user->incomingRequests[$i] == $usr->username) $isExist = true;
+                if ( $user->incomingRequests[$i] == $userForeign->username) $isExist = true;
                 ++$i;
             }
             if ( $isExist ) {
@@ -73,7 +73,7 @@
                 $isExist = false;
                 $i = 0;
                 while ( !$isExist && $i < count($user->friends) ) {
-                    if ( strtolower($user->friends[$i]) == strtolower($usr->username)) $isExist = true;
+                    if ( strtolower($user->friends[$i]) == strtolower($userForeign->username)) $isExist = true;
                     ++$i;
                 }
                 if ( $isExist ) {
@@ -91,13 +91,13 @@
 
     <div class="all-info">
 
-        <?php if ( isset($usr->firstname)) {echo "<div class=\"text\" >First name: ".$usr->firstname." </div><br>";} ?>
+        <?php if ( isset($userForeign->firstname)) {echo "<div class=\"text\" >First name: ".$userForeign->firstname." </div><br>";} ?>
 
-        <?php if ( isset($usr->lastname)) {echo "<div class=\"text\" >Last name: ".$usr->lastname."</div> <br>";} ?>
+        <?php if ( isset($userForeign->lastname)) {echo "<div class=\"text\" >Last name: ".$userForeign->lastname."</div> <br>";} ?>
 
-        <?php if ( isset($usr->username)) {echo "<div class=\"text\" >username: ".$usr->username."</div><br>";} ?>
+        <?php if ( isset($userForeign->username)) {echo "<div class=\"text\" >username: ".$userForeign->username."</div><br>";} ?>
 
-        <?php if ( isset($usr->city)) {echo "<div class=\"text\" ><span>City: ".$usr->city."</span></div>";} ?>
+        <?php if ( isset($userForeign->city)) {echo "<div class=\"text\" ><span>City: ".$userForeign->city."</span></div>";} ?>
 
         <?php if ( isset($user->gender) ) {echo " <div class=\"gender\" >".$user->gender."</div>";} ?>
 
