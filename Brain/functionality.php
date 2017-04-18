@@ -468,7 +468,7 @@ class User {
 
         if ( !$this->deleteConversationWith($uid) ) {
             $myfile = fopen("logs.txt", "a");
-            $txt = "Delete conversation: ".$this." with ".$username."(time: ". date("d-m-Y; H:i:s", time()).")\n"."-----------------------------------\n";
+            $txt = "Delete conversation: ".$this." with ".$username."(time: ". date("Y-m-d H:i:s", time()).")\n"."-----------------------------------\n";
             fputs($myfile, $txt);
             fclose($myfile);
         }
@@ -799,7 +799,7 @@ class Conversation {
                 $this->reverse = true;
             } else {
 
-                $sql = "INSERT INTO conversations (participant1, participant2, last_time, confirm) VALUES ('" . $this->me->uid . "', '" . $this->interlocutor->uid . "', '".date('d-m-Y; H:i:s',time())."' , 0) ;";
+                $sql = "INSERT INTO conversations (participant1, participant2, last_time, confirm) VALUES ('" . $this->me->uid . "', '" . $this->interlocutor->uid . "', '".date('Y-m-d H:i:s',time())."' , 0) ;";
                 if (!mysqli_query($GLOBALS['dbCon'], $sql)) {
                     return "524: " . $sql;
                 }
@@ -845,7 +845,7 @@ class Conversation {
 
         mergeSort($unread, $loadedMess, $this->messages);
 
-        $sql = "UPDATE messages SET readd='".date('d-m-Y; H:i:s',time())."' WHERE to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." ;";
+        $sql = "UPDATE messages SET readd='".date('Y-m-d H:i:s',time())."' WHERE to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." ;";
         if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
             return "unread update: ".$sql;
         }
@@ -862,10 +862,10 @@ class Conversation {
             echo "not confirmed!";
             return ;
         }
-        $mess = new Message(0, $this->me, $this->interlocutor, date('d-m-Y; H:i:s',time()), $text, $att, null);
+        $mess = new Message(0, $this->me, $this->interlocutor, date('Y-m-d H:i:s',time()), $text, $att, null);
         $mess->pushToDB();
 
-        $sql = "UPDATE conversations SET last_time='".date('d-m-Y; H:i:s',time())."', confirm=1 WHERE id=".$this->id." ;";
+        $sql = "UPDATE conversations SET last_time='".date('Y-m-d H:i:s',time())."', confirm=1 WHERE id=".$this->id." ;";
         if ( !mysqli_query($GLOBALS['dbCon'], $sql) ) {
             echo $sql;
         }
@@ -936,12 +936,15 @@ class Conversation {
             echo "936: ".$sql;
         }
         $time = mysqli_fetch_row($query)[0];
+        $time = str_ireplace(";", "", $time);
 
         //var_dump($time);
         $today = date("Y-m-d");
 
-        if ( $today ==  date("Y-m-d", strtotime(explode(";",$time)[0])) ) {
-            $time = date("H:i", strtotime($time));
+        if ( $today ==  date("Y-m-d", strtotime($time)) ) {
+            $date = new DateTime($time);
+            $date->add(new DateInterval("PT2H"));
+            $time = $date->format('H:i');
         } else {
             $time = date("D", strtotime($time));
         }
@@ -1172,7 +1175,7 @@ function mergeSort(&$first, &$second, &$output) {
         $x = array_shift($first);
         $y = array_shift($second);
 
-        ///////here time is 'date('d-m-Y; H:i:s',time());', comparable
+        ///////here time is 'date('Y-m-d H:i:s',time());', comparable
 
         if ( $x->time > $y->time ){
             array_push($output, $x );
