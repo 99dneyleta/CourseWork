@@ -862,6 +862,7 @@ class Conversation {
             echo "not confirmed!";
             return ;
         }
+        date_default_timezone_set("Ukraine/Kiev");
         $mess = new Message(0, $this->me, $this->interlocutor, date('Y-m-d H:i:s',time()), $text, $att, null);
         $mess->pushToDB();
 
