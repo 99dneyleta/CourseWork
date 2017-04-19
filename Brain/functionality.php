@@ -468,6 +468,7 @@ class User {
 
         if ( !$this->deleteConversationWith($uid) ) {
             $myfile = fopen("logs.txt", "a");
+            date_default_timezone_set("Europe/Kiev");
             $txt = "Delete conversation: ".$this." with ".$username."(time: ". date("Y-m-d H:i:s", time()).")\n"."-----------------------------------\n";
             fputs($myfile, $txt);
             fclose($myfile);
@@ -799,6 +800,7 @@ class Conversation {
                 $this->reverse = true;
             } else {
 
+                date_default_timezone_set("Europe/Kiev");
                 $sql = "INSERT INTO conversations (participant1, participant2, last_time, confirm) VALUES ('" . $this->me->uid . "', '" . $this->interlocutor->uid . "', '".date('Y-m-d H:i:s',time())."' , 0) ;";
                 if (!mysqli_query($GLOBALS['dbCon'], $sql)) {
                     return "524: " . $sql;
@@ -844,6 +846,8 @@ class Conversation {
         $this->messages = array();
 
         mergeSort($unread, $loadedMess, $this->messages);
+
+        date_default_timezone_set("Europe/Kiev");
 
         $sql = "UPDATE messages SET readd='".date('Y-m-d H:i:s',time())."' WHERE to_id=".$this->me->uid." AND from_id=".$this->interlocutor->uid." ;";
         if ( !mysqli_query($GLOBALS['dbCon'], $sql)) {
@@ -939,12 +943,13 @@ class Conversation {
         $time = mysqli_fetch_row($query)[0];
         $time = str_ireplace(";", "", $time);
 
+        date_default_timezone_set("Europe/Kiev");
         //var_dump($time);
         $today = date("Y-m-d");
 
         if ( $today ==  date("Y-m-d", strtotime($time)) ) {
             $date = new DateTime($time);
-            $date->add(new DateInterval("PT2H"));
+            //$date->add(new DateInterval("PT2H"));
             $time = $date->format('H:i');
         } else {
             $time = date("D", strtotime($time));
