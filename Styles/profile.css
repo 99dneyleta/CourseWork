@@ -184,14 +184,14 @@ h2 {
     border-radius: 6px;
 }
 
-.ma-sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-}
+/*.ma-sidenav a {*/
+    /*padding: 8px 8px 8px 32px;*/
+    /*text-decoration: none;*/
+    /*font-size: 25px;*/
+    /*color: #818181;*/
+    /*display: block;*/
+    /*transition: 0.3s;*/
+/*}*/
 
 .ma-sidenav a:hover, .offcanvas a:focus{
     color: #f1f1f1;
@@ -218,6 +218,12 @@ h2 {
     position: absolute;
     top: 0;
     left: 20px;
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 50px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
 }
 
 
@@ -226,6 +232,7 @@ h2 {
     height: 90%;
     margin-left: auto;
 }
+
 
 
 /*active menu*/
@@ -571,3 +578,7 @@ a:active {
     color: white;
 }
 
+.pos1 a {
+    text-decoration: none;
+    color: black;
+}

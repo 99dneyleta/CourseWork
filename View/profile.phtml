@@ -1,3 +1,9 @@
+<?php
+    if ( !isset($mode)) {
+        $mode = "";
+    }
+?>
+
 <!DOCTYPE html>
 <html >
 <head>
@@ -46,20 +52,38 @@
 <?php include "./View/menuContent.phtml"; ?>
 
 <?php
-$s = "Add to friends";
-$remove = false;
-if ( isset($friend)) {
-    $s = "Remove from friends";
-    $remove = true;
+$s = "";
+$friend = false;
+
+switch ($mode) {
+    case "none":
+        $s = "Add to Friends";
+        break;
+    case "received":
+        $s = "Accept request";
+        break;
+    case "friend":
+        $friend = true;
+    case "sent":
+        $s = "Remove";
+        break;
+    default:
+        $s = $mode;
+        break;
 }
+$mes = '';
+if ( $friend) {
+    $mes = "<h1 class=\"more-actions-text\"><a href='chat.php?user=".$username."'> Write message</a></h1>";
+}
+
 $username = $userForeign->username;
 $srt = "<div id=\"ma-mySidenav\" class=\"ma-sidenav\">".
     "<a class=\"ma-closebtn\" onclick=\"closeMaNav()\">&times;</a>".
     ".<div class=\"pos1\">".
-    "<h1 class=\"more-actions-text\" onclick=\"alert(1);\">".$s."</h1>".
-    "<h1 class=\"more-actions-text\">Write message</h1>".
-    "<h1 class=\"more-actions-text\">About ".$username."</h1>".
-    "<h1 class=\"more-actions-text\">Add to Black List</h1>".
+    "<h1 class=\"more-actions-text\" onclick=\"".$mode."()\">".$s."</h1>".
+    $mes.
+    "<h1 class=\"more-actions-text\" onclick=\"showAbout()\">About ".$username."</h1>".
+    "<h1 class=\"more-actions-text\" onclick=\"addToBlacklist()\">Add to Black List</h1>".
     "</div></div>";
 
 if ( isset($foreign) ) {
@@ -69,5 +93,6 @@ if ( isset($foreign) ) {
 
 <script src="../JS/jgestures.js"></script>
 <script src="../JS/menuAnimationAndSwipes.js"></script>
+<script src="../JS/peopleManagment.js"></script>
 </body>
 </html>

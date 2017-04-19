@@ -52,25 +52,27 @@
                 $out = "<img class=\"chats-sended\" class=\"chats-status-doNotDisturb\" src=\"$img2\">";
             }
 
-            echo "<a href='chat.php?user=".$usr->interlocutor->username."'>".
+            echo
                 "<div class=\"chats-user\">".
-    "<img class=\"chats-photo\" src=\"$img\">".
-    "<div style=\"background-color: #69F0AE;\" class=\"chats-status-doNotDisturb\">".
-    "</div>".
-    "<div class=\"chat-head\">".
-        "<span class=\"chat-time-position\">$date</span>".
-        "<span class=\"chat-status\">$status</span>".
-    "</div>".
-    "<div class=\"chats-name-last-msg\">".
-
-        "<span id=\"name\">$name</span>".
-    "</div>".
-    "<div class=\"$classMessage\">".
-        $out.
-        "<span class=\"chats-msg-pos\">$last</span>".
-    "</div>".
-"</div>".
-                "</a>";
+                    "<a href=\"userInfo.php?username=".$usr->interlocutor->username."\" >".
+                        "<img class=\"chats-photo\" src=\"$img\">".
+                    "</a>".
+                    "<a href='chat.php?user=".$usr->interlocutor->username."'>".
+                        "<div style=\"background-color: #69F0AE;\" class=\"chats-status-doNotDisturb\">".
+                        "</div>".
+                        "<div class=\"chat-head\">".
+                            "<span class=\"chat-time-position\">$date</span>".
+                            "<span class=\"chat-status\">$status</span>".
+                        "</div>".
+                        "<div class=\"chats-name-last-msg\">".
+                            "<span id=\"name\">$name</span>".
+                        "</div>".
+                        "<div class=\"$classMessage\">".
+                            $out.
+                            "<span class=\"chats-msg-pos\">$last</span>".
+                        "</div>".
+                    "</a>".
+                "</div>";
         }
     }
     ?>

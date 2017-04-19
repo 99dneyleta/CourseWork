@@ -1,6 +1,6 @@
 <?php
 
-include_once("dbConnect.php");
+require_once("dbConnect.php");
 
 
 /*
@@ -89,6 +89,9 @@ class User {
         }
         $sql = "SELECT id, first_name, last_name, email, image, gender, hobby, city, books, music, online FROM members WHERE username = '$this->username' AND activated = '1' LIMIT 1";
         $query = mysqli_query($GLOBALS['dbCon'], $sql);
+        if (mysqli_error($GLOBALS['dbCon'])) {
+            die("DB offline");
+        }
         $row = mysqli_fetch_row($query);
         if ( mysqli_error($GLOBALS['dbCon']) ) {
             return false;
@@ -348,6 +351,7 @@ class User {
             }
             $i--;
         }
+        return true;
 
     }
 
@@ -398,10 +402,8 @@ class User {
 
         $this->removeRequest($uid, $username);
         array_push($this->friends, $username);
-        $this->upgradeFriends();
 
-        $this->getOnline();
-
+        return true;
     }
 
     /*
@@ -421,7 +423,7 @@ class User {
             }
             $i--;
         }
-        $this->getOnline();
+        return true;
     }
 
     /*
@@ -473,6 +475,7 @@ class User {
             fputs($myfile, $txt);
             fclose($myfile);
         }
+        return true;
 
     }
 

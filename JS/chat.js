@@ -129,4 +129,4 @@ function fetch() {
 //so I'm using function set interval, that execute code inside after time T - second parameter
 //1000 = 1 sec
 
-$(document).ready( function () { $.ajaxSetup({cache:false}); fetch(); setInterval(function () { fetch();  }, 1000)} );
+$(document).ready( function () { $.ajaxSetup({cache:false}); fetch(); setInterval(function () { fetch();  }, 2000)} );
