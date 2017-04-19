@@ -26,6 +26,7 @@ if ( !isset($_POST['uid']) || !isset($_POST['partUid']) || !isset($_POST['lastId
         $conversation->loadBasics();
     } else {
         //here would be good, if loadUnread function worked)
+        //TODO
         $conversation->loadBasics();
     }
 
@@ -35,11 +36,13 @@ if ( !isset($_POST['uid']) || !isset($_POST['partUid']) || !isset($_POST['lastId
 
     //very easy: using standard syntax for each messages adding them for returning in backwards
     foreach ($conversation->messages as $message) {
-        $class = ( $message->fromUser->uid == $me->uid )? "outgoing" : "incoming";
+        $class = ( $message->fromUser->uid == $me->uid )? "chat-me-bubble" : "chat-user-bubble";
         $att = ($message->attachment)? "See attachment" : "";
         if ($message->id > $lastId) {
             if ( $message->id > $maxId) { $maxId = $message->id; }
-            $currentMessage = "<div id='message' ><div id='$message->id' class='$class' >".$message->text."</div><a href=\"".$message->attachment."\" class='attach' >".$att."</a></div>";
+            $currentMessage = "<div class=\"".$class."\">".
+                                "<span class=\"chats-message\">".$message->text."</span>".
+                                "</div>";
             $mess = $currentMessage . " " .$mess;
         }
     }
