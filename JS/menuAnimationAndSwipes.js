@@ -62,9 +62,8 @@ function closeFindNav() {
     document.getElementById("nav-icon2").style.marginLeft = "4vw";
     document.getElementById("chats-find").style.marginRight = "4vw";
 //    document.getElementById("header").style.marginLeft = "0";
-    messages = document.getElementsByClassName("chats-user");
+    messages = document.getElementsByClassName("user");
     for( i = 0; i < messages.length; ++i) {
-        name = messages[i].children[3].textContent;
         messages[i].style = "";
     }
     document.getElementById("search").value = "";

@@ -13,5 +13,7 @@ $userForeign = $user;
 
 generateSessionAndCookie($user);
 
+$listed = false;
+
 include "View/profile.phtml";
 

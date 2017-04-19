@@ -1,0 +1,94 @@
+
+
+
+
+
+
+
+
+
+.chats-user {
+	width: 100%;
+	height: 200px;
+	background-color: white;
+}
+
+
+
+
+
+
+.chat-time-position {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2vh;
+    float: right;
+}
+
+
+.chat-head {
+    text-size-adjust: 100%;
+    display: inline-block;
+    position: absolute;
+    width: 77%; 
+}
+
+
+.chat-status {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2vh;
+}
+
+
+.chats-name-last-msg {
+    font-size: 2vh;
+    display: inline-block;
+    width: 77%;
+    text-align: center;
+    margin-top: 3vh;
+    position: absolute; 
+}
+
+
+.last-msg-readed {
+    font-size: 2vh;
+    display: inline-block;
+    width: 77%;
+    text-align: center;
+    position: absolute;
+    margin-top: 7vh;
+    vertical-align: sub;
+}
+
+
+.last-msg-not-readed {
+    font-size: 2vh;
+    display: inline-block;
+    width: 77%;
+    text-align: center;
+    position: absolute;
+    margin-top: 7vh;
+    background: rgba(0,0,0,0.3);
+    vertical-align: sub;
+}
+
+
+.chats-sended {
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    float: left;
+}
+
+
+.chats-msg-pos {
+    vertical-align: sub;
+}
+
+
+
+
+
+.menu-chat-pos {
+    margin-top: 2vh;
+    margin-right: 4vw;
+}

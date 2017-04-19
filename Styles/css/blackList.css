@@ -1,0 +1,32 @@
+.user {
+    width: 100vw;
+    height: 200px;
+    background-color: rgba(0,0,0,0.3);
+    margin-top: 0.1vh;
+    
+}
+
+
+.name {
+    color: white;
+    display: inline-block;
+    font-size: 3em;
+    float: left;
+    position: absolute;
+}
+
+
+
+.status {
+    font-size: 0.7em;
+    text-align: center;
+    font-family: Verdana;
+}
+
+
+
+.remove {
+    float: right;
+    height: 3em;
+    width: 3em;
+}

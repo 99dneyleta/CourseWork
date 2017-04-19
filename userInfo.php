@@ -1,6 +1,8 @@
 <?php
 session_start();
 include_once("Brain/functionality.php");
+include "Brain/DB.php";
+include "Brain/Select.php";
 
 $user = getUser();
 if (!isset($user)) {
@@ -48,6 +50,23 @@ if ( !isset($_GET['username'])) {
             }
         }
     }
+}
+
+$myId = $user->uid;
+$idUser = $userForeign->uid;
+$listed = true;
+
+$select = new Select("id");
+$select->Where("participant1 = '".$idUser."'")->AndWhere("participant2 = '".$myId."'")->OrWhere("(participant2 = '".$idUser."' AND "."participant1 = '".$myId."')")->AndWhere("confirm = 2");
+$DB = new DB();
+$DB->setTable("conversations");
+
+try {
+    $DB->selectAAA($select);
+} catch (Error $error) {
+    //none
+    //die($error);
+    $listed = false;
 }
 
 //include "View/userFriendInfo.phtml";

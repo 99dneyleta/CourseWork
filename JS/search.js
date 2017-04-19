@@ -4,9 +4,9 @@
 
 function find() {
     searchPhrase = document.getElementById("search").value;
-    messages = document.getElementsByClassName("chats-user");
+    messages = document.getElementsByClassName("user");
     for( i = 0; i < messages.length; ++i) {
-        name = messages[i].children[3].textContent;
+        name = messages[i].children[1].children[2].textContent;
         if ( name.indexOf(searchPhrase) < 0) {
             messages[i].style = "display: none;";
         } else {

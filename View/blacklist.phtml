@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>All Chats</title>
+
+    <link rel="stylesheet" href="../Styles/css/blackList.css">
+    <link rel="stylesheet" href="../Styles/menuButtonStyle.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="../Styles/css/body.css">
+    <link rel="stylesheet" href="../Styles/find.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="../Styles/css/usersIcon.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+</head>
+<body class="body-chats">
+<div id="header">
+
+    <div style="margin-top: 2vh" id="nav-icon2" onclick="openNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <img  id="chats-find" src="../img/imgs/find.png" onclick="openFindNav()">
+</div>
+
+<?php
+if ( isset($list) && count($list) > 0) {
+    foreach ($list as $userFor) {
+
+        $name = $userFor->getName();
+        $username = $userFor->username;
+        $img = $userFor->image;
+        $status = $userFor->status;
+        $uidd = $userFor->uid;
+
+        $str = "<a href='userInfo.php?username=".$username."'>".
+            "<div class=\"user\" >" .
+            "<img class=\"chats-photo\" src=\"".$img."\">" .
+            "</a>".
+            "<a >".
+            "<div style=\"background-color: deeppink;\" class=\"chats-status-doNotDisturb\"></div>" .
+            "<div class=\"name\">" .
+            "<span>".$name."<br><span class=\"status\">".$status."</span></span>" .
+            "</div>" .
+            "<img class=\"remove\" src=\"../img/imgs/remove.png\" onclick='removeFromBlacklist($uid,$uidd)'>" .
+            "</div></a>";
+
+        echo $str;
+    }
+} else {
+}
+
+?>
+
+<?php
+    include "menuContent.phtml";
+    include "searchContent.phtml";
+
+?>
+
+
+
+<script src="../JS/menuAnimationAndSwipes.js?v=<?php echo time(); ?> >"></script>
+<script src="../JS/search.js"></script>
+<script src="../JS/blacklistHandler.js"></script>
+
+</body>
+</html>

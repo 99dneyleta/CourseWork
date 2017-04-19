@@ -11,6 +11,7 @@
     <title>YOM</title>
 
     <link rel="stylesheet" href="../Styles/profile.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../Styles/menuButtonStyle.css?v=<?php echo time();?>">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>-->
@@ -76,6 +77,14 @@ if ( $friend) {
     $mes = "<h1 class=\"more-actions-text\"><a href='chat.php?user=".$username."'> Write message</a></h1>";
 }
 
+$bl = "Add to Black List";
+$blAction = "addToBlacklist(".$user->uid.",".$userForeign->uid.")";
+
+if ( $listed ) {
+    $bl = "Remove from Black List";
+    $blAction = "removeFromBlacklist(".$user->uid.",".$userForeign->uid.")";
+}
+
 $username = $userForeign->username;
 $srt = "<div id=\"ma-mySidenav\" class=\"ma-sidenav\">".
     "<a class=\"ma-closebtn\" onclick=\"closeMaNav()\">&times;</a>".
@@ -83,7 +92,7 @@ $srt = "<div id=\"ma-mySidenav\" class=\"ma-sidenav\">".
     "<h1 class=\"more-actions-text\" onclick=\"".$mode."()\">".$s."</h1>".
     $mes.
     "<h1 class=\"more-actions-text\" onclick=\"showAbout()\">About ".$username."</h1>".
-    "<h1 class=\"more-actions-text\" onclick=\"addToBlacklist()\">Add to Black List</h1>".
+    "<h1 class=\"more-actions-text\" onclick=\"$blAction\">$bl</h1>".
     "</div></div>";
 
 if ( isset($foreign) ) {
@@ -94,5 +103,6 @@ if ( isset($foreign) ) {
 <script src="../JS/jgestures.js"></script>
 <script src="../JS/menuAnimationAndSwipes.js"></script>
 <script src="../JS/peopleManagment.js"></script>
+<script src="../JS/blacklistHandler.js"></script>
 </body>
 </html>

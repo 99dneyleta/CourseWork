@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Login</title>
 
-    <link rel="stylesheet" href="../Styles/chat.css">
+    <link rel="stylesheet" href="../Styles/chat.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="../Styles/menuButtonStyle.css?v=<?php echo time();?>">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>-->
@@ -47,7 +48,7 @@
 <div class="chat-msg-box">
     <form id="form" action="javascript:void(0);" onsubmit="return sendMessage(this);">
         <input type="text" class="chat-send-input" placeholder="Type message..." name="text">
-        <input type="hidden" name="myUid" value="<?php echo $user->uid; ?>">
+        <input type="hidden" name="myUid" value="<?php echo $userFor->uid; ?>">
         <input type="hidden" name="partUid" value="<?php echo $interlocutor->uid;?>">
         <button type="submit" class="chat-send-button">Send</button>
     </form>

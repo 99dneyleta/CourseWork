@@ -1,0 +1,91 @@
+.find-sidenav {
+    height: 6.5vh;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background: radial-gradient(circle at 25.52% 30.34%, #686996, transparent 100%),radial-gradient(circle at 86.93% 84.49%, #59607D, transparent 100%),radial-gradient(circle at 50% 50%, #000000, #000000 100%);
+    overflow-x: hidden;
+    transition: 1s;
+    transition-delay: 0.2s;
+}
+
+
+
+#chats-find {
+    margin-right: 4vw;
+    margin-top: 2vh;
+    float: right;
+   width: 60px;
+    height: 45px;
+    transition: 1s ease-in-out;
+}
+
+
+
+.find-sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.find-sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+  .find-sidenav {padding-top: 15px;}
+  .find-sidenav a {font-size: 18px;}
+}
+
+
+.chats-find-search {
+    width: 100%;
+    height: 6.5vh;
+    background: radial-gradient(circle at 25.52% 30.34%, #686996, transparent 100%),radial-gradient(circle at 86.93% 84.49%, #59607D, transparent 100%),radial-gradient(circle at 50% 50%, #000000, #000000 100%);
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 2em;
+    font-style: 'Lato', sans-serif;
+}
+
+
+textarea:focus, input:focus{
+    outline: none;
+}
+
+
+/* unvisited link */
+.find-sidenav a:link {
+    color: white;
+}
+
+/* visited link */
+.find-sidenav a:visited {
+    color: white;
+}
+
+/* mouse over link */
+.find-sidenav a:hover {
+    color: white;
+}
+
+/* selected link */
+.find-sidenav a:active {
+    color: white;
+}
+
+
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: white;
+}

@@ -10,7 +10,9 @@
     <meta charset="UTF-8">
     <title>All Chats</title>
 
-    <link rel="stylesheet" href="../Styles/chats.css">
+    <link rel="stylesheet" href="../Styles/chats.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="../Styles/menuButtonStyle.css?v=<?php echo time();?>">
+    <link rel="stylesheet" href="../Styles/find.css?v=<?php echo time();?>">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
@@ -53,7 +55,7 @@
             }
 
             echo
-                "<div class=\"chats-user\">".
+                "<div class=\"user\">".
                     "<a href=\"userInfo.php?username=".$usr->interlocutor->username."\" >".
                         "<img class=\"chats-photo\" src=\"$img\">".
                     "</a>".
@@ -79,14 +81,13 @@
 
 
 
-<?php include "./View/menuContent.phtml"; ?>
+<?php
+include "./View/menuContent.phtml";
+include "searchContent.phtml";
+?>
 <script src="../JS/jgestures.js"></script>
-<script src="../JS/menuAnimationAndSwipes.js<?php echo "?v=".time();?>>"></script>
-<div id="myFindSidenav" class="find-sidenav">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeFindNav()">&times;</a>
-    <input class="chats-find-search" type="text" placeholder="Search Name" id="search" onchange="find()">
-    <script src="../JS/search.js"></script>
+<script src="../JS/menuAnimationAndSwipes.js?v=<?php echo time(); ?> >"></script>
+<script src="../JS/search.js"></script>
 
-</div>
 </body>
 </html>

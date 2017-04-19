@@ -150,12 +150,12 @@
 </script>
 <div class="menu" id="menu" style="display: none;">
     <a href="profile.php">
-        <img class="profile-image-tiny" src=" <?php if ( isset($user->image) ) {echo $user->image;} else {echo "img/space-for-avatar.png";} ?> " >
-        <div class="menu_header"><?php if ( isset($user->username)) {echo $user->username;} else { echo "dev/null/";}?></div>
+        <img class="profile-image-tiny" src=" <?php if ( isset($userFor->image) ) {echo $userFor->image;} else {echo "img/space-for-avatar.png";} ?> " >
+        <div class="menu_header"><?php if ( isset($userFor->username)) {echo $userFor->username;} else { echo "dev/null/";}?></div>
         <div class="menu_status">Online</div>
     </a>
-    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats<?php if ( $user->hasPendingMessages() || $user->hasNewMessages()) { echo "<div id=notify></div>"; } ?></div></a>
-    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends<?php if ( $user->hasPendingFriends()) { echo "<div id=notify></div>"; } ?></div></a>
+    <a href="chats.php"><div class="menu_button"><img src="img/chats.svg" class="menu_image">Chats<?php if ( $userFor->hasPendingMessages() || $userFor->hasNewMessages()) { echo "<div id=notify></div>"; } ?></div></a>
+    <a href="friends.php"><div class="menu_button"><img src="img/friends.svg" class="menu_image">Friends<?php if ( $userFor->hasPendingFriends()) { echo "<div id=notify></div>"; } ?></div></a>
     <a href="profileData.php"><div class="menu_button"><img src="img/settings.svg" class="menu_image">Settings</div></a>
     <a href="logout.php"><div class="menu_button"><img src="img/logout.svg" class="menu_image">Log out</div></a>
 </div>
@@ -167,7 +167,7 @@
     <div class="dash" id="dash" onclick="show_menu()">
         <div id="alone">
             <span></span>
-            <span <?php if ( $user->hasNews()) { echo "style='background: #ff1001'"; } ?> ></span>
+            <span <?php if ( $userFor->hasNews()) { echo "style='background: #ff1001'"; } ?> ></span>
             <span></span>
         </div>
 
@@ -185,16 +185,16 @@
     <input type="hidden" name="didLoad" value="true">
 
     <div id="label">My current city</div>
-    <textarea name="city" rows="3"><?php if ( isset($user->city)) {echo $user->city;} ?></textarea>
+    <textarea name="city" rows="3"><?php if ( isset($userFor->city)) {echo $userFor->city;} ?></textarea>
 
     <div id="label">My hobby</div>
-    <textarea name="hobby" rows="3"><?php if ( isset($user->hobby)) {echo $user->hobby;} ?></textarea>
+    <textarea name="hobby" rows="3"><?php if ( isset($userFor->hobby)) {echo $userFor->hobby;} ?></textarea>
 
     <div id="label">My favorite books</div>
-    <textarea name="books" rows="3"><?php if ( isset($user->books)) {echo $user->books;} ?></textarea>
+    <textarea name="books" rows="3"><?php if ( isset($userFor->books)) {echo $userFor->books;} ?></textarea>
 
     <div id="label">My favorite music</div>
-    <textarea name="music" rows="3"><?php if ( isset($user->music)) {echo $user->music;} ?></textarea>
+    <textarea name="music" rows="3"><?php if ( isset($userFor->music)) {echo $userFor->music;} ?></textarea>
 
     <input type="submit" value="Update">
 

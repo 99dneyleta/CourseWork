@@ -1,0 +1,14 @@
+.chats-status-doNotDisturb {
+    width: 2vw;
+    height: 100%;
+    display: inline-block;
+    left: -4px;
+    position: relative;
+}
+
+
+
+.chats-photo {
+	width:200px;
+	height:200px;	
+}
