@@ -27,7 +27,7 @@ class DB {
 
     function __construct()
     {
-        $file = fopen("../DB/db.config", "r");
+        $file = fopen("DB/db.config", "r");
         $str = fgets($file);
         $arr = unserialize($str);
 
