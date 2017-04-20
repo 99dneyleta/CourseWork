@@ -1,6 +1,6 @@
 <?php
 
-$file = fopen("../DB/db.config", "r");
+$file = fopen("DB/db.config", "r");
 $str = fgets($file);
 fclose($file);
 $arr = unserialize($str);
