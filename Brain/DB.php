@@ -27,11 +27,11 @@ class DB {
 
     function __construct()
     {
-        $file = fopen("/Users/deniz/DB/db.config", "r");
+        $file = fopen("../DB/db.config", "r");
         $str = fgets($file);
         $arr = unserialize($str);
 
-        $this->dbConnect = new mysqli("eu-cdbr-west-01.cleardb.com", "b38032f194eeca", "74f878ef", "heroku_a42b2b8203907e2");//($arr["host"], $arr['username'], $arr["password"], $arr["database"]);
+        $this->dbConnect = new mysqli($arr["host"], $arr['username'], $arr["password"], $arr["database"]);
 
         // Check connection
         if ($this->dbConnect->connect_error) {

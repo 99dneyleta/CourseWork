@@ -32,6 +32,7 @@ $confirm = $conversation->confirm;
 if ( $confirm == 2 && !$conversation->reverse) {
     header("Location: chats.php");
 }
+//die($confirm);
 
 include "View/chat.phtml";
 

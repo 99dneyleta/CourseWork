@@ -65,34 +65,36 @@ switch ($mode) {
         break;
     case "friend":
         $friend = true;
+        $s = "Remove friend";
+        break;
     case "sent":
-        $s = "Remove";
+        $s = "Remove request";
         break;
     default:
         $s = $mode;
         break;
 }
 $mes = '';
-if ( $friend) {
-    $mes = "<h1 class=\"more-actions-text\"><a href='chat.php?user=".$username."'> Write message</a></h1>";
+if ( !$friend) {
+    $mes = "style='display: none;'";
 }
 
 $bl = "Add to Black List";
-$blAction = "addToBlacklist(".$user->uid.",".$userForeign->uid.")";
+$blAction = "addToBlacklist('".$user->uid."','".$userForeign->uid."')";
 
 if ( $listed ) {
     $bl = "Remove from Black List";
-    $blAction = "removeFromBlacklist(".$user->uid.",".$userForeign->uid.")";
+    $blAction = "removeFromBlacklist('".$user->uid."','".$userForeign->uid."')";
 }
 
 $username = $userForeign->username;
 $srt = "<div id=\"ma-mySidenav\" class=\"ma-sidenav\">".
     "<a class=\"ma-closebtn\" onclick=\"closeMaNav()\">&times;</a>".
     ".<div class=\"pos1\">".
-    "<h1 class=\"more-actions-text\" onclick=\"".$mode."()\">".$s."</h1>".
-    $mes.
-    "<h1 class=\"more-actions-text\" onclick=\"showAbout()\">About ".$username."</h1>".
-    "<h1 class=\"more-actions-text\" onclick=\"$blAction\">$bl</h1>".
+    "<h1 class=\"more-actions-text\" onclick=\"".$mode."('$username')\" id='manage'>".$s."</h1>".
+    "<h1 class=\"more-actions-text\" $mes  id='write'><a href='chat.php?user=".$username."'> Write message</a></h1>".
+    "<h1 class=\"more-actions-text\" onclick=\"showAbout('$username')\">About ".$username."</h1>".
+    "<h1 class=\"more-actions-text\" onclick=\"$blAction\" id='bl'>$bl</h1>".
     "</div></div>";
 
 if ( isset($foreign) ) {

@@ -57,7 +57,7 @@ $idUser = $userForeign->uid;
 $listed = true;
 
 $select = new Select("id");
-$select->Where("participant1 = '".$idUser."'")->AndWhere("participant2 = '".$myId."'")->OrWhere("(participant2 = '".$idUser."' AND "."participant1 = '".$myId."')")->AndWhere("confirm = 2");
+$select->Where("participant1 = '".$myId."'")->AndWhere("participant2 = '".$idUser."'")->AndWhere("confirm = 2");
 $DB = new DB();
 $DB->setTable("conversations");
 

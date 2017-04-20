@@ -286,8 +286,6 @@ class User {
         }
 
 
-
-
         $sql = "SELECT decline FROM requests WHERE from_id='$this->uid' AND to_id='$uid' ;";
         $query = mysqli_query($GLOBALS['dbCon'], $sql);
         if ( isset(mysqli_fetch_row($query)[0]) ) {
@@ -402,6 +400,7 @@ class User {
 
         $this->removeRequest($uid, $username);
         array_push($this->friends, $username);
+        $this->upgradeFriends();
 
         return true;
     }

@@ -9,62 +9,78 @@ include "functionality.php";
 include "Select.php";
 include "DB.php";
 
-if ( !isset($_POST['myId']) || !isset($_POST['username']) || !isset($_POST['mode'])) {
+if ( !isset($_POST['myId']) || !isset($_POST['userId']) || !isset($_POST['mode'])) {
     return false;
 }
 
 $myId = $_POST['myId'];
-$username = $_POST['username'];
+$userId = $_POST['userId'];
 $mode = $_POST['mode'];
 
 switch ($mode) {
     case "Add":
-        $idSelect = new Select("id");
-        $idSelect->Where("username = '".$username."'")->Limit(1);
+        $idSelect = new Select("username");
+        $idSelect->Where("id = '".$userId."'")->Limit(1);
         $DB = new DB();
         $DB->setTable("members");
         try {
-            $idUser = $DB->selectAAA($idSelect)[0]['id'];
+            $username = $DB->selectAAA($idSelect)[0]['username'];
         } catch (Error $error) {
-            return false;
+            die($error);
+        }
+        $idSelect = new Select("username");
+        $idSelect->Where("id = '".$myId."'")->Limit(1);
+        $DB = new DB();
+        $DB->setTable("members");
+        try {
+            $myUsername = $DB->selectAAA($idSelect)[0]['username'];
+        } catch (Error $error) {
+            die($error);
         }
 
+        $userToDelete = User::withUsername($username);
+        $userToDelete->updateFriends();
+        $userToDelete->removeFromFriends($myId, $myUsername);
+        $userToDelete->upgradeFriends();
+        $userToDelete->deleteConversationWith($myId);
+        $userToDelete->removeRequest($myId, $myUsername);
+
         $select = new Select("id");
-        $select->Where("participant1 = '".$idUser."'")->AndWhere("participant2 = '".$myId."'")->OrWhere("participant2 = '".$idUser."' AND "."participant1 = '".$myId."'")->AndWhere("confirm = 2");
+        $select->Where("participant1 = '".$myId."'")->AndWhere("participant2 = '".$userId."'")->AndWhere("confirm = 2");
 
         $DB->setTable("conversations");
 
         try {
             $DB->selectAAA($select);
         } catch (Error $error) {
-            $DB->insert(["participant1" => $myId, "participant2" => $idUser, "confirm" => 2]);
-            return true;
+            $DB->insert(["participant1" => $myId, "participant2" => $userId, "confirm" => 2]);
+            die("true");
         }
-        return false;
+        die("Error: ".$select);
 
         break;
     case "Remove":
-        $idSelect = new Select("id");
-        $idSelect->Where("username = '".$username."'")->Limit(1);
+        $idSelect = new Select("username");
+        $idSelect->Where("id = '".$userId."'")->Limit(1);
         $DB = new DB();
         $DB->setTable("members");
         try {
-            $idUser = $DB->selectAAA($idSelect)[0]['id'];
+            $username = $DB->selectAAA($idSelect)[0]['username'];
         } catch (Error $error) {
-            return false;
+            die($error);
         }
 
 
         $DB = new DB();
         $DB->setTable("conversations");
         try {
-            $DB->delete("(participant2 = '" . $idUser . "' AND " . "participant1 = '" . $myId . "') OR " . "(participant1 = '" . $idUser . "' AND " . "participant2 = '" . $myId . "')");
+            $DB->delete("(participant2 = '" . $userId . "' AND " . "participant1 = '" . $myId . "')");
         } catch (Error $error) {
-            return false;
+            die($error);
         }
-        return true;
+        die("true");
         break;
     default:
-        return false;
+        die("false");
         break;
 }

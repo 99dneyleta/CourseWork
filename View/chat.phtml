@@ -48,7 +48,7 @@
 <div class="chat-msg-box">
     <form id="form" action="javascript:void(0);" onsubmit="return sendMessage(this);">
         <input type="text" class="chat-send-input" placeholder="Type message..." name="text">
-        <input type="hidden" name="myUid" value="<?php echo $userFor->uid; ?>">
+        <input type="hidden" name="myUid" value="<?php echo $user->uid; ?>">
         <input type="hidden" name="partUid" value="<?php echo $interlocutor->uid;?>">
         <button type="submit" class="chat-send-button">Send</button>
     </form>
